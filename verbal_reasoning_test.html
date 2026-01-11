@@ -1,0 +1,743 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Verbal Reasoning Test</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Arial, sans-serif;
+            background-color: #f5f5f5;
+            padding: 20px;
+            line-height: 1.6;
+        }
+
+        .container {
+            max-width: 800px;
+            margin: 0 auto;
+            background: white;
+            border-radius: 12px;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+            padding: 40px;
+            min-height: 600px;
+        }
+
+        h1 {
+            color: #333;
+            margin-bottom: 20px;
+            font-size: 28px;
+        }
+
+        h2 {
+            color: #333;
+            margin-bottom: 15px;
+            font-size: 22px;
+        }
+
+        .instructions {
+            margin-bottom: 30px;
+        }
+
+        .instructions ul {
+            margin-left: 25px;
+            margin-top: 15px;
+        }
+
+        .instructions li {
+            margin-bottom: 10px;
+            color: #555;
+        }
+
+        .timer-display {
+            position: fixed;
+            top: 20px;
+            right: 20px;
+            background: #2563eb;
+            color: white;
+            padding: 15px 25px;
+            border-radius: 8px;
+            font-size: 24px;
+            font-weight: bold;
+            box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+            z-index: 1000;
+        }
+
+        .timer-warning {
+            background: #dc2626;
+            animation: pulse 1s infinite;
+        }
+
+        @keyframes pulse {
+            0%, 100% { opacity: 1; }
+            50% { opacity: 0.8; }
+        }
+
+        .question-container {
+            margin-bottom: 30px;
+        }
+
+        .question-header {
+            background: #f8f9fa;
+            padding: 15px;
+            border-radius: 8px;
+            margin-bottom: 20px;
+        }
+
+        .question-number {
+            color: #666;
+            font-size: 14px;
+            margin-bottom: 5px;
+        }
+
+        .question-text {
+            font-size: 18px;
+            color: #333;
+            margin-bottom: 15px;
+            line-height: 1.8;
+        }
+
+        .question-text strong {
+            font-weight: 600;
+        }
+
+        .context-box {
+            background: #f8f9fa;
+            border-left: 4px solid #2563eb;
+            padding: 15px;
+            margin-bottom: 20px;
+            border-radius: 4px;
+        }
+
+        .context-box p {
+            margin-bottom: 8px;
+            color: #333;
+        }
+
+        .options-container {
+            display: flex;
+            flex-direction: column;
+            gap: 12px;
+            margin-bottom: 30px;
+        }
+
+        .option-button {
+            background: white;
+            border: 2px solid #e5e7eb;
+            padding: 15px 20px;
+            border-radius: 8px;
+            cursor: pointer;
+            transition: all 0.2s;
+            text-align: left;
+            font-size: 16px;
+            display: flex;
+            align-items: center;
+            gap: 12px;
+        }
+
+        .option-button:hover {
+            border-color: #2563eb;
+            background: #f0f9ff;
+        }
+
+        .option-button.selected {
+            border-color: #2563eb;
+            background: #dbeafe;
+        }
+
+        .option-label {
+            background: #e5e7eb;
+            color: #374151;
+            font-weight: 600;
+            padding: 6px 12px;
+            border-radius: 6px;
+            min-width: 35px;
+            text-align: center;
+        }
+
+        .option-button.selected .option-label {
+            background: #2563eb;
+            color: white;
+        }
+
+        .multi-select-container {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 12px;
+            margin-bottom: 30px;
+        }
+
+        .word-groups {
+            display: flex;
+            gap: 20px;
+            justify-content: center;
+            flex-wrap: wrap;
+            margin-bottom: 25px;
+            font-size: 18px;
+            font-weight: 500;
+        }
+
+        .word-group {
+            padding: 10px 15px;
+            background: #f3f4f6;
+            border-radius: 6px;
+        }
+
+        .navigation {
+            display: flex;
+            justify-content: flex-end;
+            gap: 15px;
+            margin-top: 40px;
+            padding-top: 20px;
+            border-top: 2px solid #e5e7eb;
+        }
+
+        .btn {
+            padding: 14px 32px;
+            border: none;
+            border-radius: 8px;
+            font-size: 16px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.2s;
+        }
+
+        .btn-primary {
+            background: #2563eb;
+            color: white;
+        }
+
+        .btn-primary:hover:not(:disabled) {
+            background: #1d4ed8;
+        }
+
+        .btn-primary:disabled {
+            background: #93c5fd;
+            cursor: not-allowed;
+            opacity: 0.6;
+        }
+
+        .btn-success {
+            background: #16a34a;
+            color: white;
+        }
+
+        .btn-success:hover {
+            background: #15803d;
+        }
+
+        .results-container {
+            text-align: center;
+            padding: 20px;
+        }
+
+        .score-display {
+            font-size: 48px;
+            font-weight: bold;
+            color: #2563eb;
+            margin: 30px 0;
+        }
+
+        .results-details {
+            background: #f8f9fa;
+            padding: 20px;
+            border-radius: 8px;
+            margin-top: 20px;
+            text-align: left;
+        }
+
+        .hidden {
+            display: none;
+        }
+
+        @media (max-width: 768px) {
+            .container {
+                padding: 20px;
+            }
+
+            .timer-display {
+                position: static;
+                margin-bottom: 20px;
+                text-align: center;
+            }
+
+            .word-groups {
+                font-size: 16px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <!-- Instructions Page -->
+        <div id="instructionsPage">
+            <h1>Verbal Reasoning Test</h1>
+            <div class="instructions">
+                <h2>Instructions</h2>
+                <ul>
+                    <li>This test contains <strong>20 verbal reasoning questions</strong></li>
+                    <li>You will have <strong>10 minutes</strong> to complete all questions</li>
+                    <li>The timer will start when you click the "Start Test" button</li>
+                    <li>Select your answer for each question before proceeding</li>
+                    <li>The "Next" button will only work once you've selected an answer</li>
+                    <li>You cannot go back to previous questions</li>
+                    <li>Answer all questions to the best of your ability</li>
+                    <li>The test will automatically submit when time runs out</li>
+                </ul>
+            </div>
+            <div class="navigation">
+                <button class="btn btn-success" onclick="startTest()">Start Test</button>
+            </div>
+        </div>
+
+        <!-- Timer Display (hidden initially) -->
+        <div id="timerDisplay" class="timer-display hidden">10:00</div>
+
+        <!-- Question Page (hidden initially) -->
+        <div id="questionPage" class="hidden">
+            <div class="question-header">
+                <div class="question-number">Question <span id="currentQuestion">1</span>/20</div>
+            </div>
+            <div id="questionContent"></div>
+            <div class="navigation">
+                <button class="btn btn-primary" id="nextBtn" onclick="nextQuestion()" disabled>Next</button>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // Question bank
+        const questions = [
+            // Question 1: Odd One Out
+            {
+                type: 'multiple',
+                question: 'Three of these words are linked in some way.<br><strong>Choose the two odd ones out.</strong>',
+                options: [
+                    { id: 'A', text: 'violin' },
+                    { id: 'B', text: 'trumpet' },
+                    { id: 'C', text: 'flute' },
+                    { id: 'D', text: 'drum' },
+                    { id: 'E', text: 'piano' }
+                ],
+                correctAnswers: ['D', 'E'],
+                multiSelect: true
+            },
+            // Question 2: Analogies
+            {
+                type: 'analogy',
+                question: 'Select two words, one from each set of brackets, that will complete the sentence in the most sensible way.',
+                context: 'Teacher is to <strong>(lesson, exam, school)</strong> as doctor is to <strong>(hospital, body, bandage)</strong>.',
+                options: [
+                    { id: 'A', text: 'lesson' },
+                    { id: 'B', text: 'exam' },
+                    { id: 'C', text: 'school' },
+                    { id: 'D', text: 'hospital' },
+                    { id: 'E', text: 'body' },
+                    { id: 'F', text: 'bandage' }
+                ],
+                correctAnswers: ['C', 'D'],
+                multiSelect: true
+            },
+            // Question 3: Closest Meaning
+            {
+                type: 'closest-meaning',
+                question: 'Select the two words, one from each group, that are the closest in meaning.',
+                wordGroups: ['quick, slow, fast', 'rapid, sluggish, careful'],
+                options: [
+                    { id: 'A', text: 'quick' },
+                    { id: 'B', text: 'slow' },
+                    { id: 'C', text: 'fast' },
+                    { id: 'D', text: 'rapid' },
+                    { id: 'E', text: 'sluggish' },
+                    { id: 'F', text: 'careful' }
+                ],
+                correctAnswers: ['C', 'D'],
+                multiSelect: true
+            },
+            // Question 4: Sentence Completion
+            {
+                type: 'single',
+                question: 'Select the word that completes the sentence below in the most sensible way.',
+                context: 'The detective examined the clues _______ before making her conclusion.',
+                options: [
+                    { id: 'A', text: 'carelessly' },
+                    { id: 'B', text: 'hastily' },
+                    { id: 'C', text: 'meticulously' },
+                    { id: 'D', text: 'briefly' },
+                    { id: 'E', text: 'randomly' }
+                ],
+                correctAnswers: ['C']
+            },
+            // Question 5: Logic Puzzle
+            {
+                type: 'single',
+                question: 'Read the following statements about a sports club.<br><br>If these statements are true, select the further statement that must <strong>also</strong> be true.',
+                context: '<p>• James plays tennis on Mondays and Wednesdays.</p><p>• Sarah plays tennis every day except Tuesday and Thursday.</p><p>• Maya only plays tennis when James is playing.</p>',
+                options: [
+                    { id: 'A', text: 'James and Sarah play together on Mondays.' },
+                    { id: 'B', text: 'Maya plays tennis on Tuesdays.' },
+                    { id: 'C', text: 'Sarah never plays with Maya.' },
+                    { id: 'D', text: 'Maya plays tennis on Wednesdays.' }
+                ],
+                correctAnswers: ['D']
+            },
+            // Question 6: Word Relationships
+            {
+                type: 'single',
+                question: 'Choose the word that has the same relationship to the third word as the second word has to the first.',
+                context: '<strong>Pen</strong> is to <strong>write</strong> as <strong>scissors</strong> is to ___',
+                options: [
+                    { id: 'A', text: 'paper' },
+                    { id: 'B', text: 'sharp' },
+                    { id: 'C', text: 'cut' },
+                    { id: 'D', text: 'tool' },
+                    { id: 'E', text: 'metal' }
+                ],
+                correctAnswers: ['C']
+            },
+            // Question 7: Odd One Out (Different Style)
+            {
+                type: 'single',
+                question: 'Four of these words belong to the same category. Which is the odd one out?',
+                options: [
+                    { id: 'A', text: 'crimson' },
+                    { id: 'B', text: 'scarlet' },
+                    { id: 'C', text: 'burgundy' },
+                    { id: 'D', text: 'orange' },
+                    { id: 'E', text: 'ruby' }
+                ],
+                correctAnswers: ['D']
+            },
+            // Question 8: Letter Sequences
+            {
+                type: 'single',
+                question: 'What letter should come next in this sequence?',
+                context: '<strong>B, D, G, K, P, ___</strong>',
+                options: [
+                    { id: 'A', text: 'Q' },
+                    { id: 'B', text: 'U' },
+                    { id: 'C', text: 'V' },
+                    { id: 'D', text: 'T' },
+                    { id: 'E', text: 'W' }
+                ],
+                correctAnswers: ['C']
+            },
+            // Question 9: Sentence Completion
+            {
+                type: 'single',
+                question: 'Select the word that completes the sentence below in the most sensible way.',
+                context: 'The artist\'s work was so _______ that it divided critics into two completely opposing camps.',
+                options: [
+                    { id: 'A', text: 'conventional' },
+                    { id: 'B', text: 'controversial' },
+                    { id: 'C', text: 'beautiful' },
+                    { id: 'D', text: 'expensive' },
+                    { id: 'E', text: 'simple' }
+                ],
+                correctAnswers: ['B']
+            },
+            // Question 10: Closest Meaning
+            {
+                type: 'closest-meaning',
+                question: 'Select the two words, one from each group, that are the closest in meaning.',
+                wordGroups: ['brave, timid, strong', 'courageous, weak, fearful'],
+                options: [
+                    { id: 'A', text: 'brave' },
+                    { id: 'B', text: 'timid' },
+                    { id: 'C', text: 'strong' },
+                    { id: 'D', text: 'courageous' },
+                    { id: 'E', text: 'weak' },
+                    { id: 'F', text: 'fearful' }
+                ],
+                correctAnswers: ['A', 'D'],
+                multiSelect: true
+            },
+            // Question 11: Code Breaking
+            {
+                type: 'single',
+                question: 'If CHAT is coded as 3-8-1-20, what is the code for KING?',
+                options: [
+                    { id: 'A', text: '10-9-14-7' },
+                    { id: 'B', text: '11-9-14-7' },
+                    { id: 'C', text: '11-8-13-6' },
+                    { id: 'D', text: '12-10-15-8' },
+                    { id: 'E', text: '11-10-14-7' }
+                ],
+                correctAnswers: ['B']
+            },
+            // Question 12: Logic Puzzle
+            {
+                type: 'single',
+                question: 'Read the statements about a library.<br><br>If these statements are true, which conclusion must <strong>also</strong> be true?',
+                context: '<p>• All fiction books are on the ground floor.</p><p>• Some books on the ground floor are new arrivals.</p><p>• No poetry books are new arrivals.</p>',
+                options: [
+                    { id: 'A', text: 'All new arrivals are fiction books.' },
+                    { id: 'B', text: 'Some fiction books are new arrivals.' },
+                    { id: 'C', text: 'No poetry books are on the ground floor.' },
+                    { id: 'D', text: 'All ground floor books are fiction.' }
+                ],
+                correctAnswers: ['B']
+            },
+            // Question 13: Analogies
+            {
+                type: 'analogy',
+                question: 'Select two words, one from each set of brackets, that will complete the sentence in the most sensible way.',
+                context: 'Architect is to <strong>(building, blueprint, construct)</strong> as composer is to <strong>(music, score, orchestra)</strong>.',
+                options: [
+                    { id: 'A', text: 'building' },
+                    { id: 'B', text: 'blueprint' },
+                    { id: 'C', text: 'construct' },
+                    { id: 'D', text: 'music' },
+                    { id: 'E', text: 'score' },
+                    { id: 'F', text: 'orchestra' }
+                ],
+                correctAnswers: ['B', 'E'],
+                multiSelect: true
+            },
+            // Question 14: Opposite Meanings
+            {
+                type: 'single',
+                question: 'Which word is most nearly <strong>opposite</strong> in meaning to the word in capitals?',
+                context: '<strong>EXPAND</strong>',
+                options: [
+                    { id: 'A', text: 'grow' },
+                    { id: 'B', text: 'shrink' },
+                    { id: 'C', text: 'increase' },
+                    { id: 'D', text: 'stretch' },
+                    { id: 'E', text: 'enlarge' }
+                ],
+                correctAnswers: ['B']
+            },
+            // Question 15: Hidden Word
+            {
+                type: 'single',
+                question: 'Find the four-letter word hidden at the end of one word and the beginning of the next word.',
+                context: 'The plan <strong>terrified</strong> everyone.',
+                options: [
+                    { id: 'A', text: 'RIED' },
+                    { id: 'B', text: 'RIFE' },
+                    { id: 'C', text: 'RIFI' },
+                    { id: 'D', text: 'FIED' },
+                    { id: 'E', text: 'TERR' }
+                ],
+                correctAnswers: ['B']
+            },
+            // Question 16: Sentence Completion
+            {
+                type: 'single',
+                question: 'Select the word that completes the sentence below in the most sensible way.',
+                context: 'Despite the challenging circumstances, the team remained _______ and continued working towards their goal.',
+                options: [
+                    { id: 'A', text: 'defeated' },
+                    { id: 'B', text: 'resilient' },
+                    { id: 'C', text: 'confused' },
+                    { id: 'D', text: 'uncertain' },
+                    { id: 'E', text: 'divided' }
+                ],
+                correctAnswers: ['B']
+            },
+            // Question 17: Odd One Out
+            {
+                type: 'multiple',
+                question: 'Three of these words are linked in some way.<br><strong>Choose the two odd ones out.</strong>',
+                options: [
+                    { id: 'A', text: 'mercury' },
+                    { id: 'B', text: 'venus' },
+                    { id: 'C', text: 'jupiter' },
+                    { id: 'D', text: 'pluto' },
+                    { id: 'E', text: 'moon' }
+                ],
+                correctAnswers: ['D', 'E'],
+                multiSelect: true
+            },
+            // Question 18: Number Sequences
+            {
+                type: 'single',
+                question: 'What number should come next in this sequence?',
+                context: '<strong>2, 6, 12, 20, 30, ___</strong>',
+                options: [
+                    { id: 'A', text: '38' },
+                    { id: 'B', text: '40' },
+                    { id: 'C', text: '42' },
+                    { id: 'D', text: '44' },
+                    { id: 'E', text: '46' }
+                ],
+                correctAnswers: ['C']
+            },
+            // Question 19: Closest Meaning
+            {
+                type: 'closest-meaning',
+                question: 'Select the two words, one from each group, that are the closest in meaning.',
+                wordGroups: ['ancient, modern, old', 'contemporary, archaic, recent'],
+                options: [
+                    { id: 'A', text: 'ancient' },
+                    { id: 'B', text: 'modern' },
+                    { id: 'C', text: 'old' },
+                    { id: 'D', text: 'contemporary' },
+                    { id: 'E', text: 'archaic' },
+                    { id: 'F', text: 'recent' }
+                ],
+                correctAnswers: ['B', 'D'],
+                multiSelect: true
+            },
+            // Question 20: Logic Puzzle
+            {
+                type: 'single',
+                question: 'Read the following statements about a race.<br><br>If these statements are true, select the statement that must <strong>also</strong> be true.',
+                context: '<p>• Tom finished before Sarah.</p><p>• Sarah finished before Alex.</p><p>• Maya finished after Alex but before Tom.</p>',
+                options: [
+                    { id: 'A', text: 'Maya came first.' },
+                    { id: 'B', text: 'Alex came last.' },
+                    { id: 'C', text: 'Tom came first.' },
+                    { id: 'D', text: 'Sarah finished between Maya and Alex.' }
+                ],
+                correctAnswers: ['D']
+            }
+        ];
+
+        let currentQuestionIndex = 0;
+        let userAnswers = [];
+        let timeRemaining = 600; // 10 minutes in seconds
+        let timerInterval;
+        let testStartTime;
+
+        function startTest() {
+            document.getElementById('instructionsPage').classList.add('hidden');
+            document.getElementById('questionPage').classList.remove('hidden');
+            document.getElementById('timerDisplay').classList.remove('hidden');
+            
+            testStartTime = Date.now();
+            startTimer();
+            displayQuestion();
+        }
+
+        function startTimer() {
+            updateTimerDisplay();
+            timerInterval = setInterval(() => {
+                timeRemaining--;
+                updateTimerDisplay();
+                
+                if (timeRemaining === 120) { // 2 minutes remaining
+                    document.getElementById('timerDisplay').classList.add('timer-warning');
+                }
+                
+                if (timeRemaining <= 0) {
+                    clearInterval(timerInterval);
+                    finishTest();
+                }
+            }, 1000);
+        }
+
+        function updateTimerDisplay() {
+            const minutes = Math.floor(timeRemaining / 60);
+            const seconds = timeRemaining % 60;
+            document.getElementById('timerDisplay').textContent = 
+                `${minutes}:${seconds.toString().padStart(2, '0')}`;
+        }
+
+        function displayQuestion() {
+            const question = questions[currentQuestionIndex];
+            const questionContent = document.getElementById('questionContent');
+            document.getElementById('currentQuestion').textContent = currentQuestionIndex + 1;
+            
+            let html = '<div class="question-container">';
+            html += `<div class="question-text">${question.question}</div>`;
+            
+            if (question.context) {
+                html += `<div class="context-box">${question.context}</div>`;
+            }
+            
+            if (question.wordGroups) {
+                html += '<div class="word-groups">';
+                question.wordGroups.forEach(group => {
+                    html += `<div class="word-group">${group}</div>`;
+                });
+                html += '</div>';
+            }
+            
+            html += '<div class="' + (question.multiSelect ? 'multi-select-container' : 'options-container') + '">';
+            
+            question.options.forEach(option => {
+                html += `
+                    <button class="option-button" onclick="selectAnswer('${option.id}', ${question.multiSelect})">
+                        <span class="option-label">${option.id}</span>
+                        <span>${option.text}</span>
+                    </button>
+                `;
+            });
+            
+            html += '</div></div>';
+            
+            questionContent.innerHTML = html;
+            
+            // Disable next button
+            document.getElementById('nextBtn').disabled = true;
+        }
+
+        function selectAnswer(optionId, isMultiSelect) {
+            const buttons = document.querySelectorAll('.option-button');
+            const clickedButton = Array.from(buttons).find(btn => 
+                btn.textContent.includes(optionId)
+            );
+            
+            if (isMultiSelect) {
+                const question = questions[currentQuestionIndex];
+                const maxSelections = question.correctAnswers.length;
+                
+                clickedButton.classList.toggle('selected');
+                
+                const selectedCount = document.querySelectorAll('.option-button.selected').length;
+                
+                // Enable next button only if correct number of answers selected
+                document.getElementById('nextBtn').disabled = selectedCount !== maxSelections;
+            } else {
+                buttons.forEach(btn => btn.classList.remove('selected'));
+                clickedButton.classList.add('selected');
+                document.getElementById('nextBtn').disabled = false;
+            }
+        }
+
+        function nextQuestion() {
+            // Record answer
+            const selectedButtons = document.querySelectorAll('.option-button.selected');
+            const selectedAnswers = Array.from(selectedButtons).map(btn => {
+                const labelText = btn.querySelector('.option-label').textContent;
+                return labelText;
+            });
+            
+            userAnswers[currentQuestionIndex] = selectedAnswers;
+            
+            currentQuestionIndex++;
+            
+            if (currentQuestionIndex < questions.length) {
+                displayQuestion();
+            } else {
+                finishTest();
+            }
+        }
+
+        function finishTest() {
+            clearInterval(timerInterval);
+            
+            // Mark test as completed
+            localStorage.setItem('test_verbal_completed', 'true');
+            
+            // Return to home page immediately
+            window.location.href = 'index.html';
+        }
+
+        function arraysEqual(a, b) {
+            if (a.length !== b.length) return false;
+            for (let i = 0; i < a.length; i++) {
+                if (a[i] !== b[i]) return false;
+            }
+            return true;
+        }
+    </script>
+</body>
+</html>

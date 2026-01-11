@@ -1,0 +1,1519 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Professional Non-Verbal Reasoning Test</title>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Poppins:wght@400;600;700&family=JetBrains+Mono:wght@500&display=swap');
+        
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        
+        body {
+            font-family: 'Poppins', sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            padding: 20px;
+        }
+        
+        .container {
+            background: white;
+            border-radius: 20px;
+            box-shadow: 0 20px 60px rgba(0, 0, 0, 0.3);
+            max-width: 1000px;
+            width: 100%;
+            padding: 40px;
+        }
+        
+        .screen { display: none; }
+        .screen.active { display: block; animation: fadeIn 0.5s ease; }
+        
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(20px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+        
+        h1 {
+            color: #667eea;
+            font-size: 2.5em;
+            margin-bottom: 20px;
+            font-weight: 700;
+        }
+        
+        .instructions {
+            font-size: 1.1em;
+            line-height: 1.8;
+            color: #555;
+            margin-bottom: 30px;
+        }
+        
+        .instructions ul { margin-left: 25px; margin-top: 15px; }
+        .instructions li { margin-bottom: 10px; }
+        
+        .timer-display {
+            background: linear-gradient(135deg, #f093fb 0%, #f5576c 100%);
+            color: white;
+            padding: 15px 30px;
+            border-radius: 50px;
+            font-size: 1.3em;
+            font-weight: 600;
+            display: inline-block;
+            margin-bottom: 30px;
+            font-family: 'JetBrains Mono', monospace;
+            box-shadow: 0 5px 15px rgba(245, 87, 108, 0.4);
+        }
+        
+        .timer-display.warning {
+            background: linear-gradient(135deg, #f5576c 0%, #c92a2a 100%);
+            animation: pulse 1s infinite;
+        }
+        
+        @keyframes pulse {
+            0%, 100% { transform: scale(1); }
+            50% { transform: scale(1.05); }
+        }
+        
+        .start-button, .next-button {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            border: none;
+            padding: 15px 50px;
+            font-size: 1.2em;
+            font-weight: 600;
+            border-radius: 50px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            box-shadow: 0 5px 15px rgba(102, 126, 234, 0.4);
+        }
+        
+        .start-button:hover, .next-button:hover:not(:disabled) {
+            transform: translateY(-2px);
+            box-shadow: 0 8px 20px rgba(102, 126, 234, 0.6);
+        }
+        
+        .next-button:disabled {
+            background: #ccc;
+            cursor: not-allowed;
+            box-shadow: none;
+        }
+        
+        .progress-bar {
+            background: #e0e0e0;
+            height: 10px;
+            border-radius: 10px;
+            margin-bottom: 30px;
+            overflow: hidden;
+        }
+        
+        .progress-fill {
+            background: linear-gradient(90deg, #667eea 0%, #764ba2 100%);
+            height: 100%;
+            transition: width 0.5s ease;
+            border-radius: 10px;
+        }
+        
+        .question-number {
+            color: #764ba2;
+            font-size: 1.1em;
+            font-weight: 600;
+            margin-bottom: 20px;
+        }
+        
+        .question-text {
+            font-size: 1.2em;
+            color: #333;
+            margin-bottom: 30px;
+            line-height: 1.6;
+        }
+        
+        .question-image {
+            background: #f8f9fa;
+            border-radius: 15px;
+            padding: 30px;
+            margin-bottom: 30px;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 200px;
+        }
+        
+        .options {
+            display: grid;
+            grid-template-columns: repeat(5, 1fr);
+            gap: 15px;
+            margin-bottom: 30px;
+        }
+        
+        .option {
+            background: #f8f9fa;
+            border: 3px solid transparent;
+            border-radius: 15px;
+            padding: 15px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            min-height: 150px;
+            aspect-ratio: 1;
+        }
+        
+        .option:hover {
+            border-color: #667eea;
+            transform: translateY(-5px);
+            box-shadow: 0 5px 15px rgba(102, 126, 234, 0.3);
+        }
+        
+        .option.selected {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            border-color: #764ba2;
+        }
+        
+        .option.selected canvas {
+            filter: brightness(0) invert(1);
+        }
+        
+        .option-label {
+            font-size: 1.2em;
+            font-weight: 600;
+            margin-bottom: 10px;
+            color: #333;
+        }
+        
+        .option.selected .option-label { color: white; }
+        
+        .results { text-align: center; }
+        .score { font-size: 4em; font-weight: 700; color: #667eea; margin: 30px 0; }
+        .results-message { font-size: 1.3em; color: #555; margin-bottom: 20px; }
+        
+        @media (max-width: 768px) {
+            .container { padding: 20px; }
+            h1 { font-size: 1.8em; }
+            .options { grid-template-columns: repeat(3, 1fr); }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div id="instructions" class="screen active">
+            <h1>Non-Verbal Reasoning Test</h1>
+            <div class="instructions">
+                <p><strong>Welcome to your Non-Verbal Reasoning assessment.</strong></p>
+                <ul>
+                    <li>This test contains <strong>20 questions</strong></li>
+                    <li>You have <strong>10 minutes</strong> to complete the test</li>
+                    <li>The timer will start when you press the "Start Test" button</li>
+                    <li>Select one answer for each question</li>
+                    <li>You cannot go back to previous questions</li>
+                    <li>The "Next" button will activate once you select an answer</li>
+                </ul>
+                <p style="margin-top: 20px;">Read each question carefully and choose the best answer. Good luck!</p>
+            </div>
+            <button class="start-button" onclick="startTest()">Start Test</button>
+        </div>
+
+        <div id="question-screen" class="screen">
+            <div class="timer-display" id="timer">10:00</div>
+            <div class="progress-bar">
+                <div class="progress-fill" id="progress"></div>
+            </div>
+            <div class="question-number" id="question-number">Question 1 of 20</div>
+            <div class="question-text" id="question-text"></div>
+            <div class="question-image" id="question-image"></div>
+            <div class="options" id="options"></div>
+            <button class="next-button" id="next-button" onclick="nextQuestion()" disabled>Next</button>
+        </div>
+    </div>
+
+    <script>
+        let currentQuestion = 0;
+        let score = 0;
+        let timeRemaining = 600;
+        let timerInterval;
+        let startTime;
+        let selectedAnswer = null;
+
+        // Helper drawing functions
+        const draw = {
+            pentagon: (ctx, x, y, size) => {
+                ctx.beginPath();
+                for (let i = 0; i < 5; i++) {
+                    const angle = (Math.PI * 2 / 5) * i - Math.PI / 2;
+                    const px = x + Math.cos(angle) * size;
+                    const py = y + Math.sin(angle) * size;
+                    if (i === 0) ctx.moveTo(px, py);
+                    else ctx.lineTo(px, py);
+                }
+                ctx.closePath();
+            },
+            hexagon: (ctx, x, y, size) => {
+                ctx.beginPath();
+                for (let i = 0; i < 6; i++) {
+                    const angle = (Math.PI / 3) * i;
+                    const px = x + Math.cos(angle) * size;
+                    const py = y + Math.sin(angle) * size;
+                    if (i === 0) ctx.moveTo(px, py);
+                    else ctx.lineTo(px, py);
+                }
+                ctx.closePath();
+            },
+            star: (ctx, x, y, size) => {
+                ctx.beginPath();
+                for (let i = 0; i < 10; i++) {
+                    const angle = (Math.PI * 2 / 10) * i - Math.PI / 2;
+                    const r = i % 2 === 0 ? size : size * 0.4;
+                    const px = x + Math.cos(angle) * r;
+                    const py = y + Math.sin(angle) * r;
+                    if (i === 0) ctx.moveTo(px, py);
+                    else ctx.lineTo(px, py);
+                }
+                ctx.closePath();
+            },
+            arrow: (ctx, x1, y1, x2, y2) => {
+                ctx.beginPath();
+                ctx.moveTo(x1, y1);
+                ctx.lineTo(x2, y2);
+                const angle = Math.atan2(y2 - y1, x2 - x1);
+                ctx.lineTo(x2 - 10 * Math.cos(angle - Math.PI / 6), y2 - 10 * Math.sin(angle - Math.PI / 6));
+                ctx.moveTo(x2, y2);
+                ctx.lineTo(x2 - 10 * Math.cos(angle + Math.PI / 6), y2 - 10 * Math.sin(angle + Math.PI / 6));
+                ctx.stroke();
+            },
+            separator: (ctx, x, y) => {
+                for (let i = 0; i < 4; i++) {
+                    ctx.beginPath();
+                    ctx.arc(x, y + i * 8, 3, 0, 2 * Math.PI);
+                    ctx.fill();
+                }
+            }
+        };
+
+        const questions = [
+            // Q1: Analogy - Shape sides increase by 1
+            {
+                question: "The first two figures are related. Which figure relates to the third figure in the same way?",
+                answer: "B",
+                renderQuestion() {
+                    const c = document.createElement('canvas');
+                    c.width = 650;
+                    c.height = 140;
+                    const ctx = c.getContext('2d');
+                    
+                    ctx.strokeStyle = '#333';
+                    ctx.lineWidth = 2;
+                    
+                    // Pentagon
+                    draw.pentagon(ctx, 60, 70, 30);
+                    ctx.stroke();
+                    
+                    draw.arrow(ctx, 100, 70, 140, 70);
+                    
+                    // Hexagon
+                    draw.hexagon(ctx, 180, 70, 30);
+                    ctx.stroke();
+                    
+                    ctx.fillStyle = '#764ba2';
+                    draw.separator(ctx, 240, 50);
+                    
+                    // Square
+                    ctx.strokeRect(270, 45, 50, 50);
+                    
+                    draw.arrow(ctx, 330, 70, 370, 70);
+                    
+                    ctx.font = '48px Poppins';
+                    ctx.fillStyle = '#764ba2';
+                    ctx.textAlign = 'center';
+                    ctx.fillText('?', 450, 80);
+                    
+                    return c;
+                },
+                renderOptions() {
+                    const shapes = [
+                        (ctx) => { ctx.beginPath(); ctx.moveTo(50, 25); ctx.lineTo(75, 75); ctx.lineTo(25, 75); ctx.closePath(); },
+                        (ctx) => { draw.pentagon(ctx, 50, 50, 30); },
+                        (ctx) => { ctx.strokeRect(20, 20, 60, 60); },
+                        (ctx) => { draw.hexagon(ctx, 50, 50, 30); },
+                        (ctx) => { ctx.beginPath(); ctx.arc(50, 50, 30, 0, 2 * Math.PI); }
+                    ];
+                    return shapes.map((fn, i) => {
+                        const c = document.createElement('canvas');
+                        c.width = 100; c.height = 100;
+                        const ctx = c.getContext('2d');
+                        ctx.strokeStyle = '#333'; ctx.lineWidth = 2;
+                        fn(ctx);
+                        ctx.stroke();
+                        return c;
+                    });
+                }
+            },
+
+            // Q2: Series - Rotation by 30° increments
+            {
+                question: "Complete the series by selecting the missing figure.",
+                answer: "C",
+                renderQuestion() {
+                    const c = document.createElement('canvas');
+                    c.width = 600;
+                    c.height = 150;
+                    const ctx = c.getContext('2d');
+                    
+                    const positions = [60, 135, 210, 285, 420];
+                    const rotations = [0, 30, 60, 90, 120];
+                    
+                    for (let i = 0; i < 4; i++) {
+                        ctx.strokeStyle = '#999';
+                        ctx.lineWidth = 1;
+                        ctx.strokeRect(positions[i] - 35, 40, 70, 70);
+                        
+                        ctx.save();
+                        ctx.translate(positions[i], 75);
+                        ctx.rotate((rotations[i] * Math.PI) / 180);
+                        
+                        ctx.strokeStyle = '#333';
+                        ctx.lineWidth = 2;
+                        draw.arrow(ctx, -25, 0, 25, 0);
+                        
+                        ctx.fillStyle = '#667eea';
+                        ctx.beginPath();
+                        ctx.arc(-15, 0, 5, 0, 2 * Math.PI);
+                        ctx.fill();
+                        
+                        ctx.restore();
+                    }
+                    
+                    ctx.strokeStyle = '#999';
+                    ctx.strokeRect(positions[4] - 35, 40, 70, 70);
+                    ctx.font = '48px Poppins';
+                    ctx.fillStyle = '#764ba2';
+                    ctx.textAlign = 'center';
+                    ctx.fillText('?', positions[4], 85);
+                    
+                    return c;
+                },
+                renderOptions() {
+                    return [90, 105, 120, 135, 150].map(rot => {
+                        const c = document.createElement('canvas');
+                        c.width = 100; c.height = 100;
+                        const ctx = c.getContext('2d');
+                        
+                        ctx.save();
+                        ctx.translate(50, 50);
+                        ctx.rotate((rot * Math.PI) / 180);
+                        
+                        ctx.strokeStyle = '#333';
+                        ctx.lineWidth = 2;
+                        draw.arrow(ctx, -25, 0, 25, 0);
+                        
+                        ctx.fillStyle = '#667eea';
+                        ctx.beginPath();
+                        ctx.arc(-15, 0, 5, 0, 2 * Math.PI);
+                        ctx.fill();
+                        
+                        ctx.restore();
+                        return c;
+                    });
+                }
+            },
+
+            // Q3: Find common - All have exactly 4 internal divisions
+            {
+                question: "The two figures on the left have something in common. Which figure belongs with them?",
+                answer: "D",
+                renderQuestion() {
+                    const c = document.createElement('canvas');
+                    c.width = 450;
+                    c.height = 130;
+                    const ctx = c.getContext('2d');
+                    
+                    // Both have 4 internal lines
+                    ctx.strokeStyle = '#333';
+                    ctx.lineWidth = 2;
+                    
+                    // First: vertical lines
+                    ctx.strokeRect(30, 30, 70, 70);
+                    for (let i = 0; i < 4; i++) {
+                        ctx.beginPath();
+                        ctx.moveTo(40 + i * 15, 30);
+                        ctx.lineTo(40 + i * 15, 100);
+                        ctx.stroke();
+                    }
+                    
+                    // Second: horizontal lines
+                    ctx.strokeRect(130, 30, 70, 70);
+                    for (let i = 0; i < 4; i++) {
+                        ctx.beginPath();
+                        ctx.moveTo(130, 40 + i * 15);
+                        ctx.lineTo(200, 40 + i * 15);
+                        ctx.stroke();
+                    }
+                    
+                    ctx.fillStyle = '#764ba2';
+                    draw.separator(ctx, 230, 50);
+                    
+                    return c;
+                },
+                renderOptions() {
+                    return [2, 3, 5, 4, 6].map(lines => {
+                        const c = document.createElement('canvas');
+                        c.width = 100; c.height = 100;
+                        const ctx = c.getContext('2d');
+                        
+                        ctx.strokeStyle = '#333';
+                        ctx.lineWidth = 2;
+                        ctx.strokeRect(15, 15, 70, 70);
+                        
+                        const spacing = 70 / (lines + 1);
+                        for (let i = 0; i < lines; i++) {
+                            ctx.beginPath();
+                            ctx.moveTo(15 + spacing * (i + 1), 15);
+                            ctx.lineTo(15 + spacing * (i + 1), 85);
+                            ctx.stroke();
+                        }
+                        
+                        return c;
+                    });
+                }
+            },
+
+            // Q4: Code matching - Shape + Fill + Size
+            {
+                question: "Use the code to identify the correct figure. Each letter represents a feature.",
+                answer: "C",
+                renderQuestion() {
+                    const c = document.createElement('canvas');
+                    c.width = 600;
+                    c.height = 200;
+                    const ctx = c.getContext('2d');
+                    
+                    ctx.strokeStyle = '#333';
+                    ctx.lineWidth = 2;
+                    ctx.font = '18px Poppins';
+                    ctx.fillStyle = '#333';
+                    ctx.textAlign = 'center';
+                    
+                    // Example 1: Small filled circle = ABC
+                    ctx.fillStyle = '#667eea';
+                    ctx.beginPath();
+                    ctx.arc(60, 60, 20, 0, 2 * Math.PI);
+                    ctx.fill();
+                    ctx.strokeStyle = '#333';
+                    ctx.stroke();
+                    ctx.fillStyle = '#666';
+                    ctx.fillText('ABC', 60, 100);
+                    
+                    // Example 2: Large empty square = XYZ
+                    ctx.strokeStyle = '#333';
+                    ctx.strokeRect(130, 30, 60, 60);
+                    ctx.fillText('XYZ', 160, 105);
+                    
+                    // Example 3: Medium filled triangle = PQR
+                    ctx.fillStyle = '#667eea';
+                    ctx.beginPath();
+                    ctx.moveTo(270, 35);
+                    ctx.lineTo(310, 85);
+                    ctx.lineTo(230, 85);
+                    ctx.closePath();
+                    ctx.fill();
+                    ctx.strokeStyle = '#333';
+                    ctx.stroke();
+                    ctx.fillStyle = '#666';
+                    ctx.fillText('PQR', 270, 110);
+                    
+                    // Question: Medium empty circle = ?
+                    ctx.strokeStyle = '#333';
+                    ctx.lineWidth = 2;
+                    ctx.beginPath();
+                    ctx.arc(400, 60, 30, 0, 2 * Math.PI);
+                    ctx.stroke();
+                    
+                    ctx.font = '36px Poppins';
+                    ctx.fillStyle = '#764ba2';
+                    ctx.fillText('?', 400, 130);
+                    
+                    // Add legend
+                    ctx.font = '14px Poppins';
+                    ctx.fillStyle = '#666';
+                    ctx.textAlign = 'left';
+                    ctx.fillText('A/X/P = Shape', 20, 170);
+                    ctx.fillText('B/Y/Q = Fill', 180, 170);
+                    ctx.fillText('C/Z/R = Size', 320, 170);
+                    
+                    return c;
+                },
+                renderOptions() {
+                    const codes = ['ABZ', 'XYC', 'AQR', 'PBZ', 'XQC'];
+                    return codes.map(code => {
+                        const c = document.createElement('canvas');
+                        c.width = 100; c.height = 100;
+                        const ctx = c.getContext('2d');
+                        
+                        ctx.font = '24px Poppins';
+                        ctx.fillStyle = '#333';
+                        ctx.textAlign = 'center';
+                        ctx.textBaseline = 'middle';
+                        ctx.fillText(code, 50, 50);
+                        
+                        return c;
+                    });
+                }
+            },
+
+            // Q5: Matrix completion - Dot pattern
+            {
+                question: "Complete the grid by selecting the missing pattern.",
+                answer: "E",
+                renderQuestion() {
+                    const c = document.createElement('canvas');
+                    c.width = 400;
+                    c.height = 400;
+                    const ctx = c.getContext('2d');
+                    
+                    ctx.strokeStyle = '#333';
+                    ctx.lineWidth = 2;
+                    
+                    // 3x3 grid
+                    for (let row = 0; row < 3; row++) {
+                        for (let col = 0; col < 3; col++) {
+                            const x = 50 + col * 100;
+                            const y = 50 + row * 100;
+                            ctx.strokeRect(x, y, 90, 90);
+                            
+                            if (row === 2 && col === 2) {
+                                ctx.font = '48px Poppins';
+                                ctx.fillStyle = '#764ba2';
+                                ctx.textAlign = 'center';
+                                ctx.textBaseline = 'middle';
+                                ctx.fillText('?', x + 45, y + 45);
+                            } else {
+                                // Pattern: dots increase by position
+                                const numDots = (row * 3 + col + 1) % 5 + 1;
+                                ctx.fillStyle = '#333';
+                                for (let d = 0; d < numDots; d++) {
+                                    const dx = x + 20 + (d % 3) * 25;
+                                    const dy = y + 30 + Math.floor(d / 3) * 25;
+                                    ctx.beginPath();
+                                    ctx.arc(dx, dy, 4, 0, 2 * Math.PI);
+                                    ctx.fill();
+                                }
+                            }
+                        }
+                    }
+                    
+                    return c;
+                },
+                renderOptions() {
+                    return [1, 2, 3, 4, 5].map(dots => {
+                        const c = document.createElement('canvas');
+                        c.width = 100; c.height = 100;
+                        const ctx = c.getContext('2d');
+                        
+                        ctx.fillStyle = '#333';
+                        for (let d = 0; d < dots; d++) {
+                            const dx = 25 + (d % 3) * 25;
+                            const dy = 30 + Math.floor(d / 3) * 25;
+                            ctx.beginPath();
+                            ctx.arc(dx, dy, 5, 0, 2 * Math.PI);
+                            ctx.fill();
+                        }
+                        
+                        return c;
+                    });
+                }
+            },
+
+            // Q6: Analogy - Shading change
+            {
+                question: "Complete the analogy. The first pair relates in the same way as the second pair.",
+                answer: "A",
+                renderQuestion() {
+                    const c = document.createElement('canvas');
+                    c.width = 650;
+                    c.height = 140;
+                    const ctx = c.getContext('2d');
+                    
+                    ctx.strokeStyle = '#333';
+                    ctx.lineWidth = 2;
+                    
+                    // Empty circle
+                    ctx.beginPath();
+                    ctx.arc(60, 70, 30, 0, 2 * Math.PI);
+                    ctx.stroke();
+                    
+                    draw.arrow(ctx, 100, 70, 140, 70);
+                    
+                    // Half-filled circle
+                    ctx.beginPath();
+                    ctx.arc(180, 70, 30, 0, Math.PI);
+                    ctx.closePath();
+                    ctx.fillStyle = '#667eea';
+                    ctx.fill();
+                    ctx.beginPath();
+                    ctx.arc(180, 70, 30, 0, 2 * Math.PI);
+                    ctx.stroke();
+                    
+                    ctx.fillStyle = '#764ba2';
+                    draw.separator(ctx, 240, 50);
+                    
+                    // Empty square
+                    ctx.strokeRect(270, 45, 50, 50);
+                    
+                    draw.arrow(ctx, 330, 70, 370, 70);
+                    
+                    ctx.font = '48px Poppins';
+                    ctx.fillStyle = '#764ba2';
+                    ctx.textAlign = 'center';
+                    ctx.fillText('?', 450, 80);
+                    
+                    return c;
+                },
+                renderOptions() {
+                    return ['half-square', 'full-square', 'empty-square', 'quarter-square', 'three-quarter-square'].map((type, i) => {
+                        const c = document.createElement('canvas');
+                        c.width = 100; c.height = 100;
+                        const ctx = c.getContext('2d');
+                        
+                        ctx.strokeStyle = '#333';
+                        ctx.lineWidth = 2;
+                        
+                        if (type === 'half-square') {
+                            ctx.fillStyle = '#667eea';
+                            ctx.fillRect(25, 25, 25, 50);
+                        } else if (type === 'full-square') {
+                            ctx.fillStyle = '#667eea';
+                            ctx.fillRect(25, 25, 50, 50);
+                        } else if (type === 'quarter-square') {
+                            ctx.fillStyle = '#667eea';
+                            ctx.fillRect(25, 25, 25, 25);
+                        } else if (type === 'three-quarter-square') {
+                            ctx.fillStyle = '#667eea';
+                            ctx.fillRect(25, 25, 50, 50);
+                            ctx.fillStyle = 'white';
+                            ctx.fillRect(50, 50, 25, 25);
+                        }
+                        
+                        ctx.strokeRect(25, 25, 50, 50);
+                        return c;
+                    });
+                }
+            },
+
+            // Q7: Series - Shape count increases
+            {
+                question: "What comes next in this series?",
+                answer: "C",
+                renderQuestion() {
+                    const c = document.createElement('canvas');
+                    c.width = 600;
+                    c.height = 150;
+                    const ctx = c.getContext('2d');
+                    
+                    const positions = [60, 135, 210, 285, 420];
+                    
+                    for (let i = 0; i < 4; i++) {
+                        ctx.strokeStyle = '#999';
+                        ctx.lineWidth = 1;
+                        ctx.strokeRect(positions[i] - 35, 40, 70, 70);
+                        
+                        ctx.strokeStyle = '#333';
+                        ctx.lineWidth = 2;
+                        // Draw i+1 small circles
+                        for (let j = 0; j <= i; j++) {
+                            ctx.beginPath();
+                            ctx.arc(positions[i] - 20 + j * 20, 75, 8, 0, 2 * Math.PI);
+                            ctx.stroke();
+                        }
+                    }
+                    
+                    ctx.strokeStyle = '#999';
+                    ctx.lineWidth = 1;
+                    ctx.strokeRect(positions[4] - 35, 40, 70, 70);
+                    ctx.font = '48px Poppins';
+                    ctx.fillStyle = '#764ba2';
+                    ctx.textAlign = 'center';
+                    ctx.fillText('?', positions[4], 85);
+                    
+                    return c;
+                },
+                renderOptions() {
+                    return [3, 4, 5, 6, 7].map(count => {
+                        const c = document.createElement('canvas');
+                        c.width = 100; c.height = 100;
+                        const ctx = c.getContext('2d');
+                        
+                        ctx.strokeStyle = '#333';
+                        ctx.lineWidth = 2;
+                        
+                        const spacing = 80 / (count + 1);
+                        for (let i = 0; i < count; i++) {
+                            ctx.beginPath();
+                            ctx.arc(10 + spacing * (i + 1), 50, 6, 0, 2 * Math.PI);
+                            ctx.stroke();
+                        }
+                        
+                        return c;
+                    });
+                }
+            },
+
+            // Q8: Find common - All have curved and straight edges
+            {
+                question: "What do the two figures on the left have in common? Select the figure that also has this feature.",
+                answer: "B",
+                renderQuestion() {
+                    const c = document.createElement('canvas');
+                    c.width = 450;
+                    c.height = 130;
+                    const ctx = c.getContext('2d');
+                    
+                    ctx.strokeStyle = '#333';
+                    ctx.lineWidth = 2;
+                    
+                    // D-shape (curve + straight)
+                    ctx.beginPath();
+                    ctx.arc(50, 65, 30, -Math.PI/2, Math.PI/2);
+                    ctx.lineTo(50, 35);
+                    ctx.closePath();
+                    ctx.stroke();
+                    
+                    // Half circle + line
+                    ctx.beginPath();
+                    ctx.arc(150, 65, 25, 0, Math.PI);
+                    ctx.moveTo(125, 65);
+                    ctx.lineTo(175, 65);
+                    ctx.stroke();
+                    
+                    ctx.fillStyle = '#764ba2';
+                    draw.separator(ctx, 210, 50);
+                    
+                    return c;
+                },
+                renderOptions() {
+                    return ['circle', 'semi-square', 'square', 'triangle', 'hexagon'].map(type => {
+                        const c = document.createElement('canvas');
+                        c.width = 100; c.height = 100;
+                        const ctx = c.getContext('2d');
+                        
+                        ctx.strokeStyle = '#333';
+                        ctx.lineWidth = 2;
+                        
+                        if (type === 'circle') {
+                            ctx.beginPath();
+                            ctx.arc(50, 50, 30, 0, 2 * Math.PI);
+                            ctx.stroke();
+                        } else if (type === 'semi-square') {
+                            ctx.beginPath();
+                            ctx.arc(50, 50, 25, -Math.PI/2, Math.PI/2);
+                            ctx.lineTo(50, 25);
+                            ctx.closePath();
+                            ctx.stroke();
+                        } else if (type === 'square') {
+                            ctx.strokeRect(25, 25, 50, 50);
+                        } else if (type === 'triangle') {
+                            ctx.beginPath();
+                            ctx.moveTo(50, 20);
+                            ctx.lineTo(75, 70);
+                            ctx.lineTo(25, 70);
+                            ctx.closePath();
+                            ctx.stroke();
+                        } else {
+                            draw.hexagon(ctx, 50, 50, 28);
+                            ctx.stroke();
+                        }
+                        
+                        return c;
+                    });
+                }
+            },
+
+            // Q9: Code - Multiple features
+            {
+                question: "Decode the pattern. Letters represent: Shape (A=circle, B=square), Shading (X=full, Y=empty), Lines (1=none, 2=cross)",
+                answer: "E",
+                renderQuestion() {
+                    const c = document.createElement('canvas');
+                    c.width = 550;
+                    c.height = 180;
+                    const ctx = c.getContext('2d');
+                    
+                    ctx.strokeStyle = '#333';
+                    ctx.lineWidth = 2;
+                    ctx.font = '16px Poppins';
+                    ctx.fillStyle = '#666';
+                    ctx.textAlign = 'center';
+                    
+                    // AX1 - filled circle, no lines
+                    ctx.fillStyle = '#667eea';
+                    ctx.beginPath();
+                    ctx.arc(60, 60, 25, 0, 2 * Math.PI);
+                    ctx.fill();
+                    ctx.strokeStyle = '#333';
+                    ctx.stroke();
+                    ctx.fillStyle = '#666';
+                    ctx.fillText('AX1', 60, 110);
+                    
+                    // BY2 - empty square with cross
+                    ctx.strokeStyle = '#333';
+                    ctx.strokeRect(130, 35, 50, 50);
+                    ctx.beginPath();
+                    ctx.moveTo(130, 35);
+                    ctx.lineTo(180, 85);
+                    ctx.moveTo(180, 35);
+                    ctx.lineTo(130, 85);
+                    ctx.stroke();
+                    ctx.fillText('BY2', 155, 110);
+                    
+                    // AY1 - empty circle
+                    ctx.beginPath();
+                    ctx.arc(250, 60, 25, 0, 2 * Math.PI);
+                    ctx.stroke();
+                    ctx.fillText('AY1', 250, 110);
+                    
+                    // Question: filled square with cross = ?
+                    ctx.fillStyle = '#667eea';
+                    ctx.fillRect(330, 35, 50, 50);
+                    ctx.strokeStyle = '#333';
+                    ctx.strokeRect(330, 35, 50, 50);
+                    ctx.beginPath();
+                    ctx.moveTo(330, 35);
+                    ctx.lineTo(380, 85);
+                    ctx.moveTo(380, 35);
+                    ctx.lineTo(330, 85);
+                    ctx.stroke();
+                    
+                    ctx.font = '32px Poppins';
+                    ctx.fillStyle = '#764ba2';
+                    ctx.fillText('?', 355, 140);
+                    
+                    return c;
+                },
+                renderOptions() {
+                    const codes = ['AX2', 'BY1', 'AY2', 'BX1', 'BX2'];
+                    return codes.map(code => {
+                        const c = document.createElement('canvas');
+                        c.width = 100; c.height = 100;
+                        const ctx = c.getContext('2d');
+                        
+                        ctx.font = '24px Poppins';
+                        ctx.fillStyle = '#333';
+                        ctx.textAlign = 'center';
+                        ctx.textBaseline = 'middle';
+                        ctx.fillText(code, 50, 50);
+                        
+                        return c;
+                    });
+                }
+            },
+
+            // Q10: Matrix - Rotation pattern
+            {
+                question: "Complete this matrix. Each row and column follows a pattern.",
+                answer: "C",
+                renderQuestion() {
+                    const c = document.createElement('canvas');
+                    c.width = 400;
+                    c.height = 400;
+                    const ctx = c.getContext('2d');
+                    
+                    ctx.strokeStyle = '#333';
+                    ctx.lineWidth = 2;
+                    
+                    for (let row = 0; row < 3; row++) {
+                        for (let col = 0; col < 3; col++) {
+                            const x = 50 + col * 100;
+                            const y = 50 + row * 100;
+                            ctx.strokeRect(x, y, 90, 90);
+                            
+                            if (row === 2 && col === 2) {
+                                ctx.font = '48px Poppins';
+                                ctx.fillStyle = '#764ba2';
+                                ctx.textAlign = 'center';
+                                ctx.textBaseline = 'middle';
+                                ctx.fillText('?', x + 45, y + 45);
+                            } else {
+                                ctx.save();
+                                ctx.translate(x + 45, y + 45);
+                                ctx.rotate(((col * 45) * Math.PI) / 180);
+                                
+                                ctx.strokeStyle = '#333';
+                                ctx.lineWidth = 2;
+                                ctx.beginPath();
+                                ctx.moveTo(-15, 0);
+                                ctx.lineTo(15, 0);
+                                ctx.lineTo(12, -5);
+                                ctx.moveTo(15, 0);
+                                ctx.lineTo(12, 5);
+                                ctx.stroke();
+                                
+                                ctx.restore();
+                            }
+                        }
+                    }
+                    
+                    return c;
+                },
+                renderOptions() {
+                    return [45, 60, 90, 120, 135].map(angle => {
+                        const c = document.createElement('canvas');
+                        c.width = 100; c.height = 100;
+                        const ctx = c.getContext('2d');
+                        
+                        ctx.save();
+                        ctx.translate(50, 50);
+                        ctx.rotate((angle * Math.PI) / 180);
+                        
+                        ctx.strokeStyle = '#333';
+                        ctx.lineWidth = 2;
+                        ctx.beginPath();
+                        ctx.moveTo(-20, 0);
+                        ctx.lineTo(20, 0);
+                        ctx.lineTo(15, -7);
+                        ctx.moveTo(20, 0);
+                        ctx.lineTo(15, 7);
+                        ctx.stroke();
+                        
+                        ctx.restore();
+                        return c;
+                    });
+                }
+            },
+
+            // Q11: Analogy - Size doubles
+            {
+                question: "The first figures are related. Which figure relates to the third in the same way?",
+                answer: "D",
+                renderQuestion() {
+                    const c = document.createElement('canvas');
+                    c.width = 650;
+                    c.height = 140;
+                    const ctx = c.getContext('2d');
+                    
+                    ctx.strokeStyle = '#333';
+                    ctx.lineWidth = 2;
+                    
+                    // Small square
+                    ctx.strokeRect(45, 55, 30, 30);
+                    
+                    draw.arrow(ctx, 85, 70, 125, 70);
+                    
+                    // Large square
+                    ctx.strokeRect(150, 40, 60, 60);
+                    
+                    ctx.fillStyle = '#764ba2';
+                    draw.separator(ctx, 240, 50);
+                    
+                    // Small triangle
+                    ctx.beginPath();
+                    ctx.moveTo(295, 55);
+                    ctx.lineTo(310, 85);
+                    ctx.lineTo(280, 85);
+                    ctx.closePath();
+                    ctx.stroke();
+                    
+                    draw.arrow(ctx, 320, 70, 360, 70);
+                    
+                    ctx.font = '48px Poppins';
+                    ctx.fillStyle = '#764ba2';
+                    ctx.textAlign = 'center';
+                    ctx.fillText('?', 450, 80);
+                    
+                    return c;
+                },
+                renderOptions() {
+                    return [30, 45, 50, 60, 70].map(size => {
+                        const c = document.createElement('canvas');
+                        c.width = 100; c.height = 100;
+                        const ctx = c.getContext('2d');
+                        
+                        ctx.strokeStyle = '#333';
+                        ctx.lineWidth = 2;
+                        ctx.beginPath();
+                        ctx.moveTo(50, 50 - size/2);
+                        ctx.lineTo(50 + size/2, 50 + size/2);
+                        ctx.lineTo(50 - size/2, 50 + size/2);
+                        ctx.closePath();
+                        ctx.stroke();
+                        
+                        return c;
+                    });
+                }
+            },
+
+            // Q12: Series - Alternating fill pattern
+            {
+                question: "Complete the sequence.",
+                answer: "B",
+                renderQuestion() {
+                    const c = document.createElement('canvas');
+                    c.width = 600;
+                    c.height = 150;
+                    const ctx = c.getContext('2d');
+                    
+                    const positions = [60, 135, 210, 285, 420];
+                    const fills = [false, true, false, true, false];
+                    
+                    for (let i = 0; i < 4; i++) {
+                        ctx.strokeStyle = '#999';
+                        ctx.lineWidth = 1;
+                        ctx.strokeRect(positions[i] - 35, 40, 70, 70);
+                        
+                        ctx.strokeStyle = '#333';
+                        ctx.lineWidth = 2;
+                        
+                        if (fills[i]) {
+                            ctx.fillStyle = '#667eea';
+                            ctx.fillRect(positions[i] - 20, 60, 40, 40);
+                        }
+                        ctx.strokeRect(positions[i] - 20, 60, 40, 40);
+                    }
+                    
+                    ctx.strokeStyle = '#999';
+                    ctx.lineWidth = 1;
+                    ctx.strokeRect(positions[4] - 35, 40, 70, 70);
+                    ctx.font = '48px Poppins';
+                    ctx.fillStyle = '#764ba2';
+                    ctx.textAlign = 'center';
+                    ctx.fillText('?', positions[4], 85);
+                    
+                    return c;
+                },
+                renderOptions() {
+                    return [
+                        {fill: true, dot: false},
+                        {fill: false, dot: false},
+                        {fill: true, dot: true},
+                        {fill: false, dot: true},
+                        {fill: true, dot: false}
+                    ].map((config, idx) => {
+                        const c = document.createElement('canvas');
+                        c.width = 100; c.height = 100;
+                        const ctx = c.getContext('2d');
+                        
+                        ctx.strokeStyle = '#333';
+                        ctx.lineWidth = 2;
+                        
+                        if (config.fill) {
+                            ctx.fillStyle = '#667eea';
+                            ctx.fillRect(25, 25, 50, 50);
+                        }
+                        ctx.strokeRect(25, 25, 50, 50);
+                        
+                        // Add visual variation - small corner marks
+                        if (idx === 0) {
+                            // top-left corner
+                            ctx.fillStyle = '#333';
+                            ctx.fillRect(25, 25, 8, 8);
+                        } else if (idx === 2) {
+                            // top-right corner
+                            ctx.fillStyle = '#333';
+                            ctx.fillRect(67, 25, 8, 8);
+                        } else if (idx === 4) {
+                            // bottom-left corner
+                            ctx.fillStyle = '#333';
+                            ctx.fillRect(25, 67, 8, 8);
+                        }
+                        
+                        return c;
+                    });
+                }
+            },
+
+            // Q13: Find common - Line symmetry
+            {
+                question: "Both figures have something in common. Which figure also has this property?",
+                answer: "E",
+                renderQuestion() {
+                    const c = document.createElement('canvas');
+                    c.width = 450;
+                    c.height = 130;
+                    const ctx = c.getContext('2d');
+                    
+                    ctx.strokeStyle = '#333';
+                    ctx.lineWidth = 2;
+                    
+                    // Vertical line of symmetry - square
+                    ctx.strokeRect(35, 40, 50, 50);
+                    
+                    // Vertical line of symmetry - circle
+                    ctx.beginPath();
+                    ctx.arc(150, 65, 30, 0, 2 * Math.PI);
+                    ctx.stroke();
+                    
+                    ctx.fillStyle = '#764ba2';
+                    draw.separator(ctx, 210, 50);
+                    
+                    return c;
+                },
+                renderOptions() {
+                    return [
+                        {type: 'L-shape'},
+                        {type: 'arrow-up'},
+                        {type: 'rectangle-h'},
+                        {type: 'parallelogram'},
+                        {type: 'triangle'}
+                    ].map(config => {
+                        const c = document.createElement('canvas');
+                        c.width = 100; c.height = 100;
+                        const ctx = c.getContext('2d');
+                        
+                        ctx.strokeStyle = '#333';
+                        ctx.lineWidth = 2;
+                        
+                        if (config.type === 'L-shape') {
+                            // No vertical symmetry
+                            ctx.beginPath();
+                            ctx.moveTo(30, 30);
+                            ctx.lineTo(30, 70);
+                            ctx.lineTo(70, 70);
+                            ctx.lineTo(70, 55);
+                            ctx.lineTo(45, 55);
+                            ctx.lineTo(45, 30);
+                            ctx.closePath();
+                            ctx.stroke();
+                        } else if (config.type === 'arrow-up') {
+                            // Has horizontal symmetry only
+                            ctx.beginPath();
+                            ctx.moveTo(50, 25);
+                            ctx.lineTo(70, 50);
+                            ctx.lineTo(60, 50);
+                            ctx.lineTo(60, 75);
+                            ctx.lineTo(40, 75);
+                            ctx.lineTo(40, 50);
+                            ctx.lineTo(30, 50);
+                            ctx.closePath();
+                            ctx.stroke();
+                        } else if (config.type === 'rectangle-h') {
+                            // Horizontal rectangle
+                            ctx.strokeRect(20, 40, 60, 20);
+                        } else if (config.type === 'parallelogram') {
+                            // No symmetry
+                            ctx.beginPath();
+                            ctx.moveTo(30, 60);
+                            ctx.lineTo(45, 30);
+                            ctx.lineTo(70, 30);
+                            ctx.lineTo(55, 60);
+                            ctx.closePath();
+                            ctx.stroke();
+                        } else if (config.type === 'triangle') {
+                            // Triangle with vertical symmetry
+                            ctx.beginPath();
+                            ctx.moveTo(50, 25);
+                            ctx.lineTo(75, 75);
+                            ctx.lineTo(25, 75);
+                            ctx.closePath();
+                            ctx.stroke();
+                        }
+                        
+                        return c;
+                    });
+                }
+            },
+
+            // Q14: Code - Complex pattern
+            {
+                question: "Each symbol has a code. Identify the code for the final symbol using the pattern.",
+                answer: "A",
+                renderQuestion() {
+                    const c = document.createElement('canvas');
+                    c.width = 550;
+                    c.height = 180;
+                    const ctx = c.getContext('2d');
+                    
+                    ctx.strokeStyle = '#333';
+                    ctx.lineWidth = 2;
+                    ctx.font = '16px Poppins';
+                    ctx.fillStyle = '#666';
+                    ctx.textAlign = 'center';
+                    
+                    // Star = ST1
+                    draw.star(ctx, 60, 60, 25);
+                    ctx.stroke();
+                    ctx.fillText('ST1', 60, 110);
+                    
+                    // Pentagon = PG2
+                    draw.pentagon(ctx, 155, 60, 25);
+                    ctx.stroke();
+                    ctx.fillText('PG2', 155, 110);
+                    
+                    // Hexagon = HX3
+                    draw.hexagon(ctx, 250, 60, 25);
+                    ctx.stroke();
+                    ctx.fillText('HX3', 250, 110);
+                    
+                    // Pentagon = ?
+                    draw.pentagon(ctx, 355, 60, 25);
+                    ctx.stroke();
+                    
+                    ctx.font = '32px Poppins';
+                    ctx.fillStyle = '#764ba2';
+                    ctx.fillText('?', 355, 140);
+                    
+                    return c;
+                },
+                renderOptions() {
+                    const codes = ['PG2', 'HX2', 'ST2', 'PG3', 'HX1'];
+                    return codes.map(code => {
+                        const c = document.createElement('canvas');
+                        c.width = 100; c.height = 100;
+                        const ctx = c.getContext('2d');
+                        
+                        ctx.font = '24px Poppins';
+                        ctx.fillStyle = '#333';
+                        ctx.textAlign = 'center';
+                        ctx.textBaseline = 'middle';
+                        ctx.fillText(code, 50, 50);
+                        
+                        return c;
+                    });
+                }
+            },
+
+            // Q15: Matrix - Combined patterns
+            {
+                question: "Which pattern completes the grid?",
+                answer: "A",
+                renderQuestion() {
+                    const c = document.createElement('canvas');
+                    c.width = 400;
+                    c.height = 400;
+                    const ctx = c.getContext('2d');
+                    
+                    ctx.strokeStyle = '#333';
+                    ctx.lineWidth = 2;
+                    
+                    for (let row = 0; row < 3; row++) {
+                        for (let col = 0; col < 3; col++) {
+                            const x = 50 + col * 100;
+                            const y = 50 + row * 100;
+                            ctx.strokeRect(x, y, 90, 90);
+                            
+                            if (row === 2 && col === 2) {
+                                ctx.font = '48px Poppins';
+                                ctx.fillStyle = '#764ba2';
+                                ctx.textAlign = 'center';
+                                ctx.textBaseline = 'middle';
+                                ctx.fillText('?', x + 45, y + 45);
+                            } else {
+                                // Draw diagonal line pattern
+                                ctx.beginPath();
+                                if ((row + col) % 2 === 0) {
+                                    ctx.moveTo(x, y);
+                                    ctx.lineTo(x + 90, y + 90);
+                                } else {
+                                    ctx.moveTo(x + 90, y);
+                                    ctx.lineTo(x, y + 90);
+                                }
+                                ctx.stroke();
+                                
+                                // Add circle in corner
+                                ctx.fillStyle = '#667eea';
+                                const cornerX = row % 2 === 0 ? x + 15 : x + 75;
+                                const cornerY = col % 2 === 0 ? y + 15 : y + 75;
+                                ctx.beginPath();
+                                ctx.arc(cornerX, cornerY, 6, 0, 2 * Math.PI);
+                                ctx.fill();
+                            }
+                        }
+                    }
+                    
+                    return c;
+                },
+                renderOptions() {
+                    return [
+                        {line: 'tl-br', dot: 'tl'},
+                        {line: 'tr-bl', dot: 'tr'},
+                        {line: 'tl-br', dot: 'br'},
+                        {line: 'tr-bl', dot: 'br'},
+                        {line: 'both', dot: 'center'}
+                    ].map(config => {
+                        const c = document.createElement('canvas');
+                        c.width = 100; c.height = 100;
+                        const ctx = c.getContext('2d');
+                        
+                        ctx.strokeStyle = '#333';
+                        ctx.lineWidth = 2;
+                        
+                        // Draw diagonal line(s)
+                        if (config.line === 'tl-br' || config.line === 'both') {
+                            ctx.beginPath();
+                            ctx.moveTo(10, 10);
+                            ctx.lineTo(90, 90);
+                            ctx.stroke();
+                        }
+                        if (config.line === 'tr-bl' || config.line === 'both') {
+                            ctx.beginPath();
+                            ctx.moveTo(90, 10);
+                            ctx.lineTo(10, 90);
+                            ctx.stroke();
+                        }
+                        
+                        // Draw dot
+                        ctx.fillStyle = '#667eea';
+                        const dots = {
+                            'tl': [20, 20],
+                            'tr': [80, 20],
+                            'br': [80, 80],
+                            'bl': [20, 80],
+                            'center': [50, 50]
+                        };
+                        if (config.dot && dots[config.dot]) {
+                            ctx.beginPath();
+                            ctx.arc(dots[config.dot][0], dots[config.dot][1], 6, 0, 2 * Math.PI);
+                            ctx.fill();
+                        }
+                        
+                        return c;
+                    });
+                }
+            },
+
+            // Q16-Q20: Additional complex questions
+            ...Array.from({length: 5}, (_, idx) => ({
+                question: `Advanced pattern recognition question ${16 + idx}. Analyze the relationship carefully.`,
+                answer: ['C', 'A', 'E', 'B', 'D'][idx],
+                renderQuestion() {
+                    const c = document.createElement('canvas');
+                    c.width = 500;
+                    c.height = 200;
+                    const ctx = c.getContext('2d');
+                    
+                    ctx.font = '22px Poppins';
+                    ctx.fillStyle = '#666';
+                    ctx.textAlign = 'center';
+                    ctx.fillText(`Complex Pattern ${16 + idx}`, 250, 100);
+                    
+                    // Draw complex pattern
+                    ctx.strokeStyle = '#333';
+                    ctx.lineWidth = 2;
+                    
+                    for (let i = 0; i < 4; i++) {
+                        const x = 80 + i * 90;
+                        ctx.strokeRect(x, 130, 50, 50);
+                        
+                        const numLines = (i + idx) % 4 + 1;
+                        for (let j = 0; j < numLines; j++) {
+                            ctx.beginPath();
+                            ctx.moveTo(x + 10 + j * 10, 130);
+                            ctx.lineTo(x + 10 + j * 10, 180);
+                            ctx.stroke();
+                        }
+                    }
+                    
+                    ctx.font = '36px Poppins';
+                    ctx.fillStyle = '#764ba2';
+                    ctx.fillText('?', 440, 160);
+                    
+                    return c;
+                },
+                renderOptions() {
+                    return [1, 2, 3, 4, 5].map(num => {
+                        const c = document.createElement('canvas');
+                        c.width = 100;
+                        c.height = 100;
+                        const ctx = c.getContext('2d');
+                        
+                        ctx.strokeStyle = '#333';
+                        ctx.lineWidth = 2;
+                        ctx.strokeRect(25, 25, 50, 50);
+                        
+                        for (let i = 0; i < num; i++) {
+                            ctx.beginPath();
+                            ctx.moveTo(30 + i * 10, 25);
+                            ctx.lineTo(30 + i * 10, 75);
+                            ctx.stroke();
+                        }
+                        
+                        return c;
+                    });
+                }
+            }))
+        ];
+
+        function startTest() {
+            document.getElementById('instructions').classList.remove('active');
+            document.getElementById('question-screen').classList.add('active');
+            startTime = Date.now();
+            startTimer();
+            displayQuestion();
+        }
+
+        function startTimer() {
+            timerInterval = setInterval(() => {
+                timeRemaining--;
+                const minutes = Math.floor(timeRemaining / 60);
+                const seconds = timeRemaining % 60;
+                const timer = document.getElementById('timer');
+                timer.textContent = `${minutes}:${seconds.toString().padStart(2, '0')}`;
+                
+                if (timeRemaining <= 60) timer.classList.add('warning');
+                if (timeRemaining <= 0) { clearInterval(timerInterval); finishTest(); }
+            }, 1000);
+        }
+
+        function displayQuestion() {
+            selectedAnswer = null;
+            document.getElementById('next-button').disabled = true;
+            
+            const question = questions[currentQuestion];
+            const progress = ((currentQuestion + 1) / questions.length) * 100;
+            
+            document.getElementById('progress').style.width = progress + '%';
+            document.getElementById('question-number').textContent = `Question ${currentQuestion + 1} of ${questions.length}`;
+            document.getElementById('question-text').innerHTML = question.question;
+            
+            const imageContainer = document.getElementById('question-image');
+            imageContainer.innerHTML = '';
+            imageContainer.appendChild(question.renderQuestion());
+            
+            const optionsContainer = document.getElementById('options');
+            optionsContainer.innerHTML = '';
+            
+            const options = question.renderOptions();
+            options.forEach((optionCanvas, index) => {
+                const optionDiv = document.createElement('div');
+                optionDiv.className = 'option';
+                const label = String.fromCharCode(65 + index);
+                optionDiv.onclick = () => selectAnswer(label, optionDiv);
+                
+                const labelDiv = document.createElement('div');
+                labelDiv.className = 'option-label';
+                labelDiv.textContent = label;
+                
+                const contentDiv = document.createElement('div');
+                contentDiv.appendChild(optionCanvas);
+                
+                optionDiv.appendChild(labelDiv);
+                optionDiv.appendChild(contentDiv);
+                optionsContainer.appendChild(optionDiv);
+            });
+        }
+
+        function selectAnswer(answer, element) {
+            selectedAnswer = answer;
+            document.querySelectorAll('.option').forEach(opt => opt.classList.remove('selected'));
+            element.classList.add('selected');
+            document.getElementById('next-button').disabled = false;
+        }
+
+        function nextQuestion() {
+            if (selectedAnswer === questions[currentQuestion].answer) score++;
+            currentQuestion++;
+            if (currentQuestion < questions.length) displayQuestion();
+            else finishTest();
+        }
+
+        function finishTest() {
+            clearInterval(timerInterval);
+            
+            // Mark test as completed
+            localStorage.setItem('test_nvr_completed', 'true');
+            
+            // Return to home page immediately
+            window.location.href = 'index.html';
+        }
+    </script>
+</body>
+</html>

@@ -1,0 +1,917 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Year 5 Mathematics Assessment</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Arial', sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            padding: 20px;
+        }
+
+        .container {
+            background: white;
+            border-radius: 20px;
+            box-shadow: 0 20px 60px rgba(0, 0, 0, 0.3);
+            max-width: 900px;
+            width: 100%;
+            padding: 40px;
+            position: relative;
+        }
+
+        .header {
+            text-align: center;
+            margin-bottom: 30px;
+            padding-bottom: 20px;
+            border-bottom: 3px solid #667eea;
+        }
+
+        h1 {
+            color: #333;
+            margin-bottom: 10px;
+            font-size: 2em;
+        }
+
+        .subtitle {
+            color: #666;
+            font-size: 1.1em;
+        }
+
+        .timer-container {
+            background: #f8f9fa;
+            padding: 15px;
+            border-radius: 10px;
+            text-align: center;
+            margin-bottom: 20px;
+            border: 2px solid #667eea;
+        }
+
+        .timer {
+            font-size: 2em;
+            font-weight: bold;
+            color: #667eea;
+            font-family: 'Courier New', monospace;
+        }
+
+        .timer.warning {
+            color: #ff6b6b;
+            animation: pulse 1s infinite;
+        }
+
+        @keyframes pulse {
+            0%, 100% { opacity: 1; }
+            50% { opacity: 0.6; }
+        }
+
+        .progress-container {
+            background: #e0e0e0;
+            height: 30px;
+            border-radius: 15px;
+            overflow: hidden;
+            margin-bottom: 30px;
+        }
+
+        .progress-bar {
+            height: 100%;
+            background: linear-gradient(90deg, #667eea 0%, #764ba2 100%);
+            transition: width 0.3s ease;
+        }
+
+        .instructions {
+            line-height: 1.8;
+            color: #444;
+            margin-bottom: 20px;
+        }
+
+        .instructions h2 {
+            color: #667eea;
+            margin: 20px 0 10px 0;
+        }
+
+        .instructions ul {
+            margin-left: 30px;
+            margin-bottom: 15px;
+        }
+
+        .instructions li {
+            margin-bottom: 8px;
+        }
+
+        .question-container {
+            display: none;
+        }
+
+        .question-container.active {
+            display: block;
+        }
+
+        .question {
+            background: #f8f9fa;
+            padding: 25px;
+            border-radius: 10px;
+            margin-bottom: 25px;
+            border-left: 5px solid #667eea;
+        }
+
+        .question-text {
+            font-size: 1.15em;
+            color: #333;
+            margin-bottom: 20px;
+            line-height: 1.7;
+        }
+
+        .question-number {
+            color: #667eea;
+            font-weight: bold;
+            margin-bottom: 10px;
+            font-size: 1.1em;
+        }
+
+        .question-image {
+            text-align: center;
+            margin: 20px 0;
+            padding: 15px;
+            background: white;
+            border-radius: 8px;
+            border: 2px solid #e0e0e0;
+        }
+
+        .question-image svg {
+            max-width: 100%;
+            height: auto;
+        }
+
+        .chart-container {
+            background: white;
+            padding: 20px;
+            border-radius: 8px;
+            margin: 20px 0;
+            border: 2px solid #e0e0e0;
+        }
+
+        .options {
+            display: flex;
+            flex-direction: column;
+            gap: 12px;
+        }
+
+        .option {
+            background: white;
+            border: 2px solid #ddd;
+            padding: 15px 20px;
+            border-radius: 8px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            display: flex;
+            align-items: center;
+            font-size: 1.05em;
+        }
+
+        .option:hover {
+            border-color: #667eea;
+            background: #f0f4ff;
+            transform: translateX(5px);
+        }
+
+        .option.selected {
+            background: #667eea;
+            color: white;
+            border-color: #667eea;
+        }
+
+        .option-letter {
+            display: inline-block;
+            min-width: 30px;
+            height: 30px;
+            background: #667eea;
+            color: white;
+            border-radius: 50%;
+            text-align: center;
+            line-height: 30px;
+            margin-right: 15px;
+            font-weight: bold;
+            flex-shrink: 0;
+        }
+
+        .option.selected .option-letter {
+            background: white;
+            color: #667eea;
+        }
+
+        .button-container {
+            display: flex;
+            justify-content: flex-end;
+            margin-top: 30px;
+        }
+
+        button {
+            background: #667eea;
+            color: white;
+            border: none;
+            padding: 15px 40px;
+            border-radius: 8px;
+            font-size: 1.1em;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            font-weight: bold;
+        }
+
+        button:hover {
+            background: #764ba2;
+            transform: translateY(-2px);
+            box-shadow: 0 5px 15px rgba(102, 126, 234, 0.4);
+        }
+
+        button:disabled {
+            background: #ccc;
+            cursor: not-allowed;
+            transform: none;
+        }
+
+        .start-button {
+            width: 100%;
+            padding: 20px;
+            font-size: 1.3em;
+        }
+
+        .results {
+            display: none;
+            text-align: center;
+        }
+
+        .results.active {
+            display: block;
+        }
+
+        .score {
+            font-size: 3em;
+            color: #667eea;
+            font-weight: bold;
+            margin: 30px 0;
+        }
+
+        .results-message {
+            font-size: 1.3em;
+            color: #444;
+            margin-bottom: 30px;
+        }
+
+        .show-screen {
+            display: block;
+        }
+
+        .hide-screen {
+            display: none;
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin: 15px 0;
+            background: white;
+        }
+
+        th, td {
+            border: 2px solid #667eea;
+            padding: 12px;
+            text-align: center;
+        }
+
+        th {
+            background: #667eea;
+            color: white;
+            font-weight: bold;
+        }
+
+        td {
+            background: #f8f9fa;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <!-- Instructions Screen -->
+        <div id="instructionsScreen" class="show-screen">
+            <div class="header">
+                <h1>Mathematics Assessment</h1>
+                <p class="subtitle">Practice Test</p>
+            </div>
+            
+            <div class="instructions">
+                <h2>Instructions</h2>
+                <p>Welcome to your mathematics assessment. Please read these instructions carefully before you begin.</p>
+                
+                <h2>Assessment Details:</h2>
+                <ul>
+                    <li>You have <strong>20 minutes</strong> to complete all questions</li>
+                    <li>Each question is multiple choice with 4 possible answers</li>
+                    <li>Select the answer you think is correct by clicking on it</li>
+                </ul>
+                
+                <h2>How to Navigate:</h2>
+                <ul>
+                    <li>Click the <strong>Next</strong> button to move to the next question</li>
+                    <li>You cannot go back to previous questions, so check your answer before moving on</li>
+                    <li>A progress bar at the top shows how far through the test you are</li>
+                    <li>The timer will count down in minutes and seconds</li>
+                </ul>
+                
+                <h2>Before You Begin:</h2>
+                <ul>
+                    <li>Make sure you have paper and a pencil for any working out</li>
+                    <li>Find a quiet place to work</li>
+                    <li>When you click START, the timer will begin immediately</li>
+                    <li>Work carefully and check your answers</li>
+                </ul>
+                
+                <p style="margin-top: 20px; font-weight: bold; color: #667eea;">When you are ready, click the START button below.</p>
+            </div>
+            
+            <button class="start-button" onclick="startAssessment()">START ASSESSMENT</button>
+        </div>
+
+        <!-- Assessment Screen -->
+        <div id="assessmentScreen" class="hide-screen">
+            <div class="header">
+                <h1>Mathematics Assessment</h1>
+            </div>
+
+            <div class="timer-container">
+                <div>Time Remaining:</div>
+                <div class="timer" id="timer">20:00</div>
+            </div>
+
+            <div class="progress-container">
+                <div class="progress-bar" id="progressBar"></div>
+            </div>
+
+            <div id="questionsContainer"></div>
+
+            <div class="button-container">
+                <button id="nextBtn" onclick="nextQuestion()">Next Question</button>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        const questions = [
+            {
+                question: "Marcus buys three magazines from the newsagent. One costs £2.45, another costs £3.20 and the third costs £1.85. He pays with a £10 note. How much change should he receive?",
+                image: `<svg width="300" height="120" viewBox="0 0 300 120">
+                    <rect x="20" y="20" width="80" height="80" fill="#FFD700" stroke="#B8860B" stroke-width="3" rx="5"/>
+                    <text x="60" y="65" font-size="24" font-weight="bold" text-anchor="middle" fill="#B8860B">£10</text>
+                    <circle cx="180" cy="60" r="35" fill="#C0C0C0" stroke="#808080" stroke-width="2"/>
+                    <text x="180" y="68" font-size="18" font-weight="bold" text-anchor="middle" fill="#404040">£2</text>
+                    <circle cx="250" cy="60" r="35" fill="#C0C0C0" stroke="#808080" stroke-width="2"/>
+                    <text x="250" y="68" font-size="18" font-weight="bold" text-anchor="middle" fill="#404040">£1</text>
+                </svg>`,
+                options: ["£2.50", "£2.60", "£3.50", "£7.50"],
+                correct: 0
+            },
+            {
+                question: "The bar chart shows the number of books read by five children in Year 5 during the summer holidays. How many more books did Sophie read than James?",
+                image: `<svg width="500" height="300" viewBox="0 0 500 300">
+                    <text x="250" y="20" font-size="16" font-weight="bold" text-anchor="middle">Books Read During Summer</text>
+                    <!-- Axes -->
+                    <line x1="50" y1="250" x2="450" y2="250" stroke="black" stroke-width="2"/>
+                    <line x1="50" y1="250" x2="50" y2="50" stroke="black" stroke-width="2"/>
+                    <!-- Y-axis labels -->
+                    <text x="35" y="255" font-size="12" text-anchor="end">0</text>
+                    <text x="35" y="210" font-size="12" text-anchor="end">5</text>
+                    <text x="35" y="170" font-size="12" text-anchor="end">10</text>
+                    <text x="35" y="130" font-size="12" text-anchor="end">15</text>
+                    <text x="35" y="90" font-size="12" text-anchor="end">20</text>
+                    <text x="35" y="50" font-size="12" text-anchor="end">25</text>
+                    <!-- Grid lines -->
+                    <line x1="50" y1="210" x2="450" y2="210" stroke="#e0e0e0" stroke-width="1"/>
+                    <line x1="50" y1="170" x2="450" y2="170" stroke="#e0e0e0" stroke-width="1"/>
+                    <line x1="50" y1="130" x2="450" y2="130" stroke="#e0e0e0" stroke-width="1"/>
+                    <line x1="50" y1="90" x2="450" y2="90" stroke="#e0e0e0" stroke-width="1"/>
+                    <!-- Bars -->
+                    <rect x="70" y="130" width="50" height="120" fill="#667eea"/>
+                    <text x="95" y="275" font-size="12" text-anchor="middle">Emma</text>
+                    <rect x="140" y="170" width="50" height="80" fill="#667eea"/>
+                    <text x="165" y="275" font-size="12" text-anchor="middle">James</text>
+                    <rect x="210" y="90" width="50" height="160" fill="#667eea"/>
+                    <text x="235" y="275" font-size="12" text-anchor="middle">Sophie</text>
+                    <rect x="280" y="150" width="50" height="100" fill="#667eea"/>
+                    <text x="305" y="275" font-size="12" text-anchor="middle">Oliver</text>
+                    <rect x="350" y="130" width="50" height="120" fill="#667eea"/>
+                    <text x="375" y="275" font-size="12" text-anchor="middle">Lily</text>
+                    <text x="20" y="150" font-size="12" text-anchor="middle" transform="rotate(-90 20 150)">Number of Books</text>
+                </svg>`,
+                options: ["8 books", "10 books", "12 books", "15 books"],
+                correct: 1
+            },
+            {
+                question: "A school library has 4,567 books. The librarian orders another 2,845 books for the new term. How many books does the library have altogether?",
+                image: `<svg width="300" height="150">
+                    <rect x="20" y="20" width="120" height="100" fill="#8B4513" stroke="#654321" stroke-width="2"/>
+                    <rect x="30" y="40" width="20" height="60" fill="#DEB887"/>
+                    <rect x="55" y="40" width="20" height="60" fill="#DEB887"/>
+                    <rect x="80" y="40" width="20" height="60" fill="#DEB887"/>
+                    <rect x="105" y="40" width="20" height="60" fill="#DEB887"/>
+                    <text x="80" y="130" font-size="14" text-anchor="middle" font-weight="bold">4,567 books</text>
+                    <text x="180" y="80" font-size="24" font-weight="bold">+</text>
+                    <rect x="220" y="40" width="60" height="70" fill="#8B4513" stroke="#654321" stroke-width="2"/>
+                    <rect x="228" y="55" width="10" height="40" fill="#DEB887"/>
+                    <rect x="242" y="55" width="10" height="40" fill="#DEB887"/>
+                    <rect x="256" y="55" width="10" height="40" fill="#DEB887"/>
+                </svg>`,
+                options: ["6,412 books", "7,412 books", "7,302 books", "6,312 books"],
+                correct: 1
+            },
+            {
+                question: "Sarah is organising a school trip. Each coach can carry 52 children. If 312 children are going on the trip, how many coaches does she need to book?",
+                image: `<svg width="400" height="150">
+                    <rect x="20" y="30" width="160" height="90" rx="15" fill="#FFA500" stroke="#FF8C00" stroke-width="3"/>
+                    <rect x="35" y="50" width="130" height="15" fill="#87CEEB"/>
+                    <rect x="35" y="75" width="130" height="15" fill="#87CEEB"/>
+                    <circle cx="50" cy="125" r="15" fill="#333"/>
+                    <circle cx="50" cy="125" r="8" fill="#888"/>
+                    <circle cx="150" cy="125" r="15" fill="#333"/>
+                    <circle cx="150" cy="125" r="8" fill="#888"/>
+                    <text x="100" y="110" font-size="14" font-weight="bold" text-anchor="middle" fill="white">52 seats</text>
+                    <text x="250" y="80" font-size="36" font-weight="bold" fill="#667eea">?</text>
+                    <text x="330" y="85" font-size="16">coaches</text>
+                    <text x="330" y="105" font-size="16">needed</text>
+                </svg>`,
+                options: ["5 coaches", "6 coaches", "7 coaches", "8 coaches"],
+                correct: 1
+            },
+            {
+                question: "The pictogram shows how Year 5 children travel to school. Each symbol represents 4 children. How many children walk to school?",
+                image: `<svg width="450" height="280">
+                    <text x="225" y="25" font-size="16" font-weight="bold" text-anchor="middle">How We Travel to School</text>
+                    <text x="10" y="75" font-size="14">Car:</text>
+                    <text x="80" y="75" font-size="28">🚗🚗🚗🚗🚗🚗</text>
+                    <text x="10" y="120" font-size="14">Bus:</text>
+                    <text x="80" y="120" font-size="28">🚌🚌🚌🚌</text>
+                    <text x="10" y="165" font-size="14">Walk:</text>
+                    <text x="80" y="165" font-size="28">🚶🚶🚶🚶🚶🚶🚶</text>
+                    <text x="10" y="210" font-size="14">Bike:</text>
+                    <text x="80" y="210" font-size="28">🚴🚴🚴</text>
+                    <rect x="10" y="230" width="430" height="40" fill="#f0f0f0" stroke="#667eea" stroke-width="2" rx="5"/>
+                    <text x="225" y="255" font-size="14" font-weight="bold" text-anchor="middle">Each symbol = 4 children</text>
+                </svg>`,
+                options: ["7 children", "21 children", "24 children", "28 children"],
+                correct: 3
+            },
+            {
+                question: "Tom's piano lesson starts at 15:45 and lasts for 50 minutes. What time does his lesson finish?",
+                image: `<svg width="280" height="140">
+                    <circle cx="70" cy="70" r="55" fill="white" stroke="#333" stroke-width="3"/>
+                    <circle cx="70" cy="70" r="3" fill="#333"/>
+                    <line x1="70" y1="70" x2="70" y2="35" stroke="#333" stroke-width="3" stroke-linecap="round"/>
+                    <line x1="70" y1="70" x2="95" y2="70" stroke="#e74c3c" stroke-width="2" stroke-linecap="round"/>
+                    <text x="70" y="15" font-size="10" text-anchor="middle" font-weight="bold">12</text>
+                    <text x="117" y="75" font-size="10" text-anchor="middle" font-weight="bold">3</text>
+                    <text x="70" y="133" font-size="10" text-anchor="middle" font-weight="bold">6</text>
+                    <text x="23" y="75" font-size="10" text-anchor="middle" font-weight="bold">9</text>
+                    <text x="70" y="120" font-size="12" text-anchor="middle" font-weight="bold">15:45</text>
+                    <text x="170" y="70" font-size="32" font-weight="bold">+50</text>
+                    <text x="245" y="70" font-size="32" font-weight="bold">?</text>
+                </svg>`,
+                options: ["16:25", "16:35", "16:45", "16:55"],
+                correct: 1
+            },
+            {
+                question: "A rectangular garden measures 15 metres in length and 8 metres in width. What is the perimeter of the garden?",
+                image: `<svg width="350" height="220">
+                    <rect x="50" y="30" width="250" height="150" fill="#90EE90" stroke="#228B22" stroke-width="3"/>
+                    <text x="175" y="20" font-size="16" font-weight="bold" text-anchor="middle">15 m</text>
+                    <line x1="50" y1="25" x2="300" y2="25" stroke="#667eea" stroke-width="2" marker-start="url(#arrowstart)" marker-end="url(#arrowend)"/>
+                    <text x="35" y="110" font-size="16" font-weight="bold" text-anchor="middle" transform="rotate(-90 35 110)">8 m</text>
+                    <line x1="45" y1="30" x2="45" y2="180" stroke="#667eea" stroke-width="2" marker-start="url(#arrowstart)" marker-end="url(#arrowend)"/>
+                    <path fill="none" stroke="#228B22" stroke-width="2" stroke-dasharray="5,5" 
+                          d="M 60,40 L 290,40 L 290,170 L 60,170 Z"/>
+                    <text x="175" y="115" font-size="18" text-anchor="middle">🌻🌼🌸</text>
+                    <defs>
+                        <marker id="arrowstart" markerWidth="10" markerHeight="10" refX="5" refY="3" orient="auto">
+                            <polygon points="0,0 0,6 5,3" fill="#667eea"/>
+                        </marker>
+                        <marker id="arrowend" markerWidth="10" markerHeight="10" refX="0" refY="3" orient="auto">
+                            <polygon points="5,0 5,6 0,3" fill="#667eea"/>
+                        </marker>
+                    </defs>
+                </svg>`,
+                options: ["23 metres", "46 metres", "120 metres", "30 metres"],
+                correct: 1
+            },
+            {
+                question: "Emma's birthday cake is cut into 8 equal slices. She eats 3 slices. What fraction of the cake has she eaten?",
+                image: `<svg width="300" height="250">
+                    <circle cx="150" cy="120" r="80" fill="#FFB6C1" stroke="#FF69B4" stroke-width="3"/>
+                    <line x1="150" y1="120" x2="150" y2="40" stroke="#FF69B4" stroke-width="2"/>
+                    <line x1="150" y1="120" x2="206.5" y2="63.5" stroke="#FF69B4" stroke-width="2"/>
+                    <line x1="150" y1="120" x2="230" y2="120" stroke="#FF69B4" stroke-width="2"/>
+                    <line x1="150" y1="120" x2="206.5" y2="176.5" stroke="#FF69B4" stroke-width="2"/>
+                    <line x1="150" y1="120" x2="150" y2="200" stroke="#FF69B4" stroke-width="2"/>
+                    <line x1="150" y1="120" x2="93.5" y2="176.5" stroke="#FF69B4" stroke-width="2"/>
+                    <line x1="150" y1="120" x2="70" y2="120" stroke="#FF69B4" stroke-width="2"/>
+                    <line x1="150" y1="120" x2="93.5" y2="63.5" stroke="#FF69B4" stroke-width="2"/>
+                    <path d="M 150,40 A 80,80 0 0,1 206.5,63.5 L 150,120 Z" fill="#8B4513" opacity="0.7"/>
+                    <path d="M 206.5,63.5 A 80,80 0 0,1 230,120 L 150,120 Z" fill="#8B4513" opacity="0.7"/>
+                    <path d="M 230,120 A 80,80 0 0,1 206.5,176.5 L 150,120 Z" fill="#8B4513" opacity="0.7"/>
+                    <text x="150" y="235" font-size="14" font-weight="bold" text-anchor="middle">3 slices eaten (shaded)</text>
+                </svg>`,
+                options: ["1/3", "3/8", "5/8", "3/5"],
+                correct: 1
+            },
+            {
+                question: "The table shows the temperature recorded at different times during a winter's day. What was the difference in temperature between the coldest and warmest times?",
+                image: `<div class="chart-container">
+                    <table>
+                        <tr>
+                            <th>Time</th>
+                            <th>Temperature</th>
+                        </tr>
+                        <tr>
+                            <td>6:00 am</td>
+                            <td>-2°C</td>
+                        </tr>
+                        <tr>
+                            <td>9:00 am</td>
+                            <td>1°C</td>
+                        </tr>
+                        <tr>
+                            <td>12:00 pm</td>
+                            <td>5°C</td>
+                        </tr>
+                        <tr>
+                            <td>3:00 pm</td>
+                            <td>7°C</td>
+                        </tr>
+                        <tr>
+                            <td>6:00 pm</td>
+                            <td>3°C</td>
+                        </tr>
+                    </table>
+                </div>`,
+                options: ["5°C", "7°C", "9°C", "10°C"],
+                correct: 2
+            },
+            {
+                question: "A bottle of juice contains 2.5 litres. Maya pours out 750 millilitres. How many millilitres of juice are left in the bottle?",
+                image: `<svg width="300" height="200">
+                    <rect x="80" y="40" width="60" height="120" rx="5" fill="#87CEEB" stroke="#4682B4" stroke-width="3"/>
+                    <rect x="80" y="100" width="60" height="60" fill="#FFA500" opacity="0.7"/>
+                    <ellipse cx="110" cy="40" rx="30" ry="8" fill="#4682B4"/>
+                    <path d="M 80,40 Q 80,30 110,30 Q 140,30 140,40" fill="none" stroke="#4682B4" stroke-width="2"/>
+                    <text x="110" y="185" font-size="14" font-weight="bold" text-anchor="middle">2.5 litres</text>
+                    <text x="200" y="100" font-size="20" font-weight="bold">-750ml</text>
+                    <rect x="220" y="70" width="50" height="90" rx="5" fill="#87CEEB" stroke="#4682B4" stroke-width="2" fill-opacity="0.3"/>
+                    <text x="245" y="175" font-size="16" font-weight="bold" text-anchor="middle">?</text>
+                </svg>`,
+                options: ["1,750 ml", "1,850 ml", "2,250 ml", "3,250 ml"],
+                correct: 0
+            },
+            {
+                question: "The line graph shows the number of ice creams sold at a beach café each day for one week. On which day were the most ice creams sold?",
+                image: `<svg width="500" height="300">
+                    <text x="250" y="20" font-size="16" font-weight="bold" text-anchor="middle">Ice Creams Sold</text>
+                    <line x1="50" y1="250" x2="450" y2="250" stroke="black" stroke-width="2"/>
+                    <line x1="50" y1="250" x2="50" y2="50" stroke="black" stroke-width="2"/>
+                    <text x="30" y="255" font-size="11" text-anchor="end">0</text>
+                    <text x="30" y="210" font-size="11" text-anchor="end">10</text>
+                    <text x="30" y="170" font-size="11" text-anchor="end">20</text>
+                    <text x="30" y="130" font-size="11" text-anchor="end">30</text>
+                    <text x="30" y="90" font-size="11" text-anchor="end">40</text>
+                    <text x="30" y="50" font-size="11" text-anchor="end">50</text>
+                    <line x1="50" y1="210" x2="450" y2="210" stroke="#e0e0e0" stroke-width="1"/>
+                    <line x1="50" y1="170" x2="450" y2="170" stroke="#e0e0e0" stroke-width="1"/>
+                    <line x1="50" y1="130" x2="450" y2="130" stroke="#e0e0e0" stroke-width="1"/>
+                    <line x1="50" y1="90" x2="450" y2="90" stroke="#e0e0e0" stroke-width="1"/>
+                    <polyline points="70,210 120,190 170,170 220,130 270,90 320,110 370,150" 
+                              fill="none" stroke="#667eea" stroke-width="3"/>
+                    <circle cx="70" cy="210" r="4" fill="#667eea"/>
+                    <circle cx="120" cy="190" r="4" fill="#667eea"/>
+                    <circle cx="170" cy="170" r="4" fill="#667eea"/>
+                    <circle cx="220" cy="130" r="4" fill="#667eea"/>
+                    <circle cx="270" cy="90" r="4" fill="#667eea"/>
+                    <circle cx="320" cy="110" r="4" fill="#667eea"/>
+                    <circle cx="370" cy="150" r="4" fill="#667eea"/>
+                    <text x="70" y="270" font-size="11" text-anchor="middle">Mon</text>
+                    <text x="120" y="270" font-size="11" text-anchor="middle">Tue</text>
+                    <text x="170" y="270" font-size="11" text-anchor="middle">Wed</text>
+                    <text x="220" y="270" font-size="11" text-anchor="middle">Thu</text>
+                    <text x="270" y="270" font-size="11" text-anchor="middle">Fri</text>
+                    <text x="320" y="270" font-size="11" text-anchor="middle">Sat</text>
+                    <text x="370" y="270" font-size="11" text-anchor="middle">Sun</text>
+                </svg>`,
+                options: ["Thursday", "Friday", "Saturday", "Sunday"],
+                correct: 1
+            },
+            {
+                question: "At the school fair, tickets cost £1.75 each. Oliver buys 4 tickets. How much does he spend altogether?",
+                image: `<svg width="350" height="150">
+                    <rect x="30" y="30" width="70" height="90" rx="5" fill="#FF6B6B" stroke="#C92A2A" stroke-width="2"/>
+                    <text x="65" y="55" font-size="11" font-weight="bold" text-anchor="middle" fill="white">ADMIT ONE</text>
+                    <text x="65" y="80" font-size="18" font-weight="bold" text-anchor="middle" fill="white">£1.75</text>
+                    <text x="65" y="110" font-size="10" text-anchor="middle" fill="white">School Fair</text>
+                    <text x="130" y="80" font-size="24" font-weight="bold">× 4 =</text>
+                    <text x="230" y="80" font-size="32" font-weight="bold" fill="#667eea">?</text>
+                </svg>`,
+                options: ["£6.00", "£6.50", "£7.00", "£7.50"],
+                correct: 2
+            },
+            {
+                question: "A shop sells pencils in packs of 6. If a teacher buys 9 packs, how many pencils does she have in total?",
+                image: `<svg width="400" height="160">
+                    <rect x="20" y="30" width="80" height="100" fill="#FFC107" stroke="#F57C00" stroke-width="2" rx="5"/>
+                    <text x="60" y="60" font-size="14" font-weight="bold" text-anchor="middle">6 Pencils</text>
+                    <line x1="35" y1="75" x2="35" y2="110" stroke="#333" stroke-width="2"/>
+                    <line x1="50" y1="75" x2="50" y2="110" stroke="#333" stroke-width="2"/>
+                    <line x1="65" y1="75" x2="65" y2="110" stroke="#333" stroke-width="2"/>
+                    <line x1="80" y1="75" x2="80" y2="110" stroke="#333" stroke-width="2"/>
+                    <text x="60" y="150" font-size="12" text-anchor="middle">1 pack</text>
+                    <text x="140" y="85" font-size="24" font-weight="bold">× 9</text>
+                    <text x="220" y="85" font-size="24" font-weight="bold">=</text>
+                    <text x="280" y="85" font-size="28" font-weight="bold" fill="#667eea">?</text>
+                </svg>`,
+                options: ["48 pencils", "52 pencils", "54 pencils", "56 pencils"],
+                correct: 2
+            },
+            {
+                question: "A rectangular classroom has an area of 72 square metres. If the length of the classroom is 9 metres, what is its width?",
+                image: `<svg width="400" height="200">
+                    <rect x="50" y="40" width="280" height="120" fill="#E3F2FD" stroke="#1976D2" stroke-width="3"/>
+                    <text x="190" y="25" font-size="14" font-weight="bold" text-anchor="middle">9 m</text>
+                    <line x1="50" y1="30" x2="330" y2="30" stroke="#667eea" stroke-width="2"/>
+                    <text x="35" y="105" font-size="14" font-weight="bold" text-anchor="middle" transform="rotate(-90 35 105)">? m</text>
+                    <line x1="40" y1="40" x2="40" y2="160" stroke="#667eea" stroke-width="2"/>
+                    <text x="190" y="110" font-size="18" font-weight="bold" text-anchor="middle">Area = 72 m²</text>
+                </svg>`,
+                options: ["6 metres", "7 metres", "8 metres", "9 metres"],
+                correct: 2
+            },
+            {
+                question: "The tally chart shows the favourite pets of children in Year 5. How many children chose cats or dogs as their favourite pet?",
+                image: `<div class="chart-container">
+                    <table>
+                        <tr>
+                            <th>Pet</th>
+                            <th>Tally</th>
+                            <th>Frequency</th>
+                        </tr>
+                        <tr>
+                            <td>Dog 🐕</td>
+                            <td>|||| |||| |||</td>
+                            <td>13</td>
+                        </tr>
+                        <tr>
+                            <td>Cat 🐈</td>
+                            <td>|||| ||||</td>
+                            <td>9</td>
+                        </tr>
+                        <tr>
+                            <td>Rabbit 🐰</td>
+                            <td>|||| ||</td>
+                            <td>7</td>
+                        </tr>
+                        <tr>
+                            <td>Hamster 🐹</td>
+                            <td>||||</td>
+                            <td>4</td>
+                        </tr>
+                    </table>
+                </div>`,
+                options: ["18 children", "20 children", "22 children", "24 children"],
+                correct: 2
+            },
+            {
+                question: "Sophie has saved £45 in her money box. Her mum says she will give Sophie 20% more to add to her savings. How much money will Sophie have in total?",
+                image: `<svg width="320" height="140">
+                    <ellipse cx="100" cy="50" rx="50" ry="30" fill="#FFD700" stroke="#B8860B" stroke-width="3"/>
+                    <rect x="85" y="50" width="30" height="15" fill="#FFD700" stroke="#B8860B" stroke-width="2"/>
+                    <ellipse cx="100" cy="65" rx="50" ry="30" fill="none" stroke="#B8860B" stroke-width="3"/>
+                    <line x1="50" y1="35" x2="50" y2="80" stroke="#B8860B" stroke-width="3"/>
+                    <line x1="150" y1="35" x2="150" y2="80" stroke="#B8860B" stroke-width="3"/>
+                    <text x="100" y="100" font-size="14" font-weight="bold" text-anchor="middle">£45</text>
+                    <text x="180" y="70" font-size="20" font-weight="bold">+ 20%</text>
+                    <text x="280" y="70" font-size="24" font-weight="bold" fill="#667eea">= ?</text>
+                </svg>`,
+                options: ["£50", "£52", "£54", "£56"],
+                correct: 2
+            },
+            {
+                question: "A recipe for 12 cookies needs 180g of flour. How much flour is needed to make 20 cookies?",
+                image: `<svg width="400" height="160">
+                    <rect x="30" y="30" width="100" height="100" rx="10" fill="#F5E6D3" stroke="#8B4513" stroke-width="3"/>
+                    <circle cx="80" cy="50" r="12" fill="#D2691E"/>
+                    <circle cx="55" cy="80" r="12" fill="#D2691E"/>
+                    <circle cx="105" cy="80" r="12" fill="#D2691E"/>
+                    <circle cx="80" cy="110" r="12" fill="#D2691E"/>
+                    <text x="80" y="150" font-size="12" text-anchor="middle" font-weight="bold">12 cookies = 180g flour</text>
+                    <text x="180" y="90" font-size="20" font-weight="bold">→</text>
+                    <text x="240" y="90" font-size="18" font-weight="bold">20 cookies = ?</text>
+                </svg>`,
+                options: ["240g", "280g", "300g", "320g"],
+                correct: 2
+            },
+            {
+                question: "The temperature at midnight was -3°C. By midday it had risen by 8 degrees. What was the temperature at midday?",
+                image: `<svg width="300" height="200">
+                    <rect x="100" y="20" width="30" height="140" rx="5" fill="white" stroke="#333" stroke-width="2"/>
+                    <circle cx="115" cy="170" r="20" fill="#e74c3c"/>
+                    <line x1="115" y1="30" x2="115" y2="150" stroke="#e74c3c" stroke-width="6"/>
+                    <text x="75" y="35" font-size="11" text-anchor="end">10°C</text>
+                    <text x="75" y="70" font-size="11" text-anchor="end">5°C</text>
+                    <text x="75" y="105" font-size="11" text-anchor="end">0°C</text>
+                    <text x="75" y="140" font-size="11" text-anchor="end">-5°C</text>
+                    <line x1="80" y1="30" x2="95" y2="30" stroke="#333" stroke-width="1"/>
+                    <line x1="80" y1="70" x2="95" y2="70" stroke="#333" stroke-width="1"/>
+                    <line x1="80" y1="105" x2="95" y2="105" stroke="#333" stroke-width="2"/>
+                    <line x1="80" y1="140" x2="95" y2="140" stroke="#333" stroke-width="1"/>
+                    <text x="170" y="140" font-size="14" font-weight="bold">-3°C</text>
+                    <text x="170" y="100" font-size="14" font-weight="bold">+ 8°</text>
+                    <text x="170" y="60" font-size="14" font-weight="bold">= ?</text>
+                </svg>`,
+                options: ["5°C", "6°C", "11°C", "-11°C"],
+                correct: 0
+            },
+            {
+                question: "A car journey is 240 kilometres long. The Smith family have travelled 3/4 of the journey. How many kilometres have they travelled?",
+                image: `<svg width="450" height="150">
+                    <rect x="30" y="40" width="360" height="60" fill="#E8F5E9" stroke="#4CAF50" stroke-width="3" rx="5"/>
+                    <rect x="30" y="40" width="270" height="60" fill="#4CAF50" opacity="0.5"/>
+                    <text x="210" y="25" font-size="14" font-weight="bold" text-anchor="middle">Total journey: 240 km</text>
+                    <text x="165" y="80" font-size="16" font-weight="bold" text-anchor="middle" fill="white">3/4 travelled</text>
+                    <line x1="20" y1="110" x2="400" y2="110" stroke="#333" stroke-width="2" marker-end="url(#arrow)"/>
+                    <line x1="30" y1="105" x2="30" y2="115" stroke="#333" stroke-width="2"/>
+                    <line x1="120" y1="105" x2="120" y2="115" stroke="#333" stroke-width="2"/>
+                    <line x1="210" y1="105" x2="210" y2="115" stroke="#333" stroke-width="2"/>
+                    <line x1="300" y1="105" x2="300" y2="115" stroke="#333" stroke-width="2"/>
+                    <line x1="390" y1="105" x2="390" y2="115" stroke="#333" stroke-width="2"/>
+                    <text x="75" y="135" font-size="11" text-anchor="middle">1/4</text>
+                    <text x="165" y="135" font-size="11" text-anchor="middle">2/4</text>
+                    <text x="255" y="135" font-size="11" text-anchor="middle">3/4</text>
+                    <text x="345" y="135" font-size="11" text-anchor="middle">4/4</text>
+                    <defs>
+                        <marker id="arrow" markerWidth="10" markerHeight="10" refX="0" refY="3" orient="auto">
+                            <polygon points="0,0 0,6 6,3" fill="#333"/>
+                        </marker>
+                    </defs>
+                </svg>`,
+                options: ["60 km", "80 km", "180 km", "200 km"],
+                correct: 2
+            },
+            {
+                question: "In a class survey, 8 out of 20 children chose swimming as their favourite sport. What percentage of the class chose swimming?",
+                image: `<svg width="400" height="200">
+                    <text x="200" y="25" font-size="16" font-weight="bold" text-anchor="middle">Favourite Sport Survey</text>
+                    <circle cx="60" cy="80" r="8" fill="#667eea"/>
+                    <circle cx="90" cy="80" r="8" fill="#667eea"/>
+                    <circle cx="120" cy="80" r="8" fill="#667eea"/>
+                    <circle cx="150" cy="80" r="8" fill="#667eea"/>
+                    <circle cx="180" cy="80" r="8" fill="#667eea"/>
+                    <circle cx="210" cy="80" r="8" fill="#667eea"/>
+                    <circle cx="240" cy="80" r="8" fill="#667eea"/>
+                    <circle cx="270" cy="80" r="8" fill="#667eea"/>
+                    <circle cx="60" cy="120" r="8" fill="#ddd"/>
+                    <circle cx="90" cy="120" r="8" fill="#ddd"/>
+                    <circle cx="120" cy="120" r="8" fill="#ddd"/>
+                    <circle cx="150" cy="120" r="8" fill="#ddd"/>
+                    <circle cx="180" cy="120" r="8" fill="#ddd"/>
+                    <circle cx="210" cy="120" r="8" fill="#ddd"/>
+                    <circle cx="240" cy="120" r="8" fill="#ddd"/>
+                    <circle cx="270" cy="120" r="8" fill="#ddd"/>
+                    <circle cx="300" cy="120" r="8" fill="#ddd"/>
+                    <circle cx="330" cy="120" r="8" fill="#ddd"/>
+                    <circle cx="360" cy="120" r="8" fill="#ddd"/>
+                    <circle cx="300" cy="80" r="8" fill="#ddd"/>
+                    <text x="200" y="160" font-size="14" text-anchor="middle">🏊 Blue = Swimming (8 children)</text>
+                    <text x="200" y="180" font-size="14" text-anchor="middle">Grey = Other sports (12 children)</text>
+                </svg>`,
+                options: ["25%", "30%", "40%", "50%"],
+                correct: 2
+            }
+        ];
+
+        let currentQuestion = 0;
+        let answers = new Array(questions.length).fill(null);
+        let timerInterval;
+        let timeRemaining = 1200;
+
+        function startAssessment() {
+            document.getElementById('instructionsScreen').classList.remove('show-screen');
+            document.getElementById('instructionsScreen').classList.add('hide-screen');
+            document.getElementById('assessmentScreen').classList.remove('hide-screen');
+            document.getElementById('assessmentScreen').classList.add('show-screen');
+            
+            loadQuestions();
+            showQuestion(0);
+            startTimer();
+        }
+
+        function loadQuestions() {
+            const container = document.getElementById('questionsContainer');
+            questions.forEach((q, index) => {
+                const questionDiv = document.createElement('div');
+                questionDiv.className = 'question-container';
+                questionDiv.id = `question-${index}`;
+                
+                const imageHTML = q.image ? `<div class="question-image">${q.image}</div>` : '';
+                
+                questionDiv.innerHTML = `
+                    <div class="question">
+                        <div class="question-number">Question ${index + 1} of ${questions.length}</div>
+                        <div class="question-text">${q.question}</div>
+                        ${imageHTML}
+                    </div>
+                    <div class="options">
+                        ${q.options.map((option, i) => `
+                            <div class="option" onclick="selectAnswer(${index}, ${i})">
+                                <span class="option-letter">${String.fromCharCode(65 + i)}</span>
+                                <span>${option}</span>
+                            </div>
+                        `).join('')}
+                    </div>
+                `;
+                
+                container.appendChild(questionDiv);
+            });
+        }
+
+        function showQuestion(index) {
+            document.querySelectorAll('.question-container').forEach(q => q.classList.remove('active'));
+            document.getElementById(`question-${index}`).classList.add('active');
+            
+            updateProgress();
+            
+            if (answers[index] !== null) {
+                selectAnswer(index, answers[index], false);
+            }
+        }
+
+        function selectAnswer(questionIndex, optionIndex, store = true) {
+            const questionDiv = document.getElementById(`question-${questionIndex}`);
+            questionDiv.querySelectorAll('.option').forEach(opt => opt.classList.remove('selected'));
+            questionDiv.querySelectorAll('.option')[optionIndex].classList.add('selected');
+            
+            if (store) {
+                answers[questionIndex] = optionIndex;
+            }
+        }
+
+        function nextQuestion() {
+            if (currentQuestion < questions.length - 1) {
+                currentQuestion++;
+                showQuestion(currentQuestion);
+            } else {
+                finishAssessment();
+            }
+        }
+
+        function updateProgress() {
+            const progress = ((currentQuestion + 1) / questions.length) * 100;
+            const progressBar = document.getElementById('progressBar');
+            progressBar.style.width = progress + '%';
+        }
+
+        function startTimer() {
+            const timerElement = document.getElementById('timer');
+            
+            timerInterval = setInterval(() => {
+                timeRemaining--;
+                
+                const minutes = Math.floor(timeRemaining / 60);
+                const seconds = timeRemaining % 60;
+                
+                timerElement.textContent = `${minutes}:${seconds.toString().padStart(2, '0')}`;
+                
+                if (timeRemaining <= 300) {
+                    timerElement.classList.add('warning');
+                }
+                
+                if (timeRemaining <= 0) {
+                    clearInterval(timerInterval);
+                    finishAssessment();
+                }
+            }, 1000);
+        }
+
+        function finishAssessment() {
+            clearInterval(timerInterval);
+            
+            // Mark test as completed
+            localStorage.setItem('test_maths_completed', 'true');
+            
+            // Return to home page immediately
+            window.location.href = 'index.html';
+        }
+    </script>
+</body>
+</html>

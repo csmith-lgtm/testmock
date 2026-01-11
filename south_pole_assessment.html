@@ -1,0 +1,1801 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>The Race to the South Pole Assessment</title>
+    <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;600;700;900&family=Libre+Baskerville:ital,wght@0,400;0,700;1,400&display=swap" rel="stylesheet">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        :root {
+            --ice-blue: #a8d8ea;
+            --deep-blue: #2c3e50;
+            --slate: #546e7a;
+            --frost: #ecf5f8;
+            --sepia: #8b7355;
+            --dark-grey: #263238;
+            --snow-white: #fafcfd;
+            --warning-red: #c0392b;
+        }
+
+        body {
+            font-family: 'Libre Baskerville', serif;
+            background: linear-gradient(180deg, #d4e4ed 0%, #ecf5f8 50%, #ffffff 100%);
+            color: var(--dark-grey);
+            min-height: 100vh;
+            position: relative;
+        }
+
+        body::before {
+            content: '';
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background-image: 
+                radial-gradient(circle at 20% 30%, rgba(168, 216, 234, 0.1) 0%, transparent 50%),
+                radial-gradient(circle at 80% 70%, rgba(168, 216, 234, 0.15) 0%, transparent 50%);
+            pointer-events: none;
+            z-index: 0;
+        }
+
+        .header {
+            background: linear-gradient(135deg, var(--deep-blue) 0%, var(--slate) 100%);
+            color: var(--snow-white);
+            padding: 1.5rem 2rem;
+            border-bottom: 5px solid var(--ice-blue);
+            box-shadow: 0 4px 20px rgba(0,0,0,0.3);
+            position: relative;
+            z-index: 10;
+        }
+
+        .header::after {
+            content: '';
+            position: absolute;
+            bottom: -5px;
+            left: 0;
+            right: 0;
+            height: 3px;
+            background: repeating-linear-gradient(
+                90deg,
+                var(--ice-blue) 0px,
+                var(--ice-blue) 10px,
+                rgba(168, 216, 234, 0.3) 10px,
+                rgba(168, 216, 234, 0.3) 20px
+            );
+        }
+
+        .header-content {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            max-width: 1600px;
+            margin: 0 auto;
+        }
+
+        h1 {
+            font-family: 'Playfair Display', serif;
+            font-size: 2.2rem;
+            font-weight: 900;
+            letter-spacing: 2px;
+            text-transform: uppercase;
+            text-shadow: 3px 3px 6px rgba(0,0,0,0.4);
+        }
+
+        .timer {
+            font-family: 'Playfair Display', serif;
+            font-size: 1.6rem;
+            font-weight: 700;
+            background: rgba(0,0,0,0.3);
+            padding: 0.6rem 1.8rem;
+            border-radius: 6px;
+            border: 3px solid var(--ice-blue);
+            box-shadow: inset 0 2px 4px rgba(0,0,0,0.3);
+        }
+
+        .timer.warning {
+            animation: pulse 1s ease-in-out infinite;
+            background: rgba(192, 57, 43, 0.4);
+            border-color: var(--warning-red);
+        }
+
+        @keyframes pulse {
+            0%, 100% { transform: scale(1); }
+            50% { transform: scale(1.06); }
+        }
+
+        .container {
+            display: flex;
+            max-width: 1600px;
+            margin: 0 auto;
+            height: calc(100vh - 100px);
+            position: relative;
+            z-index: 1;
+        }
+
+        .sources-panel {
+            width: 45%;
+            background: rgba(255, 255, 255, 0.97);
+            border-right: 5px solid var(--ice-blue);
+            overflow-y: auto;
+            padding: 2rem;
+            box-shadow: 4px 0 15px rgba(0,0,0,0.15);
+        }
+
+        .sources-panel::-webkit-scrollbar {
+            width: 14px;
+        }
+
+        .sources-panel::-webkit-scrollbar-track {
+            background: var(--frost);
+        }
+
+        .sources-panel::-webkit-scrollbar-thumb {
+            background: var(--slate);
+            border-radius: 7px;
+        }
+
+        .sources-title {
+            font-family: 'Playfair Display', serif;
+            font-size: 2.8rem;
+            color: var(--deep-blue);
+            margin-bottom: 2rem;
+            text-align: center;
+            padding-bottom: 1rem;
+            border-bottom: 4px double var(--ice-blue);
+            text-transform: uppercase;
+            letter-spacing: 3px;
+            font-weight: 700;
+        }
+
+        .source {
+            background: white;
+            border: 2px solid var(--slate);
+            border-radius: 4px;
+            padding: 1.8rem;
+            margin-bottom: 2rem;
+            box-shadow: 0 3px 10px rgba(0,0,0,0.1);
+            position: relative;
+        }
+
+        .source::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: 4px;
+            background: var(--ice-blue);
+        }
+
+        .source-label {
+            font-family: 'Playfair Display', serif;
+            font-size: 1.2rem;
+            font-weight: 700;
+            color: var(--sepia);
+            margin-bottom: 1rem;
+            padding-bottom: 0.5rem;
+            border-bottom: 1px solid var(--ice-blue);
+        }
+
+        .source-content {
+            font-size: 1.05rem;
+            line-height: 1.8;
+            color: var(--dark-grey);
+        }
+
+        .diary-entry {
+            background: rgba(139, 115, 85, 0.05);
+            border-left: 4px solid var(--sepia);
+            padding: 1.5rem;
+            margin: 1rem 0;
+            font-style: italic;
+            position: relative;
+        }
+
+        .diary-entry::before {
+            content: '"';
+            font-size: 4rem;
+            color: var(--sepia);
+            opacity: 0.3;
+            position: absolute;
+            top: -10px;
+            left: 10px;
+            font-family: Georgia, serif;
+        }
+
+        .diary-date {
+            font-weight: 700;
+            color: var(--sepia);
+            margin-bottom: 0.5rem;
+            font-style: normal;
+            font-size: 1.1rem;
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin: 1rem 0;
+            background: white;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+        }
+
+        th {
+            background: var(--deep-blue);
+            color: white;
+            padding: 1rem;
+            font-family: 'Playfair Display', serif;
+            font-size: 1.1rem;
+            font-weight: 700;
+            border: 2px solid var(--slate);
+        }
+
+        td {
+            padding: 0.9rem;
+            border: 1px solid var(--slate);
+            text-align: left;
+            font-size: 1rem;
+        }
+
+        tr:nth-child(even) {
+            background: rgba(168, 216, 234, 0.05);
+        }
+
+        .map-container {
+            width: 100%;
+            margin: 1.5rem 0;
+            padding: 1rem;
+            background: rgba(236, 245, 248, 0.5);
+            border: 3px solid var(--ice-blue);
+            border-radius: 4px;
+        }
+
+        .chart-container {
+            width: 100%;
+            margin: 1.5rem 0;
+            padding: 1.5rem;
+            background: white;
+            border: 2px solid var(--slate);
+            border-radius: 4px;
+        }
+
+        .questions-panel {
+            width: 55%;
+            background: rgba(255, 255, 255, 0.98);
+            padding: 3rem;
+            overflow-y: auto;
+            display: flex;
+            flex-direction: column;
+        }
+
+        .questions-panel::-webkit-scrollbar {
+            width: 14px;
+        }
+
+        .questions-panel::-webkit-scrollbar-track {
+            background: var(--frost);
+        }
+
+        .questions-panel::-webkit-scrollbar-thumb {
+            background: var(--ice-blue);
+            border-radius: 7px;
+        }
+
+        .question {
+            display: none;
+            animation: fadeIn 0.5s ease-in;
+        }
+
+        .question.active {
+            display: block;
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(20px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        .question-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 2rem;
+            padding-bottom: 1rem;
+            border-bottom: 3px solid var(--ice-blue);
+        }
+
+        .question-number {
+            font-family: 'Playfair Display', serif;
+            font-size: 1.6rem;
+            color: var(--deep-blue);
+            font-weight: 700;
+        }
+
+        .progress {
+            font-size: 1rem;
+            color: var(--slate);
+            font-weight: 700;
+        }
+
+        .question-text {
+            font-size: 1.2rem;
+            line-height: 1.8;
+            margin-bottom: 2rem;
+            color: var(--dark-grey);
+            font-weight: 600;
+        }
+
+        .instruction {
+            font-size: 0.95rem;
+            font-style: italic;
+            color: var(--slate);
+            margin-bottom: 1.5rem;
+        }
+
+        .options {
+            display: flex;
+            flex-direction: column;
+            gap: 1rem;
+        }
+
+        .option {
+            background: white;
+            border: 3px solid var(--frost);
+            padding: 1.2rem;
+            border-radius: 4px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            font-size: 1.05rem;
+            display: flex;
+            align-items: flex-start;
+        }
+
+        .option:hover {
+            border-color: var(--ice-blue);
+            background: rgba(168, 216, 234, 0.05);
+            transform: translateX(8px);
+            box-shadow: -4px 0 0 var(--ice-blue);
+        }
+
+        .option.selected {
+            background: rgba(44, 62, 80, 0.08);
+            border-color: var(--deep-blue);
+            box-shadow: 0 3px 12px rgba(44, 62, 80, 0.2);
+        }
+
+        .option-label {
+            background: var(--slate);
+            color: white;
+            padding: 0.3rem 0.8rem;
+            border-radius: 3px;
+            margin-right: 1rem;
+            font-family: 'Playfair Display', serif;
+            font-weight: 700;
+            min-width: 35px;
+            text-align: center;
+        }
+
+        .navigation {
+            display: flex;
+            justify-content: space-between;
+            margin-top: auto;
+            padding-top: 2rem;
+            border-top: 3px solid var(--ice-blue);
+        }
+
+        button {
+            font-family: 'Playfair Display', serif;
+            font-size: 1.1rem;
+            padding: 1rem 2.5rem;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            font-weight: 700;
+            letter-spacing: 1px;
+            box-shadow: 0 4px 10px rgba(0,0,0,0.2);
+        }
+
+        button:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 6px 15px rgba(0,0,0,0.3);
+        }
+
+        button:active {
+            transform: translateY(-1px);
+        }
+
+        .btn-back {
+            background: var(--frost);
+            color: var(--slate);
+            border: 3px solid var(--slate);
+        }
+
+        .btn-back:hover {
+            background: var(--slate);
+            color: white;
+        }
+
+        .btn-back:disabled {
+            opacity: 0.4;
+            cursor: not-allowed;
+        }
+
+        .btn-next {
+            background: linear-gradient(135deg, var(--deep-blue) 0%, var(--slate) 100%);
+            color: white;
+            border: 3px solid var(--ice-blue);
+        }
+
+        .btn-submit {
+            background: linear-gradient(135deg, var(--slate) 0%, var(--deep-blue) 100%);
+            color: white;
+            border: 3px solid var(--ice-blue);
+            padding: 1.2rem 3rem;
+            font-size: 1.2rem;
+        }
+
+        /* Cover Page Styles */
+        .cover-page {
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: linear-gradient(135deg, var(--deep-blue) 0%, var(--slate) 50%, var(--ice-blue) 100%);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            z-index: 2000;
+            animation: fadeIn 1s ease-in;
+        }
+
+        .cover-page::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background-image: 
+                repeating-linear-gradient(0deg, transparent, transparent 100px, rgba(255,255,255,0.03) 100px, rgba(255,255,255,0.03) 102px),
+                repeating-linear-gradient(90deg, transparent, transparent 100px, rgba(255,255,255,0.03) 100px, rgba(255,255,255,0.03) 102px);
+            pointer-events: none;
+        }
+
+        .cover-content {
+            background: rgba(250, 252, 253, 0.98);
+            padding: 4rem;
+            border-radius: 8px;
+            border: 5px solid var(--ice-blue);
+            max-width: 850px;
+            box-shadow: 0 15px 50px rgba(0,0,0,0.4);
+            text-align: center;
+            position: relative;
+            animation: slideUp 0.8s ease-out;
+        }
+
+        @keyframes slideUp {
+            from { 
+                opacity: 0;
+                transform: translateY(50px);
+            }
+            to { 
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        .cover-title {
+            font-family: 'Playfair Display', serif;
+            font-size: 3.2rem;
+            font-weight: 900;
+            color: var(--deep-blue);
+            margin-bottom: 0.5rem;
+            text-shadow: 2px 2px 4px rgba(0,0,0,0.1);
+            letter-spacing: 2px;
+            text-transform: uppercase;
+            line-height: 1.2;
+        }
+
+        .cover-subtitle {
+            font-family: 'Playfair Display', serif;
+            font-size: 1.4rem;
+            color: var(--slate);
+            margin-bottom: 2rem;
+            font-style: italic;
+        }
+
+        .cover-decoration {
+            width: 150px;
+            height: 3px;
+            background: linear-gradient(90deg, transparent, var(--ice-blue), transparent);
+            margin: 2rem auto;
+        }
+
+        .instructions-box {
+            background: white;
+            border: 3px solid var(--ice-blue);
+            border-radius: 6px;
+            padding: 2rem;
+            margin: 2rem 0;
+            text-align: left;
+        }
+
+        .instructions-box h2 {
+            font-family: 'Playfair Display', serif;
+            font-size: 1.8rem;
+            color: var(--deep-blue);
+            margin-bottom: 1.5rem;
+            text-align: center;
+            padding-bottom: 1rem;
+            border-bottom: 2px solid var(--ice-blue);
+        }
+
+        .instructions-box ul {
+            list-style: none;
+            padding: 0;
+        }
+
+        .instructions-box li {
+            font-size: 1.1rem;
+            line-height: 1.8;
+            margin-bottom: 0.9rem;
+            padding-left: 2rem;
+            position: relative;
+        }
+
+        .instructions-box li::before {
+            content: '❄';
+            position: absolute;
+            left: 0;
+            color: var(--ice-blue);
+            font-size: 1.2rem;
+        }
+
+        .instructions-box strong {
+            color: var(--deep-blue);
+            font-weight: 700;
+        }
+
+        .btn-start {
+            font-family: 'Playfair Display', serif;
+            font-size: 1.6rem;
+            padding: 1.5rem 4.5rem;
+            background: linear-gradient(135deg, var(--deep-blue) 0%, var(--slate) 100%);
+            color: white;
+            border: 4px solid var(--ice-blue);
+            border-radius: 6px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            font-weight: 900;
+            letter-spacing: 2px;
+            box-shadow: 0 8px 25px rgba(0,0,0,0.3);
+            margin-top: 2rem;
+            text-transform: uppercase;
+        }
+
+        .btn-start:hover {
+            transform: translateY(-4px) scale(1.05);
+            box-shadow: 0 10px 30px rgba(0,0,0,0.4);
+        }
+
+        .btn-start:active {
+            transform: translateY(-2px) scale(1.02);
+        }
+
+        .cover-footer {
+            margin-top: 2rem;
+            padding-top: 1.5rem;
+            border-top: 2px solid var(--ice-blue);
+        }
+
+        .cover-footer p {
+            font-size: 1rem;
+            font-style: italic;
+            color: var(--slate);
+        }
+
+        /* Review Mode Styles */
+
+        .option.correct-answer {
+            background: rgba(40, 167, 69, 0.15);
+            border-color: #28a745;
+            border-width: 4px;
+        }
+
+        .option.wrong-answer {
+            background: rgba(220, 53, 69, 0.15);
+            border-color: #dc3545;
+            border-width: 4px;
+        }
+
+        .option.second-attempt {
+            border-color: #ffc107;
+            border-width: 4px;
+        }
+
+        @media (max-width: 1200px) {
+            .container {
+                flex-direction: column;
+            }
+            .sources-panel, .questions-panel {
+                width: 100%;
+                height: 50vh;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="cover-page" id="coverPage">
+        <div class="cover-content">
+            <h1 class="cover-title">The Race to the South Pole</h1>
+            <p class="cover-subtitle">Scott vs Amundsen, 1911-1912</p>
+            <div class="cover-decoration"></div>
+            
+            <div class="instructions-box">
+                <h2>Instructions</h2>
+                <ul>
+                    <li>This assessment contains <strong>15 questions</strong> based on five source materials.</li>
+                    <li>You have <strong>25 minutes</strong> to complete all questions.</li>
+                    <li>The sources will remain visible on the left side of your screen throughout the assessment.</li>
+                    <li>You may navigate forwards and backwards between questions at any time.</li>
+                    <li>Select one answer for each question by clicking on your chosen option.</li>
+                    <li>Your selections will be saved as you move between questions.</li>
+                    <li>The timer will display minutes remaining and will turn red in the final 5 minutes.</li>
+                    <li>When time expires, your assessment will be automatically submitted.</li>
+                    <li>After submission, you can review your answers and try again on incorrect responses.</li>
+                    <li>Press the <strong>Start Assessment</strong> button below when you are ready to begin.</li>
+                </ul>
+            </div>
+
+            <button class="btn-start" id="startButton">Start Assessment</button>
+            
+            <div class="cover-footer">
+                <p>Ensure you are in a quiet environment with no distractions before beginning.</p>
+            </div>
+        </div>
+    </div>
+
+    <div class="header" id="assessmentHeader" style="display: none;">
+        <div class="header-content">
+            <h1>❄ THE RACE TO THE SOUTH POLE ❄</h1>
+            <div class="timer" id="timer">25 minutes remaining</div>
+        </div>
+    </div>
+
+    <div class="container" id="assessmentContainer" style="display: none;">
+        <div class="sources-panel">
+            <h2 class="sources-title">Sources</h2>
+
+            <div class="source">
+                <div class="source-label">Source 1. Extract from Captain Robert Falcon Scott's diary</div>
+                <div class="source-content">
+                    <div class="diary-entry">
+                        <div class="diary-date">17th January 1912</div>
+                        <p>The worst has happened... We arrived at the South Pole today to find the Norwegians have beaten us. Poor Oates, Wilson, and Bowers. After all our effort, we are not first. A black flag marks their achievement. Amundsen's tent sits there, a clear symbol of our defeat. We have done what we came to do, reached the Pole, but it is a bitter disappointment to find we are second. The journey back will be difficult, perhaps impossible. Our supplies are calculated to the minimum. Evans is showing signs of weakness already. The temperature has dropped to -30°F and the weather worsens daily. We shall do our best to return, but I fear for our survival.</p>
+                    </div>
+                </div>
+            </div>
+
+            <div class="source">
+                <div class="source-label">Source 2. Map showing routes taken by Scott and Amundsen</div>
+                <div class="map-container">
+                    <svg viewBox="0 0 700 600" style="width: 100%; height: auto;">
+                        <!-- Antarctica outline -->
+                        <ellipse cx="350" cy="350" rx="280" ry="200" fill="#e8f4f8" stroke="#2c3e50" stroke-width="3"/>
+                        
+                        <!-- Grid lines -->
+                        <g stroke="#a8d8ea" stroke-width="1" stroke-dasharray="5,5">
+                            <circle cx="350" cy="350" r="50"/>
+                            <circle cx="350" cy="350" r="100"/>
+                            <circle cx="350" cy="350" r="150"/>
+                            <line x1="150" y1="350" x2="550" y2="350"/>
+                            <line x1="350" y1="150" x2="350" y2="550"/>
+                        </g>
+
+                        <!-- South Pole -->
+                        <circle cx="350" cy="350" r="8" fill="#c0392b"/>
+                        <text x="365" y="355" font-size="14" font-weight="bold" fill="#c0392b">SOUTH POLE</text>
+
+                        <!-- Ross Ice Shelf -->
+                        <rect x="280" y="500" width="140" height="40" fill="#d4e4ed" stroke="#2c3e50" stroke-width="2"/>
+                        <text x="320" y="525" font-size="12" font-weight="bold">Ross Ice Shelf</text>
+
+                        <!-- Base camps -->
+                        <circle cx="320" cy="520" r="5" fill="#2c3e50"/>
+                        <text x="275" y="545" font-size="11" font-weight="bold">Scott's Base</text>
+                        <text x="275" y="558" font-size="10">(Cape Evans)</text>
+
+                        <circle cx="390" cy="520" r="5" fill="#8b7355"/>
+                        <text x="345" y="545" font-size="11" font-weight="bold">Amundsen's Base</text>
+                        <text x="350" y="558" font-size="10">(Bay of Whales)</text>
+
+                        <!-- Scott's route (blue dashed) -->
+                        <path d="M 320 520 L 330 480 L 340 440 L 345 400 L 350 350" 
+                              stroke="#2c3e50" stroke-width="3" stroke-dasharray="8,4" fill="none"/>
+                        <text x="360" y="430" font-size="12" font-weight="bold" fill="#2c3e50">Scott's Route</text>
+                        <text x="360" y="445" font-size="11" fill="#2c3e50">1,380 km total</text>
+
+                        <!-- Amundsen's route (brown solid) -->
+                        <path d="M 390 520 L 380 480 L 370 440 L 360 400 L 350 350" 
+                              stroke="#8b7355" stroke-width="3" fill="none"/>
+                        <text x="240" y="430" font-size="12" font-weight="bold" fill="#8b7355">Amundsen's Route</text>
+                        <text x="240" y="445" font-size="11" fill="#8b7355">1,280 km total</text>
+
+                        <!-- Supply depots -->
+                        <circle cx="330" cy="480" r="3" fill="#2c3e50"/>
+                        <text x="335" y="478" font-size="9">Depot</text>
+                        
+                        <circle cx="340" cy="440" r="3" fill="#2c3e50"/>
+                        <text x="345" y="438" font-size="9">Depot</text>
+
+                        <circle cx="380" cy="480" r="3" fill="#8b7355"/>
+                        <text x="385" y="478" font-size="9">Depot</text>
+
+                        <!-- Scale -->
+                        <line x1="100" y1="580" x2="200" y2="580" stroke="#2c3e50" stroke-width="2"/>
+                        <text x="130" y="575" font-size="11">100 km</text>
+
+                        <!-- Compass -->
+                        <circle cx="650" cy="50" r="25" fill="white" stroke="#2c3e50" stroke-width="2"/>
+                        <text x="645" y="40" font-size="14" font-weight="bold">N</text>
+                        <line x1="650" y1="50" x2="650" y2="35" stroke="#c0392b" stroke-width="2" marker-end="url(#arrowhead)"/>
+                    </svg>
+                </div>
+            </div>
+
+            <div class="source">
+                <div class="source-label">Source 3. Comparison of equipment and supplies</div>
+                <div class="source-content">
+                    <table>
+                        <thead>
+                            <tr>
+                                <th>Category</th>
+                                <th>Scott's Expedition</th>
+                                <th>Amundsen's Expedition</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td><strong>Transport</strong></td>
+                                <td>Ponies and motor sledges (later man-hauling)</td>
+                                <td>Sled dogs throughout</td>
+                            </tr>
+                            <tr>
+                                <td><strong>Starting distance from Pole</strong></td>
+                                <td>690 km</td>
+                                <td>640 km</td>
+                            </tr>
+                            <tr>
+                                <td><strong>Daily distance goal</strong></td>
+                                <td>16 km per day</td>
+                                <td>25 km per day</td>
+                            </tr>
+                            <tr>
+                                <td><strong>Team size at Pole</strong></td>
+                                <td>5 men</td>
+                                <td>5 men</td>
+                            </tr>
+                            <tr>
+                                <td><strong>Food supplies</strong></td>
+                                <td>Calculated to minimum requirements</td>
+                                <td>33% extra provisions</td>
+                            </tr>
+                            <tr>
+                                <td><strong>Clothing</strong></td>
+                                <td>Woollen outer garments (absorbed moisture)</td>
+                                <td>Fur outer garments (repelled moisture)</td>
+                            </tr>
+                            <tr>
+                                <td><strong>Depot markers</strong></td>
+                                <td>Single flag at each depot</td>
+                                <td>Flags every 8 km marking route to depots</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+
+            <div class="source">
+                <div class="source-label">Source 4. Timeline of key events</div>
+                <div class="source-content">
+                    <table>
+                        <thead>
+                            <tr>
+                                <th>Date</th>
+                                <th>Amundsen's Team</th>
+                                <th>Scott's Team</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td><strong>1st Nov 1911</strong></td>
+                                <td>Departed base camp</td>
+                                <td>Still preparing</td>
+                            </tr>
+                            <tr>
+                                <td><strong>8th Nov 1911</strong></td>
+                                <td>Progressing well</td>
+                                <td>Departed base camp</td>
+                            </tr>
+                            <tr>
+                                <td><strong>14th Dec 1911</strong></td>
+                                <td><strong>Reached South Pole</strong></td>
+                                <td>Still 300 km away</td>
+                            </tr>
+                            <tr>
+                                <td><strong>17th Jan 1912</strong></td>
+                                <td>Returned safely to base</td>
+                                <td><strong>Reached South Pole</strong></td>
+                            </tr>
+                            <tr>
+                                <td><strong>17th Feb 1912</strong></td>
+                                <td>—</td>
+                                <td>Evans died</td>
+                            </tr>
+                            <tr>
+                                <td><strong>17th Mar 1912</strong></td>
+                                <td>—</td>
+                                <td>Oates died</td>
+                            </tr>
+                            <tr>
+                                <td><strong>29th Mar 1912</strong></td>
+                                <td>—</td>
+                                <td>Final diary entry (Scott, Wilson, Bowers died)</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+
+            <div class="source">
+                <div class="source-label">Source 5. Average temperatures recorded during expeditions</div>
+                <div class="chart-container">
+                    <svg viewBox="0 0 600 350" style="width: 100%; height: auto;">
+                        <!-- Title -->
+                        <text x="300" y="25" font-size="16" font-weight="bold" text-anchor="middle">Temperature Comparison (°F)</text>
+                        
+                        <!-- Y-axis -->
+                        <line x1="80" y1="60" x2="80" y2="300" stroke="#2c3e50" stroke-width="2"/>
+                        <text x="50" y="65" font-size="12">0°F</text>
+                        <text x="40" y="125" font-size="12">-10°F</text>
+                        <text x="40" y="185" font-size="12">-20°F</text>
+                        <text x="40" y="245" font-size="12">-30°F</text>
+                        <text x="40" y="305" font-size="12">-40°F</text>
+
+                        <!-- Grid lines -->
+                        <g stroke="#e0e0e0" stroke-width="1">
+                            <line x1="80" y1="60" x2="580" y2="60"/>
+                            <line x1="80" y1="120" x2="580" y2="120"/>
+                            <line x1="80" y1="180" x2="580" y2="180"/>
+                            <line x1="80" y1="240" x2="580" y2="240"/>
+                            <line x1="80" y1="300" x2="580" y2="300"/>
+                        </g>
+
+                        <!-- X-axis -->
+                        <line x1="80" y1="300" x2="580" y2="300" stroke="#2c3e50" stroke-width="2"/>
+                        <text x="150" y="325" font-size="11" text-anchor="middle">Outbound</text>
+                        <text x="280" y="325" font-size="11" text-anchor="middle">At Pole</text>
+                        <text x="410" y="325" font-size="11" text-anchor="middle">Return</text>
+
+                        <!-- Amundsen's temperatures (brown line) -->
+                        <polyline points="100,180 220,200 350,210 480,190" 
+                                  stroke="#8b7355" stroke-width="3" fill="none"/>
+                        <circle cx="100" cy="180" r="4" fill="#8b7355"/>
+                        <circle cx="220" cy="200" r="4" fill="#8b7355"/>
+                        <circle cx="350" cy="210" r="4" fill="#8b7355"/>
+                        <circle cx="480" cy="190" r="4" fill="#8b7355"/>
+
+                        <!-- Scott's temperatures (blue line) -->
+                        <polyline points="130,190 250,220 380,240 510,270" 
+                                  stroke="#2c3e50" stroke-width="3" fill="none"/>
+                        <circle cx="130" cy="190" r="4" fill="#2c3e50"/>
+                        <circle cx="250" cy="220" r="4" fill="#2c3e50"/>
+                        <circle cx="380" cy="240" r="4" fill="#2c3e50"/>
+                        <circle cx="510" cy="270" r="4" fill="#2c3e50"/>
+
+                        <!-- Legend -->
+                        <rect x="100" y="40" width="200" height="15" fill="white" stroke="#2c3e50"/>
+                        <line x1="110" y1="47" x2="140" y2="47" stroke="#8b7355" stroke-width="3"/>
+                        <text x="145" y="51" font-size="11">Amundsen (Nov-Jan)</text>
+                        
+                        <rect x="320" y="40" width="200" height="15" fill="white" stroke="#2c3e50"/>
+                        <line x1="330" y1="47" x2="360" y2="47" stroke="#2c3e50" stroke-width="3"/>
+                        <text x="365" y="51" font-size="11">Scott (Nov-Mar)</text>
+                    </svg>
+                </div>
+            </div>
+        </div>
+
+        <div class="questions-panel">
+            <!-- Question 1 -->
+            <div class="question active" data-question="1">
+                <div class="question-header">
+                    <span class="question-number">Question 1</span>
+                    <span class="progress">1 of 15</span>
+                </div>
+                <div class="question-text">
+                    According to Source 1, what was Scott's immediate reaction upon reaching the South Pole?
+                </div>
+                <div class="instruction">Select one answer.</div>
+                <div class="options">
+                    <div class="option" data-answer="A">
+                        <span class="option-label">A</span>
+                        <span>Relief that the journey was over</span>
+                    </div>
+                    <div class="option" data-answer="B">
+                        <span class="option-label">B</span>
+                        <span>Bitter disappointment at being second</span>
+                    </div>
+                    <div class="option" data-answer="C">
+                        <span class="option-label">C</span>
+                        <span>Anger at Amundsen for beating them</span>
+                    </div>
+                    <div class="option" data-answer="D">
+                        <span class="option-label">D</span>
+                        <span>Pride in reaching the Pole regardless</span>
+                    </div>
+                    <div class="option" data-answer="E">
+                        <span class="option-label">E</span>
+                        <span>Confusion about whether they were in the right location</span>
+                    </div>
+                </div>
+                <div class="navigation">
+                    <button class="btn-back" disabled>← Back</button>
+                    <button class="btn-next">Next →</button>
+                </div>
+            </div>
+
+            <!-- Question 2 -->
+            <div class="question" data-question="2">
+                <div class="question-header">
+                    <span class="question-number">Question 2</span>
+                    <span class="progress">2 of 15</span>
+                </div>
+                <div class="question-text">
+                    Using Source 2, approximately how much shorter was Amundsen's total journey compared to Scott's?
+                </div>
+                <div class="instruction">Select one answer.</div>
+                <div class="options">
+                    <div class="option" data-answer="A">
+                        <span class="option-label">A</span>
+                        <span>50 km shorter</span>
+                    </div>
+                    <div class="option" data-answer="B">
+                        <span class="option-label">B</span>
+                        <span>100 km shorter</span>
+                    </div>
+                    <div class="option" data-answer="C">
+                        <span class="option-label">C</span>
+                        <span>150 km shorter</span>
+                    </div>
+                    <div class="option" data-answer="D">
+                        <span class="option-label">D</span>
+                        <span>200 km shorter</span>
+                    </div>
+                    <div class="option" data-answer="E">
+                        <span class="option-label">E</span>
+                        <span>Amundsen's journey was actually longer</span>
+                    </div>
+                </div>
+                <div class="navigation">
+                    <button class="btn-back">← Back</button>
+                    <button class="btn-next">Next →</button>
+                </div>
+            </div>
+
+            <!-- Question 3 -->
+            <div class="question" data-question="3">
+                <div class="question-header">
+                    <span class="question-number">Question 3</span>
+                    <span class="progress">3 of 15</span>
+                </div>
+                <div class="question-text">
+                    Based on Source 3, which statement best explains a key advantage Amundsen had over Scott?
+                </div>
+                <div class="instruction">Select one answer.</div>
+                <div class="options">
+                    <div class="option" data-answer="A">
+                        <span class="option-label">A</span>
+                        <span>Amundsen had more men in his team</span>
+                    </div>
+                    <div class="option" data-answer="B">
+                        <span class="option-label">B</span>
+                        <span>Amundsen used dogs which were more reliable than Scott's ponies and motor sledges</span>
+                    </div>
+                    <div class="option" data-answer="C">
+                        <span class="option-label">C</span>
+                        <span>Amundsen started his journey much earlier in the year</span>
+                    </div>
+                    <div class="option" data-answer="D">
+                        <span class="option-label">D</span>
+                        <span>Amundsen had better maps of Antarctica</span>
+                    </div>
+                    <div class="option" data-answer="E">
+                        <span class="option-label">E</span>
+                        <span>Amundsen's base camp was closer to the South Pole</span>
+                    </div>
+                </div>
+                <div class="navigation">
+                    <button class="btn-back">← Back</button>
+                    <button class="btn-next">Next →</button>
+                </div>
+            </div>
+
+            <!-- Question 4 -->
+            <div class="question" data-question="4">
+                <div class="question-header">
+                    <span class="question-number">Question 4</span>
+                    <span class="progress">4 of 15</span>
+                </div>
+                <div class="question-text">
+                    According to Source 4, how many days elapsed between Amundsen reaching the Pole and Scott reaching it?
+                </div>
+                <div class="instruction">Select one answer.</div>
+                <div class="options">
+                    <div class="option" data-answer="A">
+                        <span class="option-label">A</span>
+                        <span>7 days</span>
+                    </div>
+                    <div class="option" data-answer="B">
+                        <span class="option-label">B</span>
+                        <span>14 days</span>
+                    </div>
+                    <div class="option" data-answer="C">
+                        <span class="option-label">C</span>
+                        <span>28 days</span>
+                    </div>
+                    <div class="option" data-answer="D">
+                        <span class="option-label">D</span>
+                        <span>34 days</span>
+                    </div>
+                    <div class="option" data-answer="E">
+                        <span class="option-label">E</span>
+                        <span>43 days</span>
+                    </div>
+                </div>
+                <div class="navigation">
+                    <button class="btn-back">← Back</button>
+                    <button class="btn-next">Next →</button>
+                </div>
+            </div>
+
+            <!-- Question 5 -->
+            <div class="question" data-question="5">
+                <div class="question-header">
+                    <span class="question-number">Question 5</span>
+                    <span class="progress">5 of 15</span>
+                </div>
+                <div class="question-text">
+                    Using Sources 3 and 5, which factor most likely contributed to Scott's team struggling more on the return journey?
+                </div>
+                <div class="instruction">Select one answer.</div>
+                <div class="options">
+                    <div class="option" data-answer="A">
+                        <span class="option-label">A</span>
+                        <span>Scott's team had more men to feed</span>
+                    </div>
+                    <div class="option" data-answer="B">
+                        <span class="option-label">B</span>
+                        <span>Scott's return journey occurred during significantly colder weather, and they had only minimum food supplies</span>
+                    </div>
+                    <div class="option" data-answer="C">
+                        <span class="option-label">C</span>
+                        <span>Scott's team walked slower because they were conducting more scientific research</span>
+                    </div>
+                    <div class="option" data-answer="D">
+                        <span class="option-label">D</span>
+                        <span>Amundsen had stolen Scott's food depots</span>
+                    </div>
+                    <div class="option" data-answer="E">
+                        <span class="option-label">E</span>
+                        <span>Scott's route was over steeper terrain</span>
+                    </div>
+                </div>
+                <div class="navigation">
+                    <button class="btn-back">← Back</button>
+                    <button class="btn-next">Next →</button>
+                </div>
+            </div>
+
+            <!-- Question 6 -->
+            <div class="question" data-question="6">
+                <div class="question-header">
+                    <span class="question-number">Question 6</span>
+                    <span class="progress">6 of 15</span>
+                </div>
+                <div class="question-text">
+                    In Source 1, Scott writes "I fear for our survival." What evidence from the diary entry supports this concern?
+                </div>
+                <div class="instruction">Select one answer.</div>
+                <div class="options">
+                    <div class="option" data-answer="A">
+                        <span class="option-label">A</span>
+                        <span>They were disappointed about being second</span>
+                    </div>
+                    <div class="option" data-answer="B">
+                        <span class="option-label">B</span>
+                        <span>Amundsen left a tent at the Pole</span>
+                    </div>
+                    <div class="option" data-answer="C">
+                        <span class="option-label">C</span>
+                        <span>Evans was showing weakness, temperatures had dropped to -30°F, supplies were calculated to minimum, and weather was worsening</span>
+                    </div>
+                    <div class="option" data-answer="D">
+                        <span class="option-label">D</span>
+                        <span>They had been travelling for a long time</span>
+                    </div>
+                    <div class="option" data-answer="E">
+                        <span class="option-label">E</span>
+                        <span>The black flag was demoralizing</span>
+                    </div>
+                </div>
+                <div class="navigation">
+                    <button class="btn-back">← Back</button>
+                    <button class="btn-next">Next →</button>
+                </div>
+            </div>
+
+            <!-- Question 7 -->
+            <div class="question" data-question="7">
+                <div class="question-header">
+                    <span class="question-number">Question 7</span>
+                    <span class="progress">7 of 15</span>
+                </div>
+                <div class="question-text">
+                    According to Source 3, which of Amundsen's preparation choices would have been MOST helpful in finding supply depots during poor visibility?
+                </div>
+                <div class="instruction">Select one answer.</div>
+                <div class="options">
+                    <div class="option" data-answer="A">
+                        <span class="option-label">A</span>
+                        <span>Using sled dogs</span>
+                    </div>
+                    <div class="option" data-answer="B">
+                        <span class="option-label">B</span>
+                        <span>Carrying 33% extra provisions</span>
+                    </div>
+                    <div class="option" data-answer="C">
+                        <span class="option-label">C</span>
+                        <span>Having a shorter starting distance</span>
+                    </div>
+                    <div class="option" data-answer="D">
+                        <span class="option-label">D</span>
+                        <span>Placing flags every 8 km to mark the route to depots</span>
+                    </div>
+                    <div class="option" data-answer="E">
+                        <span class="option-label">E</span>
+                        <span>Wearing fur outer garments</span>
+                    </div>
+                </div>
+                <div class="navigation">
+                    <button class="btn-back">← Back</button>
+                    <button class="btn-next">Next →</button>
+                </div>
+            </div>
+
+            <!-- Question 8 -->
+            <div class="question" data-question="8">
+                <div class="question-header">
+                    <span class="question-number">Question 8</span>
+                    <span class="progress">8 of 15</span>
+                </div>
+                <div class="question-text">
+                    Using Sources 3 and 4, if Scott's team aimed to travel 16 km per day, approximately how many days should their outbound journey from base camp to the Pole have taken?
+                </div>
+                <div class="instruction">Select one answer.</div>
+                <div class="options">
+                    <div class="option" data-answer="A">
+                        <span class="option-label">A</span>
+                        <span>Approximately 35 days</span>
+                    </div>
+                    <div class="option" data-answer="B">
+                        <span class="option-label">B</span>
+                        <span>Approximately 43 days</span>
+                    </div>
+                    <div class="option" data-answer="C">
+                        <span class="option-label">C</span>
+                        <span>Approximately 55 days</span>
+                    </div>
+                    <div class="option" data-answer="D">
+                        <span class="option-label">D</span>
+                        <span>Approximately 70 days</span>
+                    </div>
+                    <div class="option" data-answer="E">
+                        <span class="option-label">E</span>
+                        <span>Approximately 86 days</span>
+                    </div>
+                </div>
+                <div class="navigation">
+                    <button class="btn-back">← Back</button>
+                    <button class="btn-next">Next →</button>
+                </div>
+            </div>
+
+            <!-- Question 9 -->
+            <div class="question" data-question="9">
+                <div class="question-header">
+                    <span class="question-number">Question 9</span>
+                    <span class="progress">9 of 15</span>
+                </div>
+                <div class="question-text">
+                    According to Source 5, what pattern can be observed about temperatures during the two expeditions?
+                </div>
+                <div class="instruction">Select one answer.</div>
+                <div class="options">
+                    <div class="option" data-answer="A">
+                        <span class="option-label">A</span>
+                        <span>Both teams experienced similar temperatures throughout</span>
+                    </div>
+                    <div class="option" data-answer="B">
+                        <span class="option-label">B</span>
+                        <span>Amundsen's team consistently experienced warmer conditions than Scott's, particularly during the return journey</span>
+                    </div>
+                    <div class="option" data-answer="C">
+                        <span class="option-label">C</span>
+                        <span>Scott's outbound journey was colder than his return journey</span>
+                    </div>
+                    <div class="option" data-answer="D">
+                        <span class="option-label">D</span>
+                        <span>Temperatures at the Pole were warmer than during travel</span>
+                    </div>
+                    <div class="option" data-answer="E">
+                        <span class="option-label">E</span>
+                        <span>Amundsen experienced the coldest temperatures at the Pole</span>
+                    </div>
+                </div>
+                <div class="navigation">
+                    <button class="btn-back">← Back</button>
+                    <button class="btn-next">Next →</button>
+                </div>
+            </div>
+
+            <!-- Question 10 -->
+            <div class="question" data-question="10">
+                <div class="question-header">
+                    <span class="question-number">Question 10</span>
+                    <span class="progress">10 of 15</span>
+                </div>
+                <div class="question-text">
+                    Based on Source 4, what can be inferred about the timing of Amundsen's departure?
+                </div>
+                <div class="instruction">Select one answer.</div>
+                <div class="options">
+                    <div class="option" data-answer="A">
+                        <span class="option-label">A</span>
+                        <span>He left at the same time as Scott</span>
+                    </div>
+                    <div class="option" data-answer="B">
+                        <span class="option-label">B</span>
+                        <span>He left two weeks after Scott</span>
+                    </div>
+                    <div class="option" data-answer="C">
+                        <span class="option-label">C</span>
+                        <span>He left one week before Scott, giving him an early advantage</span>
+                    </div>
+                    <div class="option" data-answer="D">
+                        <span class="option-label">D</span>
+                        <span>He left one month before Scott</span>
+                    </div>
+                    <div class="option" data-answer="E">
+                        <span class="option-label">E</span>
+                        <span>The timeline doesn't provide information about departures</span>
+                    </div>
+                </div>
+                <div class="navigation">
+                    <button class="btn-back">← Back</button>
+                    <button class="btn-next">Next →</button>
+                </div>
+            </div>
+
+            <!-- Question 11 -->
+            <div class="question" data-question="11">
+                <div class="question-header">
+                    <span class="question-number">Question 11</span>
+                    <span class="progress">11 of 15</span>
+                </div>
+                <div class="question-text">
+                    Using all sources, which statement best summarizes why Amundsen succeeded where Scott's team perished?
+                </div>
+                <div class="instruction">Select one answer.</div>
+                <div class="options">
+                    <div class="option" data-answer="A">
+                        <span class="option-label">A</span>
+                        <span>Amundsen was simply luckier with weather conditions</span>
+                    </div>
+                    <div class="option" data-answer="B">
+                        <span class="option-label">B</span>
+                        <span>Amundsen had a slightly shorter route and left earlier</span>
+                    </div>
+                    <div class="option" data-answer="C">
+                        <span class="option-label">C</span>
+                        <span>Amundsen made multiple superior choices: earlier departure, better transport, extra provisions, better clothing, and clearer depot marking, combined with completing his journey during warmer months</span>
+                    </div>
+                    <div class="option" data-answer="D">
+                        <span class="option-label">D</span>
+                        <span>Scott's team was weaker physically</span>
+                    </div>
+                    <div class="option" data-answer="E">
+                        <span class="option-label">E</span>
+                        <span>Scott spent too much time doing scientific work</span>
+                    </div>
+                </div>
+                <div class="navigation">
+                    <button class="btn-back">← Back</button>
+                    <button class="btn-next">Next →</button>
+                </div>
+            </div>
+
+            <!-- Question 12 -->
+            <div class="question" data-question="12">
+                <div class="question-header">
+                    <span class="question-number">Question 12</span>
+                    <span class="progress">12 of 15</span>
+                </div>
+                <div class="question-text">
+                    According to Source 3, why would woollen outer garments be particularly problematic in Antarctic conditions?
+                </div>
+                <div class="instruction">Select one answer.</div>
+                <div class="options">
+                    <div class="option" data-answer="A">
+                        <span class="option-label">A</span>
+                        <span>Wool is too expensive</span>
+                    </div>
+                    <div class="option" data-answer="B">
+                        <span class="option-label">B</span>
+                        <span>Wool absorbed moisture from sweat and breath, which would then freeze, making clothing heavier and colder</span>
+                    </div>
+                    <div class="option" data-answer="C">
+                        <span class="option-label">C</span>
+                        <span>Wool is not warm enough</span>
+                    </div>
+                    <div class="option" data-answer="D">
+                        <span class="option-label">D</span>
+                        <span>Wool attracts dogs</span>
+                    </div>
+                    <div class="option" data-answer="E">
+                        <span class="option-label">E</span>
+                        <span>Wool deteriorates in cold temperatures</span>
+                    </div>
+                </div>
+                <div class="navigation">
+                    <button class="btn-back">← Back</button>
+                    <button class="btn-next">Next →</button>
+                </div>
+            </div>
+
+            <!-- Question 13 -->
+            <div class="question" data-question="13">
+                <div class="question-header">
+                    <span class="question-number">Question 13</span>
+                    <span class="progress">13 of 15</span>
+                </div>
+                <div class="question-text">
+                    Based on Source 1, what literary technique does Scott use when he writes "The worst has happened"?
+                </div>
+                <div class="instruction">Select one answer.</div>
+                <div class="options">
+                    <div class="option" data-answer="A">
+                        <span class="option-label">A</span>
+                        <span>Simile - comparing two things using 'like' or 'as'</span>
+                    </div>
+                    <div class="option" data-answer="B">
+                        <span class="option-label">B</span>
+                        <span>Metaphor - describing one thing as if it were another</span>
+                    </div>
+                    <div class="option" data-answer="C">
+                        <span class="option-label">C</span>
+                        <span>Hyperbole - exaggeration to emphasize his extreme disappointment at being second</span>
+                    </div>
+                    <div class="option" data-answer="D">
+                        <span class="option-label">D</span>
+                        <span>Alliteration - repetition of initial sounds</span>
+                    </div>
+                    <div class="option" data-answer="E">
+                        <span class="option-label">E</span>
+                        <span>Personification - giving human qualities to non-human things</span>
+                    </div>
+                </div>
+                <div class="navigation">
+                    <button class="btn-back">← Back</button>
+                    <button class="btn-next">Next →</button>
+                </div>
+            </div>
+
+            <!-- Question 14 -->
+            <div class="question" data-question="14">
+                <div class="question-header">
+                    <span class="question-number">Question 14</span>
+                    <span class="progress">14 of 15</span>
+                </div>
+                <div class="question-text">
+                    According to Source 4, how long did Scott's team survive after reaching the South Pole before the final diary entry?
+                </div>
+                <div class="instruction">Select one answer.</div>
+                <div class="options">
+                    <div class="option" data-answer="A">
+                        <span class="option-label">A</span>
+                        <span>31 days</span>
+                    </div>
+                    <div class="option" data-answer="B">
+                        <span class="option-label">B</span>
+                        <span>41 days</span>
+                    </div>
+                    <div class="option" data-answer="C">
+                        <span class="option-label">C</span>
+                        <span>53 days</span>
+                    </div>
+                    <div class="option" data-answer="D">
+                        <span class="option-label">D</span>
+                        <span>71 days</span>
+                    </div>
+                    <div class="option" data-answer="E">
+                        <span class="option-label">E</span>
+                        <span>90 days</span>
+                    </div>
+                </div>
+                <div class="navigation">
+                    <button class="btn-back">← Back</button>
+                    <button class="btn-next">Next →</button>
+                </div>
+            </div>
+
+            <!-- Question 15 -->
+            <div class="question" data-question="15">
+                <div class="question-header">
+                    <span class="question-number">Question 15</span>
+                    <span class="progress">15 of 15</span>
+                </div>
+                <div class="question-text">
+                    Considering all sources, if Scott's team had departed on the same date as Amundsen (1st November) and travelled at Amundsen's daily rate (25 km per day), would they have reached the Pole before Amundsen?
+                </div>
+                <div class="instruction">Select one answer.</div>
+                <div class="options">
+                    <div class="option" data-answer="A">
+                        <span class="option-label">A</span>
+                        <span>Yes, because Scott's route was shorter</span>
+                    </div>
+                    <div class="option" data-answer="B">
+                        <span class="option-label">B</span>
+                        <span>Yes, because Scott had better equipment</span>
+                    </div>
+                    <div class="option" data-answer="C">
+                        <span class="option-label">C</span>
+                        <span>No, Scott's starting point was 50 km further from the Pole, so at 25 km/day he would have taken about 2 days longer</span>
+                    </div>
+                    <div class="option" data-answer="D">
+                        <span class="option-label">D</span>
+                        <span>They would have arrived on exactly the same day</span>
+                    </div>
+                    <div class="option" data-answer="E">
+                        <span class="option-label">E</span>
+                        <span>It's impossible to calculate from the sources provided</span>
+                    </div>
+                </div>
+                <div class="navigation">
+                    <button class="btn-back">← Back</button>
+                    <button class="btn-submit">Submit Assessment</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // Correct answers and explanations
+        const correctAnswers = {
+            1: 'B',
+            2: 'B',
+            3: 'B',
+            4: 'D',
+            5: 'B',
+            6: 'C',
+            7: 'D',
+            8: 'B',
+            9: 'B',
+            10: 'C',
+            11: 'C',
+            12: 'B',
+            13: 'C',
+            14: 'D',
+            15: 'C'
+        };
+
+        const explanations = {
+            1: {
+                correct: 'B',
+                explanation: 'Scott explicitly states in his diary: "it is a bitter disappointment to find we are second." This is his immediate emotional reaction upon discovering Amundsen had beaten them.',
+                wrongAnswers: {
+                    A: 'While he might have felt some relief, his diary emphasizes disappointment, not relief.',
+                    C: 'Scott expresses disappointment but not anger at Amundsen - he acknowledges their achievement.',
+                    D: 'Although he notes "We have done what we came to do," he emphasizes that this is overshadowed by bitter disappointment.',
+                    E: 'There is no confusion - the Norwegian tent and black flag make it clear they are at the Pole.'
+                }
+            },
+            2: {
+                correct: 'B',
+                explanation: 'Source 2 shows Scott\'s total route was 1,380 km and Amundsen\'s was 1,280 km. The difference is 100 km.',
+                wrongAnswers: {
+                    A: '50 km is too small - this would be half the actual difference.',
+                    C: '150 km is incorrect - this overestimates the difference.',
+                    D: '200 km is significantly wrong - nearly double the actual difference.',
+                    E: 'This is factually incorrect - Source 2 clearly shows Amundsen\'s route was shorter.'
+                }
+            },
+            3: {
+                correct: 'B',
+                explanation: 'Source 3 shows that Amundsen used sled dogs throughout while Scott used ponies and motor sledges (later resorting to man-hauling). Dogs proved far more reliable in Antarctic conditions.',
+                wrongAnswers: {
+                    A: 'Both teams had 5 men at the Pole - team size was equal.',
+                    C: 'The starting date advantage is shown in Source 4, not Source 3.',
+                    D: 'There is no information about map quality in any source.',
+                    E: 'While true (50 km closer), the question asks about Source 3 specifically, and transport method was the most significant factor mentioned there.'
+                }
+            },
+            4: {
+                correct: 'D',
+                explanation: 'Source 4 shows Amundsen reached the Pole on 14th December 1911 and Scott on 17th January 1912. From December 14 to January 17 is 34 days (17 days left in December + 17 days in January).',
+                wrongAnswers: {
+                    A: '7 days is far too short.',
+                    B: '14 days (two weeks) doesn\'t account for the full time span across two months.',
+                    C: '28 days (four weeks) is close but still underestimates by 6 days.',
+                    E: '43 days overestimates the gap.'
+                }
+            },
+            5: {
+                correct: 'B',
+                explanation: 'Source 5 shows Scott\'s return journey occurred during much colder temperatures (around -35°F compared to Amundsen\'s -25°F), and Source 3 indicates Scott had supplies "calculated to minimum requirements" with no buffer.',
+                wrongAnswers: {
+                    A: 'Both teams had 5 men at the Pole - team size was equal.',
+                    C: 'While Scott did conduct scientific work, this isn\'t mentioned in Sources 3 and 5, which the question specifically references.',
+                    D: 'There is no evidence in any source that Amundsen interfered with Scott\'s supplies.',
+                    E: 'Source 2 doesn\'t indicate significant terrain differences - both crossed similar ice shelf.'
+                }
+            },
+            6: {
+                correct: 'C',
+                explanation: 'Scott lists multiple concrete threats: Evans showing weakness, extreme cold of -30°F, supplies calculated to minimum with no margin for error, and worsening weather. These combine to justify his fear.',
+                wrongAnswers: {
+                    A: 'Disappointment is an emotional reaction, not a survival threat.',
+                    B: 'Amundsen\'s tent is evidence of being second, not a survival concern.',
+                    D: 'Duration of travel isn\'t mentioned as a specific concern for survival.',
+                    E: 'The black flag relates to disappointment, not survival fears.'
+                }
+            },
+            7: {
+                correct: 'D',
+                explanation: 'In poor visibility (blizzards/whiteout conditions), having flags every 8 km marking the route would be crucial for navigation. Scott only had single flags at each depot, making them much harder to locate in bad weather.',
+                wrongAnswers: {
+                    A: 'Dogs help with transport but don\'t specifically help find depots.',
+                    B: 'Extra provisions help survival but don\'t help locate depots.',
+                    C: 'Starting distance doesn\'t help with finding depots during the journey.',
+                    E: 'Clothing choice doesn\'t affect depot finding ability.'
+                }
+            },
+            8: {
+                correct: 'B',
+                explanation: 'Source 3 shows Scott started 690 km from the Pole. At 16 km per day: 690 ÷ 16 = 43.125 days, approximately 43 days. Source 4 confirms this took about 70 days in reality (Nov 8 to Jan 17), showing they fell behind their target.',
+                wrongAnswers: {
+                    A: '35 days would require travelling nearly 20 km per day.',
+                    C: '55 days would mean travelling only 12.5 km per day.',
+                    D: '70 days is what actually happened (per Source 4), not what should have happened at their target rate.',
+                    E: '86 days would mean travelling only 8 km per day.'
+                }
+            },
+            9: {
+                correct: 'B',
+                explanation: 'Source 5 clearly shows Amundsen\'s line (brown) consistently higher (warmer) than Scott\'s (blue), with the greatest difference during the return journey when Scott\'s temperatures plummeted to around -35°F.',
+                wrongAnswers: {
+                    A: 'The graph clearly shows different temperature patterns for the two expeditions.',
+                    C: 'Scott\'s return journey was significantly colder, not warmer - the graph shows his line dropping.',
+                    D: 'The graph shows temperatures were coldest at the Pole and during return, not warmer.',
+                    E: 'Amundsen experienced relatively mild temperatures throughout - Scott experienced the coldest conditions.'
+                }
+            },
+            10: {
+                correct: 'C',
+                explanation: 'Source 4 shows Amundsen departed on 1st November while Scott departed on 8th November - a difference of one week. This early start combined with other advantages helped Amundsen win.',
+                wrongAnswers: {
+                    A: 'The timeline clearly shows different departure dates.',
+                    B: 'Amundsen left before Scott, not after.',
+                    D: 'One month would be 30 days - the actual difference was 7 days (one week).',
+                    E: 'The timeline explicitly shows both departure dates.'
+                }
+            },
+            11: {
+                correct: 'C',
+                explanation: 'Success required multiple factors working together: earlier departure, reliable transport (dogs vs ponies), extra food provisions for safety margin, better clothing that didn\'t absorb moisture, superior depot marking for navigation, plus crucially - completing the journey during the Antarctic summer rather than winter.',
+                wrongAnswers: {
+                    A: 'The evidence shows Amundsen\'s success was due to better planning and timing, not just luck.',
+                    B: 'This oversimplifies - while these helped, multiple other factors were equally crucial.',
+                    D: 'There\'s no evidence Scott\'s team was physically weaker - they were experienced explorers.',
+                    E: 'Scientific work isn\'t mentioned as a primary factor in the sources provided.'
+                }
+            },
+            12: {
+                correct: 'B',
+                explanation: 'Source 3 explicitly states woollen garments "absorbed moisture" while fur garments "repelled moisture." In extreme cold, absorbed moisture would freeze, making clothing heavy and reducing insulation - a critical problem.',
+                wrongAnswers: {
+                    A: 'Cost isn\'t mentioned as a factor in the source.',
+                    C: 'Wool can be very warm - the problem is moisture absorption, not warmth.',
+                    D: 'There\'s no suggestion dogs are attracted to wool.',
+                    E: 'Wool doesn\'t deteriorate in cold - the issue is moisture management.'
+                }
+            },
+            13: {
+                correct: 'C',
+                explanation: 'Scott uses hyperbole (deliberate exaggeration) when he writes "The worst has happened." Being second is disappointing but not literally "the worst" thing that could happen - he\'s exaggerating for emotional emphasis.',
+                wrongAnswers: {
+                    A: 'There\'s no comparison using "like" or "as" in this phrase.',
+                    B: 'He\'s not describing one thing as another - he\'s making an exaggerated statement.',
+                    D: 'Alliteration would require repeated initial consonant sounds.',
+                    E: 'Nothing is being given human qualities in this phrase.'
+                }
+            },
+            14: {
+                correct: 'D',
+                explanation: 'Scott reached the Pole on 17th January and made his final diary entry on 29th March. From January 17 to March 29: 14 days left in January + 28 days in February + 29 days in March = 71 days.',
+                wrongAnswers: {
+                    A: '31 days would only take them to mid-February.',
+                    B: '41 days would be late February.',
+                    C: '53 days would be early March.',
+                    E: '90 days is three months - too long.'
+                }
+            },
+            15: {
+                correct: 'C',
+                explanation: 'Source 3 shows Amundsen started 640 km from the Pole while Scott started 690 km away - a 50 km difference. At 25 km per day, this 50 km would take 2 extra days, so Scott would still arrive after Amundsen even with the same start date and speed.',
+                wrongAnswers: {
+                    A: 'Scott\'s route was longer, not shorter.',
+                    B: 'Scott\'s equipment was generally inferior (ponies vs dogs, woollen vs fur clothing).',
+                    D: 'The 50 km difference means they couldn\'t arrive the same day at the same speed.',
+                    E: 'Source 3 provides the starting distances needed to calculate this.'
+                }
+            }
+        };
+
+        // Start button functionality
+        document.getElementById('startButton').addEventListener('click', function() {
+            document.getElementById('coverPage').style.display = 'none';
+            document.getElementById('assessmentHeader').style.display = 'block';
+            document.getElementById('assessmentContainer').style.display = 'flex';
+            startTimer();
+        });
+
+        // Timer functionality
+        let timeRemaining = 25;
+        let secondsInCurrentMinute = 0;
+        const timerDisplay = document.getElementById('timer');
+        let timerInterval;
+
+        function updateTimer() {
+            if (secondsInCurrentMinute === 0) {
+                secondsInCurrentMinute = 60;
+                timeRemaining--;
+            }
+            
+            secondsInCurrentMinute--;
+            
+            if (timeRemaining > 1) {
+                timerDisplay.textContent = `${timeRemaining} minutes remaining`;
+            } else if (timeRemaining === 1) {
+                timerDisplay.textContent = `1 minute remaining`;
+            } else if (timeRemaining === 0 && secondsInCurrentMinute > 0) {
+                timerDisplay.textContent = `${secondsInCurrentMinute} seconds remaining`;
+            } else {
+                timerDisplay.textContent = `Time's up!`;
+            }
+            
+            if (timeRemaining <= 5) {
+                timerDisplay.classList.add('warning');
+            }
+            
+            if (timeRemaining <= 0 && secondsInCurrentMinute <= 0) {
+                clearInterval(timerInterval);
+                startReviewMode();
+            }
+        }
+
+        function startTimer() {
+            timerInterval = setInterval(updateTimer, 1000);
+        }
+
+        // Question navigation
+        let currentQuestion = 1;
+        const totalQuestions = 15;
+        const answers = {};
+
+        function showQuestion(questionNumber) {
+            document.querySelectorAll('.question').forEach(q => {
+                q.classList.remove('active');
+            });
+            document.querySelector(`[data-question="${questionNumber}"]`).classList.add('active');
+            currentQuestion = questionNumber;
+            
+            const backBtn = document.querySelector('.question.active .btn-back');
+            if (backBtn) {
+                backBtn.disabled = currentQuestion === 1;
+            }
+        }
+
+        // Option selection
+        document.querySelectorAll('.option').forEach(option => {
+            option.addEventListener('click', function() {
+                const questionDiv = this.closest('.question');
+                const questionNum = questionDiv.dataset.question;
+                
+                questionDiv.querySelectorAll('.option').forEach(opt => {
+                    opt.classList.remove('selected');
+                });
+                
+                this.classList.add('selected');
+                answers[questionNum] = this.dataset.answer;
+            });
+        });
+
+        // Navigation buttons
+        document.addEventListener('click', function(e) {
+            if (e.target.classList.contains('btn-next')) {
+                if (currentQuestion < totalQuestions) {
+                    showQuestion(currentQuestion + 1);
+                }
+            }
+            
+            if (e.target.classList.contains('btn-back')) {
+                if (currentQuestion > 1) {
+                    showQuestion(currentQuestion - 1);
+                }
+            }
+            
+            if (e.target.classList.contains('btn-submit')) {
+                startReviewMode();
+            }
+        });
+
+        function startReviewMode() {
+            clearInterval(timerInterval);
+            
+            // Calculate score
+            let score = 0;
+            for (let i = 1; i <= totalQuestions; i++) {
+                if (answers[i] === correctAnswers[i]) {
+                    score++;
+                }
+            }
+            
+            // Mark test as completed
+            localStorage.setItem('test_southpole_completed', 'true');
+            
+            // Show completion message
+            alert(`Test Complete!\n\nYou scored ${score} out of ${totalQuestions}.\n\nReturning to home page...`);
+            
+            // Return to home page
+            window.location.href = 'index.html';
+        }
+
+        function restoreSelection(questionNumber) {
+            if (answers[questionNumber]) {
+                const questionDiv = document.querySelector(`[data-question="${questionNumber}"]`);
+                const selectedOption = questionDiv.querySelector(`[data-answer="${answers[questionNumber]}"]`);
+                if (selectedOption) {
+                    selectedOption.classList.add('selected');
+                }
+            }
+        }
+
+        const originalShowQuestion = showQuestion;
+        showQuestion = function(questionNumber) {
+            originalShowQuestion(questionNumber);
+            restoreSelection(questionNumber);
+        };
+
+        restoreSelection(1);
+    </script>
+</body>
+</html>

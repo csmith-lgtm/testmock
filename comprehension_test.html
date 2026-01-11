@@ -1,0 +1,718 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Year 6 Comprehension Test</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+            padding: 20px;
+        }
+
+        .container {
+            max-width: 1400px;
+            margin: 0 auto;
+            background: white;
+            border-radius: 15px;
+            box-shadow: 0 20px 60px rgba(0,0,0,0.3);
+            overflow: hidden;
+        }
+
+        .header {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            padding: 20px 30px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .header h1 {
+            font-size: 24px;
+        }
+
+        .timer {
+            font-size: 28px;
+            font-weight: bold;
+            background: rgba(255,255,255,0.2);
+            padding: 10px 20px;
+            border-radius: 8px;
+            min-width: 120px;
+            text-align: center;
+        }
+
+        .timer.warning {
+            background: rgba(255, 0, 0, 0.3);
+            animation: pulse 1s infinite;
+        }
+
+        @keyframes pulse {
+            0%, 100% { transform: scale(1); }
+            50% { transform: scale(1.05); }
+        }
+
+        .instructions-screen, .results-screen {
+            padding: 60px;
+            text-align: center;
+            max-width: 800px;
+            margin: 0 auto;
+        }
+
+        .instructions-screen h2, .results-screen h2 {
+            color: #667eea;
+            font-size: 32px;
+            margin-bottom: 30px;
+        }
+
+        .instructions-screen p, .results-screen p {
+            font-size: 18px;
+            line-height: 1.8;
+            margin-bottom: 20px;
+            color: #333;
+            text-align: left;
+        }
+
+        .instructions-screen ul {
+            text-align: left;
+            margin: 20px 0 30px 40px;
+            font-size: 18px;
+            line-height: 2;
+        }
+
+        .start-btn, .restart-btn {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            border: none;
+            padding: 15px 50px;
+            font-size: 20px;
+            border-radius: 8px;
+            cursor: pointer;
+            transition: transform 0.2s;
+            margin-top: 20px;
+        }
+
+        .start-btn:hover, .restart-btn:hover {
+            transform: scale(1.05);
+        }
+
+        .main-content {
+            display: none;
+            height: calc(100vh - 140px);
+            min-height: 600px;
+        }
+
+        .test-area {
+            display: flex;
+            height: 100%;
+        }
+
+        .questions-panel {
+            flex: 0 0 45%;
+            padding: 40px;
+            overflow-y: auto;
+            border-right: 2px solid #e0e0e0;
+        }
+
+        .text-panel {
+            flex: 0 0 55%;
+            padding: 40px;
+            overflow-y: auto;
+            background: #f8f9fa;
+        }
+
+        .question-container {
+            display: none;
+        }
+
+        .question-container.active {
+            display: block;
+        }
+
+        .question-number {
+            color: #667eea;
+            font-size: 16px;
+            font-weight: bold;
+            margin-bottom: 15px;
+        }
+
+        .question-text {
+            font-size: 20px;
+            font-weight: 600;
+            color: #333;
+            margin-bottom: 30px;
+            line-height: 1.5;
+        }
+
+        .option {
+            background: white;
+            border: 2px solid #e0e0e0;
+            border-radius: 8px;
+            padding: 15px 20px;
+            margin-bottom: 15px;
+            cursor: pointer;
+            transition: all 0.2s;
+            font-size: 16px;
+        }
+
+        .option:hover {
+            border-color: #667eea;
+            background: #f0f4ff;
+        }
+
+        .option.selected {
+            border-color: #667eea;
+            background: #667eea;
+            color: white;
+        }
+
+        .next-btn {
+            background: #667eea;
+            color: white;
+            border: none;
+            padding: 12px 40px;
+            font-size: 18px;
+            border-radius: 8px;
+            cursor: not-allowed;
+            margin-top: 30px;
+            opacity: 0.5;
+            transition: all 0.2s;
+        }
+
+        .next-btn.enabled {
+            cursor: pointer;
+            opacity: 1;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+        }
+
+        .next-btn.enabled:hover {
+            transform: scale(1.05);
+        }
+
+        .text-content h2 {
+            color: #667eea;
+            font-size: 28px;
+            margin-bottom: 25px;
+        }
+
+        .text-content p {
+            font-size: 17px;
+            line-height: 1.8;
+            margin-bottom: 20px;
+            color: #333;
+            text-align: justify;
+        }
+
+        .progress-bar {
+            width: 100%;
+            height: 6px;
+            background: #e0e0e0;
+        }
+
+        .progress-fill {
+            height: 100%;
+            background: linear-gradient(90deg, #667eea 0%, #764ba2 100%);
+            transition: width 0.3s;
+        }
+
+        .score-display {
+            font-size: 24px;
+            margin: 30px 0;
+            padding: 20px;
+            background: #f0f4ff;
+            border-radius: 8px;
+        }
+
+        .score-number {
+            font-size: 48px;
+            font-weight: bold;
+            color: #667eea;
+            margin: 20px 0;
+        }
+
+        @media (max-width: 1024px) {
+            .test-area {
+                flex-direction: column;
+            }
+            .questions-panel, .text-panel {
+                flex: none;
+                width: 100%;
+            }
+            .text-panel {
+                max-height: 300px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="progress-bar">
+            <div class="progress-fill" id="progressBar" style="width: 0%"></div>
+        </div>
+        
+        <div class="header">
+            <h1>Year 6 Comprehension Assessment</h1>
+            <div class="timer" id="timer">20:00</div>
+        </div>
+
+        <!-- Instructions Screen -->
+        <div class="instructions-screen" id="instructionsScreen">
+            <h2>Instructions</h2>
+            <p>Welcome to your comprehension assessment. Please read the following instructions carefully before you begin:</p>
+            <ul>
+                <li>You have <strong>20 minutes</strong> to complete this test</li>
+                <li>The text will remain visible on the right side of your screen throughout</li>
+                <li>Questions will appear one at a time on the left side</li>
+                <li>There are 25 multiple choice questions in total</li>
+                <li>Questions 1-15 test your comprehension skills</li>
+                <li>Questions 16-25 test spelling, punctuation and grammar</li>
+                <li>You must select an answer before you can move to the next question</li>
+                <li>Once you click 'Next', you cannot go back to change your answer</li>
+                <li>Work carefully and read each question thoroughly</li>
+            </ul>
+            <p><strong>When you are ready to begin, click the Start button below. The timer will start immediately.</strong></p>
+            <button class="start-btn" onclick="startTest()">Start Test</button>
+        </div>
+
+        <!-- Main Test Area -->
+        <div class="main-content" id="mainContent">
+            <div class="test-area">
+                <!-- Questions Panel -->
+                <div class="questions-panel" id="questionsPanel">
+                    <!-- Questions will be generated here -->
+                </div>
+
+                <!-- Text Panel -->
+                <div class="text-panel">
+                    <div class="text-content">
+                        <h2>The Lost Ship of Tudor England</h2>
+                        
+                        <p>On a bright July morning in 1545, King Henry VIII stood on the shore at Portsmouth, watching with pride as his magnificent fleet prepared for battle. Among the vessels was the Mary Rose, a warship that had served England faithfully for over thirty years. The ship's name honoured Henry's favourite sister, Mary Tudor, and it had become a symbol of England's naval power. With its four towering masts and rows of bronze cannons gleaming in the sunlight, the Mary Rose was ready to face the approaching French fleet.</p>
+
+                        <p>As the ship manoeuvred into position, disaster struck. Witnesses reported that the Mary Rose suddenly listed to one side, and within moments, water began pouring through the open gun ports. The ship's captain had ordered the gun ports to remain open so that the cannons could be fired rapidly at the enemy, but this decision proved fatal. The crew scrambled desperately to close the ports, but it was too late. The vessel rolled further and further until it capsized completely, sinking in less than a minute. Of the approximately 500 men aboard, only around 35 survived. The king, watching from the shore, was said to have heard the screams of the drowning sailors carried across the water by the wind.</p>
+
+                        <p>For more than four centuries, the Mary Rose lay buried beneath the silt and clay of the Solent, the strait of water between Portsmouth and the Isle of Wight. The ship's oak timbers were preserved in the cold, murky depths, protected from decay by the lack of oxygen. Over the years, many people forgot about the sunken warship, though local fishermen sometimes snagged their nets on what they called "the old wreck" in that particular spot. Historians knew of the Mary Rose's tragic fate from written records, but the ship itself seemed lost forever, slowly being buried deeper beneath layers of sediment as the centuries passed.</p>
+
+                        <p>In the 1960s, however, a team of amateur divers led by Alexander McKee became determined to locate the wreck. Using historical documents, they narrowed down the search area and began exploring the seabed with basic sonar equipment. After several years of painstaking searching, they finally detected a large wooden structure buried beneath the seabed. Initial dives confirmed their incredible discovery: they had found the Mary Rose. The announcement electrified the archaeological world, and a major excavation project was launched.</p>
+
+                        <p>Recovering the ship was an extraordinary challenge. The wreck lay 14 metres below the surface, buried under three metres of sediment. Divers worked in near-zero visibility, feeling their way through the mud and silt with their hands. Each dive could last only a few hours due to the cold water and strong tidal currents. Despite these difficulties, the team carefully excavated the site, recovering thousands of artefacts that painted a vivid picture of Tudor life. They found everything from medical instruments and musical instruments to the sailors' personal possessions, even including a wooden comb and leather shoes. These objects had been perfectly preserved in the airless mud for over 400 years.</p>
+
+                        <p>The most ambitious goal was to raise the entire ship. Engineers designed a massive steel cradle to support the fragile hull, and on October 11th, 1982, the Mary Rose began its journey back to the surface. Millions of people watched on television as the ship broke through the waves for the first time in 437 years. Prince Charles, who had learned to dive specifically so he could visit the wreck, was present to witness this historic moment. The barnacle-encrusted timbers dripped with water as the ship slowly rose into the air, a ghostly messenger from the Tudor age returning to tell its story.</p>
+
+                        <p>Today, the Mary Rose rests in a purpose-built museum in Portsmouth, not far from where it sank. Conservation work continues, as specialists carefully remove the salt that has penetrated deep into the wood and spray the timbers with special chemicals to prevent them from cracking and warping. Visitors can walk around the ship and peer through glass panels to see its different decks, imagining the sailors who once lived and worked there. The thousands of recovered objects are displayed alongside the ship, offering an unparalleled glimpse into the daily lives of Tudor seamen. From the elegant bronze cannons to the humble wooden bowls used by the crew, each artefact helps tell the story of that fateful July day when the pride of Henry VIII's navy vanished beneath the waves.</p>
+
+                        <p>The Mary Rose has taught historians more about Tudor seafaring than any written document ever could. The ship has revealed how sailors lived, what they ate, how they fought, and even what games they played during long voyages. It has shown us that Tudor ships were far more sophisticated than previously believed, with complex systems for storing supplies, operating cannons, and navigating the seas. Perhaps most poignantly, the discovery has given names and faces to some of the men who died that day. Through forensic analysis of the skeletal remains found aboard, scientists have reconstructed what several crew members looked like, returning their identities to them after centuries of anonymity. The Mary Rose, which sank in a matter of moments, now offers us a window into the past that will remain open for generations to come.</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        const questions = [
+            // Comprehension Questions (1-15)
+            {
+                type: "comprehension",
+                question: "Why was the Mary Rose given its name?",
+                options: [
+                    "It was named after a type of flower that grew near Portsmouth",
+                    "It was named in honour of Henry VIII's favourite sister",
+                    "It was named after the Queen of England at the time",
+                    "It was named after Henry VIII's first wife, Mary"
+                ],
+                correct: 1
+            },
+            {
+                type: "comprehension",
+                question: "What does the phrase 'listed to one side' in the second paragraph tell us about the ship's movement?",
+                options: [
+                    "The ship was turning around to face the enemy",
+                    "The ship was leaning or tilting dangerously",
+                    "The ship was moving forward at great speed",
+                    "The ship was being pulled by ropes from the shore"
+                ],
+                correct: 1
+            },
+            {
+                type: "comprehension",
+                question: "What was the main reason the Mary Rose sank so quickly?",
+                options: [
+                    "It was hit by enemy cannon fire from French ships",
+                    "There was a fire in the lower decks that spread rapidly",
+                    "Water flooded through the open gun ports as the ship tilted",
+                    "The ship struck rocks hidden beneath the surface"
+                ],
+                correct: 2
+            },
+            {
+                type: "comprehension",
+                question: "From the text, we can infer that the decision to keep the gun ports open was:",
+                options: [
+                    "A clever tactical move that almost succeeded",
+                    "A strategic error that had catastrophic consequences",
+                    "Ordered by King Henry VIII himself",
+                    "A standard practice that usually worked well"
+                ],
+                correct: 1
+            },
+            {
+                type: "comprehension",
+                question: "Why were the ship's timbers so well preserved on the seabed?",
+                options: [
+                    "The wood was treated with special preserving chemicals before the ship sank",
+                    "The cold temperature and lack of oxygen prevented decay",
+                    "The silt created a protective coating that sealed the wood",
+                    "The ship was made from a rare type of oak that never rots"
+                ],
+                correct: 1
+            },
+            {
+                type: "comprehension",
+                question: "What does the phrase 'painstaking searching' in paragraph four suggest about the effort to find the ship?",
+                options: [
+                    "The search was causing physical pain to the divers",
+                    "The search required very careful and thorough work",
+                    "The search was painful because they kept failing",
+                    "The search involved painting markers on the seabed"
+                ],
+                correct: 1
+            },
+            {
+                type: "comprehension",
+                question: "Which of the following best describes the conditions divers faced during the excavation?",
+                options: [
+                    "Warm, clear water with excellent visibility",
+                    "Cold water, strong currents, and almost no visibility",
+                    "Shallow, calm water that was easy to work in",
+                    "Deep water filled with dangerous sea creatures"
+                ],
+                correct: 1
+            },
+            {
+                type: "comprehension",
+                question: "Why does the author describe the Mary Rose as a 'ghostly messenger from the Tudor age'?",
+                options: [
+                    "The ship was covered in white barnacles that made it look ghostly",
+                    "The ship carried messages written by Tudor sailors",
+                    "The ship brought information about the past back to the present",
+                    "The ship was haunted by the ghosts of the sailors who died"
+                ],
+                correct: 2
+            },
+            {
+                type: "comprehension",
+                question: "What does the text suggest about Prince Charles's interest in the Mary Rose?",
+                options: [
+                    "He was only interested because it was his royal duty",
+                    "He was sufficiently interested to learn diving specifically to see it",
+                    "He watched the raising of the ship but never visited the wreck",
+                    "He provided the money to pay for the entire excavation project"
+                ],
+                correct: 1
+            },
+            {
+                type: "comprehension",
+                question: "The conservation work described in paragraph seven is necessary because:",
+                options: [
+                    "The wood needs to be cleaned to make it look attractive to visitors",
+                    "The salt in the wood could cause it to deteriorate and damage",
+                    "The chemicals will make the wood return to its original colour",
+                    "The wood needs to be hardened so people can walk on it"
+                ],
+                correct: 1
+            },
+            {
+                type: "comprehension",
+                question: "How does the author show that the Mary Rose provides valuable historical information?",
+                options: [
+                    "By listing several different types of evidence the ship has provided",
+                    "By comparing it to other famous shipwrecks",
+                    "By describing how expensive the excavation was",
+                    "By explaining how much money the museum makes from visitors"
+                ],
+                correct: 0
+            },
+            {
+                type: "comprehension",
+                question: "What is meant by the phrase 'returning their identities to them after centuries of anonymity'?",
+                options: [
+                    "The sailors' names were carved onto the ship's hull",
+                    "Scientists used analysis to discover what crew members looked like",
+                    "The sailors' families finally learned what had happened to them",
+                    "Documents were found that listed all the sailors' names"
+                ],
+                correct: 1
+            },
+            {
+                type: "comprehension",
+                question: "Which statement best summarises the main purpose of this text?",
+                options: [
+                    "To explain the technical details of how Tudor ships were built",
+                    "To criticise King Henry VIII for watching the ship sink",
+                    "To tell the story of the Mary Rose's sinking, rediscovery and importance",
+                    "To argue that more money should be spent on marine archaeology"
+                ],
+                correct: 2
+            },
+            {
+                type: "comprehension",
+                question: "From the whole text, what can we deduce about Alexander McKee and his team?",
+                options: [
+                    "They were professional archaeologists employed by a museum",
+                    "They were determined, persistent individuals who pursued their goal for years",
+                    "They stumbled upon the wreck accidentally while on holiday",
+                    "They were more interested in treasure than in historical knowledge"
+                ],
+                correct: 1
+            },
+            {
+                type: "comprehension",
+                question: "The author's tone throughout the text is best described as:",
+                options: [
+                    "Humorous and entertaining",
+                    "Critical and disapproving",
+                    "Informative and respectful",
+                    "Emotional and personal"
+                ],
+                correct: 2
+            },
+
+            // SPaG Questions (16-25)
+            {
+                type: "spag",
+                question: "In the phrase 'the ship's captain had ordered', what is the purpose of the apostrophe in 'ship's'?",
+                options: [
+                    "To show that something has been omitted",
+                    "To show possession (the captain belonging to the ship)",
+                    "To show that 'ship's' is a contraction",
+                    "To indicate the plural form of ship"
+                ],
+                correct: 1
+            },
+            {
+                type: "spag",
+                question: "Which sentence from the text uses a semicolon correctly?",
+                options: [
+                    "The text does not contain any semicolons",
+                    "All semicolons in the text are used correctly",
+                    "The semicolons should be replaced with commas",
+                    "The semicolons should be replaced with full stops"
+                ],
+                correct: 0
+            },
+            {
+                type: "spag",
+                question: "In the sentence 'The vessel rolled further and further until it capsized completely', which word is an adverb?",
+                options: [
+                    "vessel",
+                    "rolled",
+                    "further",
+                    "capsized"
+                ],
+                correct: 2
+            },
+            {
+                type: "spag",
+                question: "What type of punctuation is used in 'Mary Rose, a warship that had served England faithfully'?",
+                options: [
+                    "A pair of commas to mark a subordinate clause",
+                    "A pair of commas to separate items in a list",
+                    "A pair of commas to add extra information (parenthesis)",
+                    "A pair of commas to introduce direct speech"
+                ],
+                correct: 2
+            },
+            {
+                type: "spag",
+                question: "In 'manoeuvred', which spelling rule is being applied?",
+                options: [
+                    "The British English spelling which includes 'oe' rather than just 'e'",
+                    "The American English spelling of the word",
+                    "An incorrect spelling that should be 'maneuvered'",
+                    "An archaic spelling no longer used in modern English"
+                ],
+                correct: 0
+            },
+            {
+                type: "spag",
+                question: "Which sentence uses a passive voice construction?",
+                options: [
+                    "'The team carefully excavated the site'",
+                    "'The wreck lay 14 metres below the surface'",
+                    "'The ship's timbers were preserved in the cold, murky depths'",
+                    "'Historians knew of the Mary Rose's tragic fate'"
+                ],
+                correct: 2
+            },
+            {
+                type: "spag",
+                question: "In the phrase 'perhaps most poignantly', what does the word 'poignantly' mean?",
+                options: [
+                    "In a way that is moving and touching emotionally",
+                    "In a way that is sharp and painful physically",
+                    "In a way that is clear and obvious",
+                    "In a way that is mysterious and puzzling"
+                ],
+                correct: 0
+            },
+            {
+                type: "spag",
+                question: "What is the subject of the sentence 'The barnacle-encrusted timbers dripped with water'?",
+                options: [
+                    "barnacle",
+                    "timbers",
+                    "dripped",
+                    "water"
+                ],
+                correct: 1
+            },
+            {
+                type: "spag",
+                question: "Which word in the text is a synonym for 'tilted'?",
+                options: [
+                    "manoeuvred",
+                    "capsized",
+                    "listed",
+                    "rolled"
+                ],
+                correct: 2
+            },
+            {
+                type: "spag",
+                question: "In 'over four centuries', what type of determiner is 'over'?",
+                options: [
+                    "It is not a determiner; it is a preposition indicating 'more than'",
+                    "It is a possessive determiner",
+                    "It is a demonstrative determiner",
+                    "It is an article"
+                ],
+                correct: 0
+            }
+        ];
+
+        let currentQuestion = 0;
+        let answers = new Array(questions.length).fill(null);
+        let timeLeft = 1200; // 20 minutes in seconds
+        let timerInterval;
+        let testStarted = false;
+
+        function startTest() {
+            document.getElementById('instructionsScreen').style.display = 'none';
+            document.getElementById('mainContent').style.display = 'block';
+            testStarted = true;
+            startTimer();
+            loadQuestions();
+            showQuestion(0);
+        }
+
+        function startTimer() {
+            timerInterval = setInterval(() => {
+                timeLeft--;
+                updateTimerDisplay();
+                
+                if (timeLeft <= 0) {
+                    endTest();
+                }
+            }, 1000);
+        }
+
+        function updateTimerDisplay() {
+            const minutes = Math.floor(timeLeft / 60);
+            const seconds = timeLeft % 60;
+            const timerElement = document.getElementById('timer');
+            timerElement.textContent = `${minutes}:${seconds.toString().padStart(2, '0')}`;
+            
+            if (timeLeft <= 300) { // Last 5 minutes
+                timerElement.classList.add('warning');
+            }
+        }
+
+        function loadQuestions() {
+            const panel = document.getElementById('questionsPanel');
+            
+            questions.forEach((q, index) => {
+                const questionDiv = document.createElement('div');
+                questionDiv.className = 'question-container';
+                questionDiv.id = `question${index}`;
+                
+                questionDiv.innerHTML = `
+                    <div class="question-number">Question ${index + 1} of ${questions.length}</div>
+                    <div class="question-text">${q.question}</div>
+                    <div class="options">
+                        ${q.options.map((option, i) => `
+                            <div class="option" onclick="selectOption(${index}, ${i})">${option}</div>
+                        `).join('')}
+                    </div>
+                    <button class="next-btn" id="nextBtn${index}" onclick="nextQuestion()">
+                        ${index === questions.length - 1 ? 'Finish' : 'Next'}
+                    </button>
+                `;
+                
+                panel.appendChild(questionDiv);
+            });
+        }
+
+        function showQuestion(index) {
+            document.querySelectorAll('.question-container').forEach(q => {
+                q.classList.remove('active');
+            });
+            document.getElementById(`question${index}`).classList.add('active');
+            updateProgressBar();
+        }
+
+        function selectOption(questionIndex, optionIndex) {
+            const questionDiv = document.getElementById(`question${questionIndex}`);
+            const options = questionDiv.querySelectorAll('.option');
+            
+            options.forEach((opt, i) => {
+                opt.classList.remove('selected');
+                if (i === optionIndex) {
+                    opt.classList.add('selected');
+                }
+            });
+            
+            answers[questionIndex] = optionIndex;
+            
+            const nextBtn = document.getElementById(`nextBtn${questionIndex}`);
+            nextBtn.classList.add('enabled');
+            nextBtn.style.cursor = 'pointer';
+        }
+
+        function nextQuestion() {
+            if (answers[currentQuestion] === null) {
+                return;
+            }
+            
+            if (currentQuestion < questions.length - 1) {
+                currentQuestion++;
+                showQuestion(currentQuestion);
+            } else {
+                endTest();
+            }
+        }
+
+        function updateProgressBar() {
+            const progress = ((currentQuestion + 1) / questions.length) * 100;
+            document.getElementById('progressBar').style.width = progress + '%';
+        }
+
+        function endTest() {
+            clearInterval(timerInterval);
+            
+            // Mark test as completed
+            localStorage.setItem('test_english_completed', 'true');
+            
+            // Return to home page immediately
+            window.location.href = 'index.html';
+        }
+    </script>
+</body>
+</html>

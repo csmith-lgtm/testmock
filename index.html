@@ -1,0 +1,407 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Entrance Assessment Portal</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            padding: 20px;
+        }
+
+        .container {
+            background: white;
+            border-radius: 20px;
+            box-shadow: 0 20px 60px rgba(0, 0, 0, 0.3);
+            max-width: 800px;
+            width: 100%;
+            padding: 50px;
+        }
+
+        .header {
+            text-align: center;
+            margin-bottom: 40px;
+        }
+
+        h1 {
+            color: #333;
+            font-size: 2.5em;
+            margin-bottom: 10px;
+        }
+
+        .subtitle {
+            color: #666;
+            font-size: 1.2em;
+        }
+
+        .progress-overview {
+            background: #f8f9fa;
+            padding: 20px;
+            border-radius: 10px;
+            margin-bottom: 30px;
+            text-align: center;
+        }
+
+        .progress-text {
+            font-size: 1.1em;
+            color: #333;
+            margin-bottom: 10px;
+        }
+
+        .progress-bar-container {
+            background: #e0e0e0;
+            height: 25px;
+            border-radius: 12px;
+            overflow: hidden;
+        }
+
+        .progress-bar {
+            height: 100%;
+            background: linear-gradient(90deg, #667eea 0%, #764ba2 100%);
+            transition: width 0.5s ease;
+        }
+
+        .test-list {
+            list-style: none;
+        }
+
+        .test-item {
+            background: #f8f9fa;
+            border-radius: 15px;
+            padding: 25px;
+            margin-bottom: 20px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            transition: all 0.3s ease;
+            border: 2px solid transparent;
+        }
+
+        .test-item.completed {
+            background: linear-gradient(135deg, rgba(102, 126, 234, 0.1) 0%, rgba(118, 75, 162, 0.1) 100%);
+            border-color: #667eea;
+        }
+
+        .test-item.locked {
+            opacity: 0.5;
+            cursor: not-allowed;
+        }
+
+        .test-item.active:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 10px 20px rgba(0, 0, 0, 0.1);
+        }
+
+        .test-info {
+            flex-grow: 1;
+        }
+
+        .test-number {
+            display: inline-block;
+            background: #667eea;
+            color: white;
+            width: 35px;
+            height: 35px;
+            border-radius: 50%;
+            text-align: center;
+            line-height: 35px;
+            font-weight: bold;
+            margin-right: 15px;
+        }
+
+        .test-item.completed .test-number {
+            background: #28a745;
+        }
+
+        .test-item.locked .test-number {
+            background: #6c757d;
+        }
+
+        .test-title {
+            font-size: 1.4em;
+            color: #333;
+            margin-bottom: 5px;
+            font-weight: 600;
+        }
+
+        .test-description {
+            color: #666;
+            font-size: 0.95em;
+        }
+
+        .test-action {
+            margin-left: 20px;
+        }
+
+        .test-button {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            border: none;
+            padding: 12px 30px;
+            font-size: 16px;
+            border-radius: 8px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            font-weight: 600;
+        }
+
+        .test-button:hover:not(:disabled) {
+            transform: scale(1.05);
+            box-shadow: 0 5px 15px rgba(102, 126, 234, 0.4);
+        }
+
+        .test-button:disabled {
+            background: #6c757d;
+            cursor: not-allowed;
+            opacity: 0.6;
+        }
+
+        .status-badge {
+            display: inline-block;
+            padding: 6px 15px;
+            border-radius: 20px;
+            font-size: 14px;
+            font-weight: 600;
+        }
+
+        .status-badge.completed {
+            background: #28a745;
+            color: white;
+        }
+
+        .status-badge.locked {
+            background: #6c757d;
+            color: white;
+        }
+
+        .status-badge.available {
+            background: #667eea;
+            color: white;
+        }
+
+        .footer {
+            text-align: center;
+            margin-top: 40px;
+            padding-top: 30px;
+            border-top: 2px solid #e0e0e0;
+        }
+
+        .footer p {
+            color: #666;
+            font-size: 0.9em;
+        }
+
+        .reset-button {
+            background: #dc3545;
+            color: white;
+            border: none;
+            padding: 10px 20px;
+            font-size: 14px;
+            border-radius: 6px;
+            cursor: pointer;
+            margin-top: 15px;
+            transition: all 0.3s ease;
+        }
+
+        .reset-button:hover {
+            background: #c82333;
+            transform: scale(1.05);
+        }
+
+        @media (max-width: 768px) {
+            .container {
+                padding: 30px 20px;
+            }
+
+            .test-item {
+                flex-direction: column;
+                text-align: center;
+            }
+
+            .test-action {
+                margin-left: 0;
+                margin-top: 15px;
+            }
+
+            h1 {
+                font-size: 2em;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <h1>Entrance Assessment Portal</h1>
+            <p class="subtitle">Complete all tests in order</p>
+        </div>
+
+        <div class="progress-overview">
+            <p class="progress-text">Overall Progress: <strong><span id="progressText">0/5</span></strong> tests completed</p>
+            <div class="progress-bar-container">
+                <div class="progress-bar" id="overallProgress"></div>
+            </div>
+        </div>
+
+        <ul class="test-list" id="testList">
+            <li class="test-item" data-test="maths">
+                <div class="test-info">
+                    <span class="test-number">1</span>
+                    <div style="display: inline-block; vertical-align: middle;">
+                        <div class="test-title">Mathematics Assessment</div>
+                        <div class="test-description">40 minutes • Problem solving and reasoning</div>
+                    </div>
+                </div>
+                <div class="test-action">
+                    <button class="test-button" onclick="startTest('maths')">Start Test</button>
+                </div>
+            </li>
+
+            <li class="test-item" data-test="nvr">
+                <div class="test-info">
+                    <span class="test-number">2</span>
+                    <div style="display: inline-block; vertical-align: middle;">
+                        <div class="test-title">Non-Verbal Reasoning</div>
+                        <div class="test-description">25 minutes • Pattern recognition and spatial awareness</div>
+                    </div>
+                </div>
+                <div class="test-action">
+                    <button class="test-button" onclick="startTest('nvr')" disabled>Start Test</button>
+                </div>
+            </li>
+
+            <li class="test-item" data-test="english">
+                <div class="test-info">
+                    <span class="test-number">3</span>
+                    <div style="display: inline-block; vertical-align: middle;">
+                        <div class="test-title">English Comprehension</div>
+                        <div class="test-description">30 minutes • Reading comprehension</div>
+                    </div>
+                </div>
+                <div class="test-action">
+                    <button class="test-button" onclick="startTest('english')" disabled>Start Test</button>
+                </div>
+            </li>
+
+            <li class="test-item" data-test="verbal">
+                <div class="test-info">
+                    <span class="test-number">4</span>
+                    <div style="display: inline-block; vertical-align: middle;">
+                        <div class="test-title">Verbal Reasoning</div>
+                        <div class="test-description">25 minutes • Word patterns and logic</div>
+                    </div>
+                </div>
+                <div class="test-action">
+                    <button class="test-button" onclick="startTest('verbal')" disabled>Start Test</button>
+                </div>
+            </li>
+
+            <li class="test-item" data-test="southpole">
+                <div class="test-info">
+                    <span class="test-number">5</span>
+                    <div style="display: inline-block; vertical-align: middle;">
+                        <div class="test-title">Research Task: South Pole</div>
+                        <div class="test-description">60 minutes • Research and analysis</div>
+                    </div>
+                </div>
+                <div class="test-action">
+                    <button class="test-button" onclick="startTest('southpole')" disabled>Start Test</button>
+                </div>
+            </li>
+        </ul>
+
+        <div class="footer">
+            <p>Complete each test before moving to the next one.</p>
+            <button class="reset-button" onclick="resetProgress()">Reset All Progress</button>
+        </div>
+    </div>
+
+    <script>
+        const tests = ['maths', 'nvr', 'english', 'verbal', 'southpole'];
+        const testFiles = {
+            'maths': 'maths_assessment.html',
+            'nvr': 'complete_nvr_test.html',
+            'english': 'comprehension_test.html',
+            'verbal': 'verbal_reasoning_test.html',
+            'southpole': 'south_pole_assessment.html'
+        };
+
+        function updateUI() {
+            let completedCount = 0;
+            
+            tests.forEach((test, index) => {
+                const isCompleted = localStorage.getItem(`test_${test}_completed`) === 'true';
+                const testItem = document.querySelector(`[data-test="${test}"]`);
+                const button = testItem.querySelector('.test-button');
+                
+                if (isCompleted) {
+                    completedCount++;
+                    testItem.classList.add('completed');
+                    testItem.classList.remove('locked', 'active');
+                    button.disabled = false;
+                    button.textContent = 'Retake Test';
+                } else {
+                    const previousTestCompleted = index === 0 || localStorage.getItem(`test_${tests[index - 1]}_completed`) === 'true';
+                    
+                    if (previousTestCompleted) {
+                        testItem.classList.add('active');
+                        testItem.classList.remove('locked', 'completed');
+                        button.disabled = false;
+                        button.textContent = 'Start Test';
+                    } else {
+                        testItem.classList.add('locked');
+                        testItem.classList.remove('active', 'completed');
+                        button.disabled = true;
+                        button.textContent = 'Locked';
+                    }
+                }
+            });
+
+            // Update progress bar
+            const progressPercentage = (completedCount / tests.length) * 100;
+            document.getElementById('overallProgress').style.width = progressPercentage + '%';
+            document.getElementById('progressText').textContent = `${completedCount}/${tests.length}`;
+        }
+
+        function startTest(testName) {
+            window.location.href = testFiles[testName];
+        }
+
+        function resetProgress() {
+            if (confirm('Are you sure you want to reset all progress? This cannot be undone.')) {
+                tests.forEach(test => {
+                    localStorage.removeItem(`test_${test}_completed`);
+                });
+                updateUI();
+            }
+        }
+
+        // Initialize on page load
+        updateUI();
+
+        // Check for returning from a test
+        window.addEventListener('load', () => {
+            const urlParams = new URLSearchParams(window.location.search);
+            if (urlParams.get('completed')) {
+                const completedTest = urlParams.get('completed');
+                localStorage.setItem(`test_${completedTest}_completed`, 'true');
+                updateUI();
+                // Clean up URL
+                window.history.replaceState({}, document.title, window.location.pathname);
+            }
+        });
+    </script>
+</body>
+</html>
