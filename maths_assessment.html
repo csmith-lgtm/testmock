@@ -315,7 +315,7 @@
                 
                 <h2>Assessment Details:</h2>
                 <ul>
-                    <li>You have <strong>20 minutes</strong> to complete all questions</li>
+                    <li>You have <strong>40 minutes</strong> to complete all questions</li>
                     <li>Each question is multiple choice with 4 possible answers</li>
                     <li>Select the answer you think is correct by clicking on it</li>
                 </ul>
@@ -350,7 +350,7 @@
 
             <div class="timer-container">
                 <div>Time Remaining:</div>
-                <div class="timer" id="timer">20:00</div>
+                <div class="timer" id="timer">40 minutes remaining</div>
             </div>
 
             <div class="progress-container">
@@ -803,7 +803,7 @@
         let currentQuestion = 0;
         let answers = new Array(questions.length).fill(null);
         let timerInterval;
-        let timeRemaining = 1200;
+        let timeRemaining = 2400; // 40 minutes in seconds
 
         function startAssessment() {
             document.getElementById('instructionsScreen').classList.remove('show-screen');
@@ -887,10 +887,9 @@
             timerInterval = setInterval(() => {
                 timeRemaining--;
                 
-                const minutes = Math.floor(timeRemaining / 60);
-                const seconds = timeRemaining % 60;
+                const minutes = Math.ceil(timeRemaining / 60);
                 
-                timerElement.textContent = `${minutes}:${seconds.toString().padStart(2, '0')}`;
+                timerElement.textContent = `${minutes} minutes remaining`;
                 
                 if (timeRemaining <= 300) {
                     timerElement.classList.add('warning');
@@ -906,10 +905,41 @@
         function finishAssessment() {
             clearInterval(timerInterval);
             
+            // Calculate score
+            let score = 0;
+            answers.forEach((answer, index) => {
+                if (answer === questions[index].correct) {
+                    score++;
+                }
+            });
+            
+            // Save student data for teacher dashboard
+            const studentName = localStorage.getItem('studentName') || 'Unknown';
+            const startTime = localStorage.getItem('test_maths_start_time');
+            let timeTaken = 'N/A';
+            if (startTime) {
+                const minutes = Math.round((new Date() - new Date(startTime)) / 1000 / 60);
+                timeTaken = `${minutes} min`;
+            }
+            
+            const testData = {
+                studentName: studentName,
+                testName: 'maths',
+                score: score,
+                totalQuestions: questions.length,
+                answers: answers,
+                timestamp: new Date().toISOString(),
+                timeTaken: timeTaken
+            };
+            
+            // Store in localStorage with unique key for teacher dashboard
+            const storageKey = `student_${studentName.replace(/\s+/g, '_')}_maths`;
+            localStorage.setItem(storageKey, JSON.stringify(testData));
+            
             // Mark test as completed
             localStorage.setItem('test_maths_completed', 'true');
             
-            // Return to home page immediately
+            // Return to home page immediately (no results shown to student)
             window.location.href = 'index.html';
         }
     </script>

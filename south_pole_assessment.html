@@ -1769,11 +1769,20 @@
                 }
             }
             
-            // Mark test as completed
-            localStorage.setItem('test_southpole_completed', 'true');
+            const percentage = Math.round((score / totalQuestions) * 100);
             
-            // Show completion message
-            alert(`Test Complete!\n\nYou scored ${score} out of ${totalQuestions}.\n\nReturning to home page...`);
+            // Record comprehensive data
+            localStorage.setItem('test_southpole_completed', 'true');
+            localStorage.setItem('test_southpole_score', `${score}/${totalQuestions} (${percentage}%)`);
+            localStorage.setItem('test_southpole_end_time', new Date().toISOString());
+            localStorage.setItem('test_southpole_answers', JSON.stringify(answers));
+            
+            // Calculate time taken
+            const startTime = localStorage.getItem('test_southpole_start_time');
+            if (startTime) {
+                const timeTaken = Math.round((new Date() - new Date(startTime)) / 1000 / 60);
+                localStorage.setItem('test_southpole_time_taken', `${timeTaken} minutes`);
+            }
             
             // Return to home page
             window.location.href = 'index.html';

@@ -217,7 +217,7 @@
         </div>
 
         <div id="question-screen" class="screen">
-            <div class="timer-display" id="timer">10:00</div>
+            <div class="timer-display" id="timer">25 minutes remaining</div>
             <div class="progress-bar">
                 <div class="progress-fill" id="progress"></div>
             </div>
@@ -232,7 +232,7 @@
     <script>
         let currentQuestion = 0;
         let score = 0;
-        let timeRemaining = 600;
+        let timeRemaining = 1500; // 25 minutes in seconds
         let timerInterval;
         let startTime;
         let selectedAnswer = null;
@@ -1443,12 +1443,11 @@
         function startTimer() {
             timerInterval = setInterval(() => {
                 timeRemaining--;
-                const minutes = Math.floor(timeRemaining / 60);
-                const seconds = timeRemaining % 60;
+                const minutes = Math.ceil(timeRemaining / 60);
                 const timer = document.getElementById('timer');
-                timer.textContent = `${minutes}:${seconds.toString().padStart(2, '0')}`;
+                timer.textContent = `${minutes} minutes remaining`;
                 
-                if (timeRemaining <= 60) timer.classList.add('warning');
+                if (timeRemaining <= 300) timer.classList.add('warning');
                 if (timeRemaining <= 0) { clearInterval(timerInterval); finishTest(); }
             }, 1000);
         }
@@ -1508,10 +1507,32 @@
         function finishTest() {
             clearInterval(timerInterval);
             
+            // Save student data for teacher dashboard
+            const studentName = localStorage.getItem('studentName') || 'Unknown';
+            const startTime = localStorage.getItem('test_nvr_start_time');
+            let timeTaken = 'N/A';
+            if (startTime) {
+                const minutes = Math.round((new Date() - new Date(startTime)) / 1000 / 60);
+                timeTaken = `${minutes} min`;
+            }
+            
+            const testData = {
+                studentName: studentName,
+                testName: 'nvr',
+                score: score,
+                totalQuestions: questions.length,
+                timestamp: new Date().toISOString(),
+                timeTaken: timeTaken
+            };
+            
+            // Store in localStorage with unique key for teacher dashboard
+            const storageKey = `student_${studentName.replace(/\s+/g, '_')}_nvr`;
+            localStorage.setItem(storageKey, JSON.stringify(testData));
+            
             // Mark test as completed
             localStorage.setItem('test_nvr_completed', 'true');
             
-            // Return to home page immediately
+            // Return to home page immediately (no results shown to student)
             window.location.href = 'index.html';
         }
     </script>

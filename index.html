@@ -30,6 +30,10 @@
             padding: 50px;
         }
 
+        .hidden {
+            display: none;
+        }
+
         .header {
             text-align: center;
             margin-bottom: 40px;
@@ -46,11 +50,91 @@
             font-size: 1.2em;
         }
 
+        /* Name Entry Form */
+        .welcome-text {
+            background: #f8f9fa;
+            padding: 25px;
+            border-radius: 10px;
+            margin-bottom: 30px;
+        }
+
+        .welcome-text p {
+            margin-bottom: 15px;
+            font-size: 1.1em;
+            color: #333;
+        }
+
+        .welcome-text ul {
+            margin-left: 25px;
+            line-height: 2;
+        }
+
+        .welcome-text li {
+            color: #555;
+        }
+
+        .name-entry-form {
+            max-width: 500px;
+            margin: 0 auto;
+        }
+
+        .form-group {
+            margin-bottom: 25px;
+        }
+
+        .form-group label {
+            display: block;
+            margin-bottom: 10px;
+            font-weight: bold;
+            color: #333;
+            font-size: 1.1em;
+        }
+
+        .form-group input {
+            width: 100%;
+            padding: 15px;
+            font-size: 1.1em;
+            border: 2px solid #667eea;
+            border-radius: 8px;
+            outline: none;
+            transition: border-color 0.3s;
+        }
+
+        .form-group input:focus {
+            border-color: #764ba2;
+        }
+
+        .btn-primary {
+            width: 100%;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            border: none;
+            padding: 15px;
+            font-size: 1.2em;
+            border-radius: 8px;
+            cursor: pointer;
+            font-weight: 600;
+            transition: all 0.3s ease;
+        }
+
+        .btn-primary:hover {
+            transform: scale(1.05);
+            box-shadow: 0 5px 15px rgba(102, 126, 234, 0.4);
+        }
+
+        /* Progress Overview */
         .progress-overview {
             background: #f8f9fa;
             padding: 20px;
             border-radius: 10px;
             margin-bottom: 30px;
+        }
+
+        .student-name-display {
+            font-size: 1.2em;
+            font-weight: bold;
+            color: #667eea;
+            margin-bottom: 15px;
             text-align: center;
         }
 
@@ -58,6 +142,7 @@
             font-size: 1.1em;
             color: #333;
             margin-bottom: 10px;
+            text-align: center;
         }
 
         .progress-bar-container {
@@ -73,6 +158,7 @@
             transition: width 0.5s ease;
         }
 
+        /* Test List */
         .test-list {
             list-style: none;
         }
@@ -99,7 +185,7 @@
             cursor: not-allowed;
         }
 
-        .test-item.active:hover {
+        .test-item.available:hover {
             transform: translateY(-3px);
             box-shadow: 0 10px 20px rgba(0, 0, 0, 0.1);
         }
@@ -141,10 +227,6 @@
             font-size: 0.95em;
         }
 
-        .test-action {
-            margin-left: 20px;
-        }
-
         .test-button {
             background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
             color: white;
@@ -168,27 +250,35 @@
             opacity: 0.6;
         }
 
-        .status-badge {
-            display: inline-block;
-            padding: 6px 15px;
-            border-radius: 20px;
-            font-size: 14px;
-            font-weight: 600;
+        /* Completion Screen */
+        .completion-screen {
+            text-align: center;
+            padding: 40px 20px;
         }
 
-        .status-badge.completed {
-            background: #28a745;
-            color: white;
+        .completion-screen h2 {
+            color: #28a745;
+            font-size: 2.5em;
+            margin-bottom: 20px;
         }
 
-        .status-badge.locked {
-            background: #6c757d;
-            color: white;
+        .completion-icon {
+            font-size: 5em;
+            margin-bottom: 20px;
         }
 
-        .status-badge.available {
-            background: #667eea;
-            color: white;
+        .completion-info {
+            background: #f8f9fa;
+            padding: 30px;
+            border-radius: 10px;
+            margin: 30px 0;
+            line-height: 1.8;
+            text-align: left;
+        }
+
+        .completion-info h3 {
+            color: #667eea;
+            margin-bottom: 15px;
         }
 
         .footer {
@@ -203,26 +293,32 @@
             font-size: 0.9em;
         }
 
-        .reset-button {
-            background: #dc3545;
+        .teacher-link {
+            position: fixed;
+            bottom: 20px;
+            right: 20px;
+            background: #28a745;
             color: white;
-            border: none;
             padding: 10px 20px;
-            font-size: 14px;
-            border-radius: 6px;
-            cursor: pointer;
-            margin-top: 15px;
+            border-radius: 8px;
+            text-decoration: none;
+            font-weight: bold;
+            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
             transition: all 0.3s ease;
         }
 
-        .reset-button:hover {
-            background: #c82333;
+        .teacher-link:hover {
             transform: scale(1.05);
+            box-shadow: 0 6px 15px rgba(0, 0, 0, 0.3);
         }
 
         @media (max-width: 768px) {
             .container {
                 padding: 30px 20px;
+            }
+
+            h1 {
+                font-size: 2em;
             }
 
             .test-item {
@@ -231,104 +327,162 @@
             }
 
             .test-action {
-                margin-left: 0;
                 margin-top: 15px;
-            }
-
-            h1 {
-                font-size: 2em;
             }
         }
     </style>
 </head>
 <body>
     <div class="container">
-        <div class="header">
-            <h1>Entrance Assessment Portal</h1>
-            <p class="subtitle">Complete all tests in order</p>
+        <!-- Name Entry Screen -->
+        <div id="nameEntryScreen">
+            <div class="header">
+                <h1>Welcome to the Entrance Assessment</h1>
+                <p class="subtitle">Please enter your details to begin</p>
+            </div>
+
+            <div class="welcome-text">
+                <p><strong>Before you start:</strong></p>
+                <ul>
+                    <li>You will complete 5 tests in sequence</li>
+                    <li>Each test must be completed before the next unlocks</li>
+                    <li>All tests are timed</li>
+                    <li>You cannot review or retake tests once completed</li>
+                    <li>Your progress will be saved automatically</li>
+                    <li>Your teacher will review your results when all tests are complete</li>
+                </ul>
+            </div>
+
+            <form class="name-entry-form" onsubmit="startAssessment(event)">
+                <div class="form-group">
+                    <label for="studentName">Full Name:</label>
+                    <input type="text" id="studentName" name="studentName" required 
+                           placeholder="Enter your first and last name" 
+                           minlength="2"
+                           autocomplete="off">
+                </div>
+
+                <button type="submit" class="btn-primary">Begin Assessment</button>
+            </form>
         </div>
 
-        <div class="progress-overview">
-            <p class="progress-text">Overall Progress: <strong><span id="progressText">0/5</span></strong> tests completed</p>
-            <div class="progress-bar-container">
-                <div class="progress-bar" id="overallProgress"></div>
+        <!-- Home/Progress Screen -->
+        <div id="homeScreen" class="hidden">
+            <div class="header">
+                <h1>Entrance Assessment Portal</h1>
+                <p class="subtitle">Complete all tests in order</p>
+            </div>
+
+            <div class="progress-overview">
+                <p class="student-name-display">Student: <span id="displayName"></span></p>
+                <p class="progress-text">Overall Progress: <strong><span id="progressText">0/5</span></strong> tests completed</p>
+                <div class="progress-bar-container">
+                    <div class="progress-bar" id="overallProgress"></div>
+                </div>
+            </div>
+
+            <ul class="test-list" id="testList">
+                <li class="test-item" data-test="maths">
+                    <div class="test-info">
+                        <span class="test-number">1</span>
+                        <div style="display: inline-block; vertical-align: middle;">
+                            <div class="test-title">Mathematics Assessment</div>
+                            <div class="test-description">40 minutes • Problem solving and reasoning</div>
+                        </div>
+                    </div>
+                    <div class="test-action">
+                        <button class="test-button" onclick="startTest('maths')">Start Test</button>
+                    </div>
+                </li>
+
+                <li class="test-item" data-test="nvr">
+                    <div class="test-info">
+                        <span class="test-number">2</span>
+                        <div style="display: inline-block; vertical-align: middle;">
+                            <div class="test-title">Non-Verbal Reasoning</div>
+                            <div class="test-description">25 minutes • Pattern recognition and spatial awareness</div>
+                        </div>
+                    </div>
+                    <div class="test-action">
+                        <button class="test-button" onclick="startTest('nvr')" disabled>Start Test</button>
+                    </div>
+                </li>
+
+                <li class="test-item" data-test="english">
+                    <div class="test-info">
+                        <span class="test-number">3</span>
+                        <div style="display: inline-block; vertical-align: middle;">
+                            <div class="test-title">English Comprehension</div>
+                            <div class="test-description">30 minutes • Reading comprehension</div>
+                        </div>
+                    </div>
+                    <div class="test-action">
+                        <button class="test-button" onclick="startTest('english')" disabled>Start Test</button>
+                    </div>
+                </li>
+
+                <li class="test-item" data-test="verbal">
+                    <div class="test-info">
+                        <span class="test-number">4</span>
+                        <div style="display: inline-block; vertical-align: middle;">
+                            <div class="test-title">Verbal Reasoning</div>
+                            <div class="test-description">25 minutes • Word patterns and logic</div>
+                        </div>
+                    </div>
+                    <div class="test-action">
+                        <button class="test-button" onclick="startTest('verbal')" disabled>Start Test</button>
+                    </div>
+                </li>
+
+                <li class="test-item" data-test="southpole">
+                    <div class="test-info">
+                        <span class="test-number">5</span>
+                        <div style="display: inline-block; vertical-align: middle;">
+                            <div class="test-title">Research Task: South Pole</div>
+                            <div class="test-description">60 minutes • Research and analysis</div>
+                        </div>
+                    </div>
+                    <div class="test-action">
+                        <button class="test-button" onclick="startTest('southpole')" disabled>Start Test</button>
+                    </div>
+                </li>
+            </ul>
+
+            <div class="footer">
+                <p>Complete each test before moving to the next one.</p>
+                <p style="margin-top: 10px; font-style: italic;">Your teacher will review all results once you complete the full assessment.</p>
             </div>
         </div>
 
-        <ul class="test-list" id="testList">
-            <li class="test-item" data-test="maths">
-                <div class="test-info">
-                    <span class="test-number">1</span>
-                    <div style="display: inline-block; vertical-align: middle;">
-                        <div class="test-title">Mathematics Assessment</div>
-                        <div class="test-description">40 minutes • Problem solving and reasoning</div>
-                    </div>
+        <!-- Completion Screen -->
+        <div id="completionScreen" class="hidden">
+            <div class="completion-screen">
+                <div class="completion-icon">🎉</div>
+                <h2>Assessment Complete!</h2>
+                
+                <div class="completion-info">
+                    <h3>Well Done, <span id="completionName"></span>!</h3>
+                    <p>You have successfully completed all 5 assessment tests:</p>
+                    <ul style="margin: 20px 0; line-height: 2;">
+                        <li>✓ Mathematics Assessment</li>
+                        <li>✓ Non-Verbal Reasoning</li>
+                        <li>✓ English Comprehension</li>
+                        <li>✓ Verbal Reasoning</li>
+                        <li>✓ Research Task: South Pole</li>
+                    </ul>
+                    <p><strong>What happens next:</strong></p>
+                    <p>Your teacher will review your responses and provide feedback on your performance. Please wait for your teacher to contact you with your results.</p>
+                    <p style="margin-top: 20px; color: #667eea; font-weight: bold;">Thank you for your effort and attention throughout this assessment!</p>
                 </div>
-                <div class="test-action">
-                    <button class="test-button" onclick="startTest('maths')">Start Test</button>
-                </div>
-            </li>
-
-            <li class="test-item" data-test="nvr">
-                <div class="test-info">
-                    <span class="test-number">2</span>
-                    <div style="display: inline-block; vertical-align: middle;">
-                        <div class="test-title">Non-Verbal Reasoning</div>
-                        <div class="test-description">25 minutes • Pattern recognition and spatial awareness</div>
-                    </div>
-                </div>
-                <div class="test-action">
-                    <button class="test-button" onclick="startTest('nvr')" disabled>Start Test</button>
-                </div>
-            </li>
-
-            <li class="test-item" data-test="english">
-                <div class="test-info">
-                    <span class="test-number">3</span>
-                    <div style="display: inline-block; vertical-align: middle;">
-                        <div class="test-title">English Comprehension</div>
-                        <div class="test-description">30 minutes • Reading comprehension</div>
-                    </div>
-                </div>
-                <div class="test-action">
-                    <button class="test-button" onclick="startTest('english')" disabled>Start Test</button>
-                </div>
-            </li>
-
-            <li class="test-item" data-test="verbal">
-                <div class="test-info">
-                    <span class="test-number">4</span>
-                    <div style="display: inline-block; vertical-align: middle;">
-                        <div class="test-title">Verbal Reasoning</div>
-                        <div class="test-description">25 minutes • Word patterns and logic</div>
-                    </div>
-                </div>
-                <div class="test-action">
-                    <button class="test-button" onclick="startTest('verbal')" disabled>Start Test</button>
-                </div>
-            </li>
-
-            <li class="test-item" data-test="southpole">
-                <div class="test-info">
-                    <span class="test-number">5</span>
-                    <div style="display: inline-block; vertical-align: middle;">
-                        <div class="test-title">Research Task: South Pole</div>
-                        <div class="test-description">60 minutes • Research and analysis</div>
-                    </div>
-                </div>
-                <div class="test-action">
-                    <button class="test-button" onclick="startTest('southpole')" disabled>Start Test</button>
-                </div>
-            </li>
-        </ul>
-
-        <div class="footer">
-            <p>Complete each test before moving to the next one.</p>
-            <button class="reset-button" onclick="resetProgress()">Reset All Progress</button>
+            </div>
         </div>
     </div>
 
+    <!-- Teacher Dashboard Link -->
+    <a href="teacher_dashboard.html" class="teacher-link">👨‍🏫 Teacher Dashboard</a>
+
     <script>
+        // Test management
         const tests = ['maths', 'nvr', 'english', 'verbal', 'southpole'];
         const testFiles = {
             'maths': 'maths_assessment.html',
@@ -338,7 +492,30 @@
             'southpole': 'south_pole_assessment.html'
         };
 
-        function updateUI() {
+        function startAssessment(event) {
+            event.preventDefault();
+            const name = document.getElementById('studentName').value.trim();
+            
+            if (name.length < 2) {
+                alert('Please enter your full name');
+                return;
+            }
+
+            // Store student name
+            localStorage.setItem('studentName', name);
+            localStorage.setItem('assessmentStarted', 'true');
+
+            // Show home screen
+            document.getElementById('nameEntryScreen').classList.add('hidden');
+            document.getElementById('homeScreen').classList.remove('hidden');
+            
+            updateHomeUI();
+        }
+
+        function updateHomeUI() {
+            const studentName = localStorage.getItem('studentName') || 'Student';
+            document.getElementById('displayName').textContent = studentName;
+            
             let completedCount = 0;
             
             tests.forEach((test, index) => {
@@ -349,20 +526,20 @@
                 if (isCompleted) {
                     completedCount++;
                     testItem.classList.add('completed');
-                    testItem.classList.remove('locked', 'active');
-                    button.disabled = false;
-                    button.textContent = 'Retake Test';
+                    testItem.classList.remove('locked', 'available');
+                    button.disabled = true;
+                    button.textContent = 'Completed ✓';
                 } else {
                     const previousTestCompleted = index === 0 || localStorage.getItem(`test_${tests[index - 1]}_completed`) === 'true';
                     
                     if (previousTestCompleted) {
-                        testItem.classList.add('active');
+                        testItem.classList.add('available');
                         testItem.classList.remove('locked', 'completed');
                         button.disabled = false;
                         button.textContent = 'Start Test';
                     } else {
                         testItem.classList.add('locked');
-                        testItem.classList.remove('active', 'completed');
+                        testItem.classList.remove('available', 'completed');
                         button.disabled = true;
                         button.textContent = 'Locked';
                     }
@@ -373,35 +550,36 @@
             const progressPercentage = (completedCount / tests.length) * 100;
             document.getElementById('overallProgress').style.width = progressPercentage + '%';
             document.getElementById('progressText').textContent = `${completedCount}/${tests.length}`;
+
+            // Check if all tests are complete
+            if (completedCount === tests.length) {
+                showCompletionScreen();
+            }
+        }
+
+        function showCompletionScreen() {
+            document.getElementById('homeScreen').classList.add('hidden');
+            document.getElementById('completionScreen').classList.remove('hidden');
+            document.getElementById('completionName').textContent = localStorage.getItem('studentName');
         }
 
         function startTest(testName) {
+            // Navigate to test
             window.location.href = testFiles[testName];
         }
 
-        function resetProgress() {
-            if (confirm('Are you sure you want to reset all progress? This cannot be undone.')) {
-                tests.forEach(test => {
-                    localStorage.removeItem(`test_${test}_completed`);
-                });
-                updateUI();
-            }
-        }
-
         // Initialize on page load
-        updateUI();
-
-        // Check for returning from a test
-        window.addEventListener('load', () => {
-            const urlParams = new URLSearchParams(window.location.search);
-            if (urlParams.get('completed')) {
-                const completedTest = urlParams.get('completed');
-                localStorage.setItem(`test_${completedTest}_completed`, 'true');
-                updateUI();
-                // Clean up URL
-                window.history.replaceState({}, document.title, window.location.pathname);
+        window.onload = function() {
+            const assessmentStarted = localStorage.getItem('assessmentStarted');
+            const studentName = localStorage.getItem('studentName');
+            
+            if (assessmentStarted && studentName) {
+                // Show home screen if already started
+                document.getElementById('nameEntryScreen').classList.add('hidden');
+                document.getElementById('homeScreen').classList.remove('hidden');
+                updateHomeUI();
             }
-        });
+        };
     </script>
 </body>
 </html>

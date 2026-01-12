@@ -724,10 +724,44 @@
         function finishTest() {
             clearInterval(timerInterval);
             
+            // Calculate score
+            let correctCount = 0;
+            questions.forEach((question, index) => {
+                const userAnswer = userAnswers[index] || [];
+                const correctAnswer = question.correctAnswers;
+                
+                if (arraysEqual(userAnswer.sort(), correctAnswer.sort())) {
+                    correctCount++;
+                }
+            });
+            
+            // Save student data for teacher dashboard
+            const studentName = localStorage.getItem('studentName') || 'Unknown';
+            const startTime = localStorage.getItem('test_verbal_start_time');
+            let timeTaken = 'N/A';
+            if (startTime) {
+                const minutes = Math.round((new Date() - new Date(startTime)) / 1000 / 60);
+                timeTaken = `${minutes} min`;
+            }
+            
+            const testData = {
+                studentName: studentName,
+                testName: 'verbal',
+                score: correctCount,
+                totalQuestions: questions.length,
+                answers: userAnswers,
+                timestamp: new Date().toISOString(),
+                timeTaken: timeTaken
+            };
+            
+            // Store in localStorage with unique key for teacher dashboard
+            const storageKey = `student_${studentName.replace(/\s+/g, '_')}_verbal`;
+            localStorage.setItem(storageKey, JSON.stringify(testData));
+            
             // Mark test as completed
             localStorage.setItem('test_verbal_completed', 'true');
             
-            // Return to home page immediately
+            // Return to home page immediately (no results shown to student)
             window.location.href = 'index.html';
         }
 
