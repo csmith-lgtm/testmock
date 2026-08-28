@@ -1,0 +1,142 @@
+<!doctype html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>Number Line Lab v3</title><style>
+:root{--bg:#f5f7fb;--card:#fff;--ink:#20304a;--muted:#5c6779;--line:#d7ddea;--accent:#3157d5;--accent2:#13a38b;--warn:#c43d3d;--font:"Lexend Deca","Lexend",Arial,sans-serif}*{box-sizing:border-box}body{margin:0;background:var(--bg);color:var(--ink);font-family:var(--font)}.wrap{max-width:1350px;margin:auto;padding:16px}.top,.panel{background:#fff;border:1px solid var(--line);border-radius:16px;box-shadow:0 8px 22px rgba(30,55,90,.08)}.top{padding:18px 20px;margin-bottom:16px}.grid{display:grid;grid-template-columns:340px 1fr;gap:16px}.panel{padding:16px}.row{display:flex;gap:8px;flex-wrap:wrap;align-items:center}.stack{display:grid;gap:12px}button,select,input{font:inherit}button{border:1px solid var(--line);background:#fff;padding:9px 12px;border-radius:11px;cursor:pointer}button.active{background:var(--accent);color:#fff;border-color:var(--accent)}select,input[type=number]{width:100%;padding:9px;border:1px solid var(--line);border-radius:10px}.small{font-size:.9rem;color:var(--muted)}h1{margin:0 0 6px;font-size:1.75rem}h2{font-size:1.05rem;margin:0 0 10px}.linebox{background:#fbfcff;border:1px solid var(--line);border-radius:14px;padding:20px;overflow:auto}.numberline{position:relative;min-width:720px;height:240px;margin:10px 0}.axis{position:absolute;left:5%;right:5%;top:120px;height:4px;background:#31415d}.tick{position:absolute;top:105px;width:2px;height:32px;background:#31415d}.label{position:absolute;top:140px;transform:translateX(-50%);font-size:.85rem}.mark{position:absolute;top:94px;width:16px;height:16px;background:var(--accent);border-radius:50%;transform:translateX(-50%)}.jump{position:absolute;top:55px;height:58px;border-top:4px solid var(--accent2);border-left:4px solid transparent;border-right:4px solid transparent;border-radius:50% 50% 0 0}.jumpLabel{position:absolute;top:32px;transform:translateX(-50%);font-size:.85rem;font-weight:700;color:#0a7665}.mid{position:absolute;top:98px;width:3px;height:44px;background:#f59e0b}.bubble{background:#fffef6;border:1px solid #eadc9e;padding:10px 12px;border-radius:12px;line-height:1.45}.chips{display:flex;gap:8px;flex-wrap:wrap}.chip{padding:6px 10px;border-radius:999px;background:#eef3ff;color:#2645b3;font-size:.83rem;font-weight:700}.answer{font-size:1.25rem;font-weight:800;margin-top:10px}.controls2{display:grid;grid-template-columns:1fr 1fr;gap:8px}@media(max-width:950px){.grid{grid-template-columns:1fr}}@media(max-width:650px){.wrap{padding:10px}.numberline{min-width:600px}.controls2{grid-template-columns:1fr}}
+
+/* ===== Interactive Maths Tools v2 shared refinement ===== */
+:root{--imt-bg:#f5f7fb;--imt-ink:#20304a;--imt-muted:#5c6779;--imt-line:#d7ddea;--imt-blue:#3157d5;--imt-soft:#eef3ff}
+html{font-size:16px;scroll-behavior:smooth}
+body{min-height:100vh;background:var(--imt-bg)!important;color:var(--imt-ink)!important}
+button,input,select{min-height:42px}
+button:focus-visible,input:focus-visible,select:focus-visible,a:focus-visible{outline:3px solid #f0b429!important;outline-offset:2px!important}
+.imt-skip{position:fixed;left:10px;top:-70px;z-index:9999;background:#172033;color:#fff;padding:10px 14px;border-radius:8px}.imt-skip:focus{top:10px}
+.imt-commonbar{max-width:1400px;margin:12px auto 0;padding:0 16px}
+.imt-commoninner{display:flex;align-items:center;justify-content:space-between;gap:12px;flex-wrap:wrap;background:#fff;border:1px solid var(--imt-line);border-radius:14px;padding:10px 12px;box-shadow:0 5px 16px rgba(30,55,90,.06)}
+.imt-context{font-size:.82rem;color:var(--imt-muted);line-height:1.4}.imt-context strong{color:var(--imt-ink)}
+.imt-modebar{display:flex;gap:6px;flex-wrap:wrap}.imt-modebar button{min-height:38px;border:1px solid #cfd7e5;background:#fff;color:#33415a;border-radius:10px;padding:7px 10px;font:inherit;font-size:.82rem;font-weight:650;cursor:pointer}.imt-modebar button.active{background:var(--imt-blue);border-color:var(--imt-blue);color:#fff}
+.imt-mode-tip{max-width:1400px;margin:8px auto 0;padding:0 16px}.imt-mode-tip>div{background:#fffef6;border:1px solid #eadfae;border-radius:11px;padding:9px 12px;font-size:.84rem;line-height:1.45;color:#5e552f}
+.imt-footer{max-width:1400px;margin:14px auto 22px;padding:0 16px;color:var(--imt-muted);font-size:.75rem;line-height:1.5}.imt-footer>div{border-top:1px solid var(--imt-line);padding-top:9px}
+@media(max-width:720px){html{font-size:16px}.imt-commonbar,.imt-mode-tip,.imt-footer{padding-left:10px;padding-right:10px}.imt-commoninner{align-items:stretch}.imt-modebar{width:100%;display:grid;grid-template-columns:repeat(3,1fr)}.imt-modebar button{padding:8px 5px}body{overflow-x:hidden}.panel,.card,.stage,.controls,.toolbar{max-width:100%}}
+@media(prefers-reduced-motion:reduce){*,*::before,*::after{scroll-behavior:auto!important;animation-duration:.001ms!important;transition-duration:.001ms!important}}
+
+
+/* ===== v3 classroom interaction standard ===== */
+.imt-classroom-controls{max-width:1400px;margin:8px auto 0;padding:0 16px;position:relative;z-index:20}
+.imt-classroom-inner{display:flex;gap:7px;align-items:center;flex-wrap:wrap;background:#f8faff;border:1px solid #d8e0ee;border-radius:12px;padding:8px 10px}
+.imt-classroom-inner button{min-height:40px;border:1px solid #cbd5e5;background:#fff;color:#33415a;border-radius:9px;padding:7px 10px;font:inherit;font-size:.8rem;font-weight:700;cursor:pointer}
+.imt-classroom-inner button[aria-pressed="true"]{background:#3157d5;color:#fff;border-color:#3157d5}
+.imt-classroom-status{font-size:.76rem;color:#5c6779;margin-left:auto}
+body.imt-frozen .wrap input,body.imt-frozen .wrap select,body.imt-frozen .wrap button{pointer-events:none;opacity:.58}
+body.imt-presentation .top{display:none!important}
+body.imt-presentation .wrap{max-width:none!important;padding-top:8px!important}
+body.imt-presentation .imt-commonbar,body.imt-presentation .imt-mode-tip{display:none!important}
+body.imt-presentation .imt-classroom-controls{position:sticky;top:0;max-width:none;background:#f5f7fb;padding-top:6px;padding-bottom:6px}
+body.imt-hide-teaching .imt-hide-target{visibility:hidden!important}
+body.imt-hide-teaching .imt-hide-target::after{content:'?';visibility:visible;display:inline-block;color:#3157d5;font-weight:800}
+@media(max-width:720px){.imt-classroom-controls{padding-left:10px;padding-right:10px}.imt-classroom-inner{display:grid;grid-template-columns:repeat(2,minmax(0,1fr))}.imt-classroom-inner button{width:100%}.imt-classroom-status{grid-column:1/-1;margin-left:0;text-align:center}}
+
+/* Hide the outcome, keep the question: tick labels stay so the line can still be read.
+   Each selector is scoped separately - a comma list would hide the rest unconditionally. */
+body.imt-hide-teaching .jumpLabel,body.imt-hide-teaching #answer{visibility:hidden!important}
+
+/* Grid children default to min-width:auto, which stops the inner scroll
+   containers shrinking and pushes the whole page sideways on a phone. */
+.grid>*{min-width:0}.linebox,.chart,.stage,.pvscroll{max-width:100%}
+canvas.coord{max-width:100%;height:auto}
+</style></head><body>
+<a class="imt-skip" href="#imtToolMain">Skip to tool</a>
+<div class="imt-commonbar" aria-label="Interactive tool controls"><div class="imt-commoninner">
+  <div class="imt-context" id="imtContext"><strong>Interactive teaching tool</strong><br><span id="imtContextText">Use for whole-class modelling, pupil exploration or a quick reasoning challenge.</span></div>
+  <div class="imt-modebar" role="group" aria-label="Teaching mode">
+    <button type="button" data-imt-mode="teach" class="active">Teach</button><button type="button" data-imt-mode="explore">Explore</button><button type="button" data-imt-mode="challenge">Challenge</button>
+  </div>
+</div></div>
+<div class="imt-mode-tip"><div id="imtModeTip"><strong>Teach:</strong> model deliberately, reveal one structural idea at a time, and ask pupils to explain what changes and what stays the same.</div></div>
+<div id="imtToolMain" tabindex="-1"></div>
+<div class="imt-classroom-controls" aria-label="Classroom display controls"><div class="imt-classroom-inner">
+ <button type="button" id="imtFreeze" aria-pressed="false">Freeze</button>
+ <button type="button" id="imtHide" aria-pressed="false">Hide labels / answer</button>
+ <button type="button" id="imtNew">New example</button>
+ <button type="button" id="imtFullscreen" aria-pressed="false">Full screen</button>
+ <span class="imt-classroom-status" id="imtClassStatus">Ready for whole-class use</span>
+</div></div>
+
+<div class="wrap"><div class="top"><h1>Number Line Lab <span class="small">v3</span></h1><div class="small">Build open or marked number lines for bridging, difference, rounding, negative numbers and interval reasoning.</div><div class="chips" style="margin-top:10px"><span class="chip">Teach</span><span class="chip">Explore</span><span class="chip">Challenge</span><span class="chip">Bridging & rounding</span></div></div><div class="grid"><aside class="panel"><h2>Controls</h2><div class="stack"><div><div class="small">Mode</div><div class="row" id="modeBtns"></div></div><div><div class="small">Purpose</div><select id="purpose"><option value="bridge">Bridge / count on</option><option value="difference">Find the difference</option><option value="round">Rounding</option><option value="interval">Marked intervals</option><option value="negative">Negative numbers</option></select></div><div id="roundBox" style="display:none"><div class="controls2"><label>Number to round<input id="roundee" type="number" value="47" step="any"></label><label>Round to nearest<select id="roundTo"><option value="0.01">0.01</option><option value="0.1">0.1</option><option value="1">1</option><option value="10" selected>10</option><option value="100">100</option><option value="1000">1000</option><option value="10000">10,000</option><option value="100000">100,000</option></select></label></div><div class="small" id="roundHint" style="margin-top:6px"></div></div><div id="rangeBox"><div class="controls2"><label>Start<input id="start" type="number" value="398"></label><label>End<input id="end" type="number" value="425"></label></div><div class="controls2"><label>Bridge / midpoint<input id="bridge" type="number" value="400"></label><label>Step<input id="step" type="number" value="5" min="0.001" step="any"></label></div></div><div><div class="small">Display</div><div class="stack small"><label><input type="checkbox" id="showTicks" checked> Show ticks</label><label><input type="checkbox" id="showLabels" checked> Show labels</label><label><input type="checkbox" id="showJumps" checked> Show jumps</label></div></div><div class="row"><button id="random">Random example</button><button id="reset">Reset</button></div><div id="challengeBox" class="bubble" style="display:none"><strong>Challenge</strong><div id="challengeText" class="small" style="margin-top:5px"></div><button id="reveal" style="margin-top:8px">Reveal</button></div></div></aside><main class="panel"><div class="bubble" id="teacherTalk"><strong>Teaching note:</strong> Use the number line to make the size and direction of jumps visible. Ask which landmark or benchmark is useful before calculating.</div><div class="linebox" style="margin-top:14px"><div class="numberline" id="nl"></div></div><div class="answer imt-hide-target" id="answer"></div></main></div></div><script>
+const $=s=>document.querySelector(s);let mode='teach',revealed=false;const modes=['teach','explore','challenge'];
+function makeModeButtons(){modes.forEach(m=>{const b=document.createElement('button');b.textContent=m[0].toUpperCase()+m.slice(1);b.onclick=()=>{mode=m;revealed=false;render()};b.dataset.mode=m;$('#modeBtns').appendChild(b)})}
+function val(id){return Number($(id).value)}function pct(x,a,b){return 5+90*(x-a)/(b-a)}
+/* Rounding needs a number that is independent of the ends of the line. The two
+   bounding multiples are derived from that number and the chosen place value, so
+   they are always adjacent (audit 2.1). */
+function roundState(){const n=val('#roundee'),place=Math.abs(val('#roundTo'))||10;
+ const lower=snap(Math.floor(round6(n/place))*place),upper=snap(lower+place),mid=snap(lower+place/2);
+ const rounded=(n-lower)>=place/2?upper:lower;
+ return{n:n,place:place,lower:lower,upper:upper,mid:mid,rounded:rounded};}
+function round6(x){return Math.round(x*1e6)/1e6}function snap(x){return Math.round(x*1e6)/1e6}
+function render(){document.querySelectorAll('[data-mode]').forEach(b=>b.classList.toggle('active',b.dataset.mode===mode));let a=val('#start'),b=val('#end'),mid=val('#bridge'),step=Math.abs(val('#step'))||1;const purpose=$('#purpose').value;$('#challengeBox').style.display=mode==='challenge'?'block':'none';
+ $('#roundBox').style.display=purpose==='round'?'block':'none';$('#rangeBox').style.display=purpose==='round'?'none':'block';
+ let min=Math.min(a,b),max=Math.max(a,b),rs=null;
+ if(purpose==='round'){rs=roundState();min=rs.lower;max=rs.upper;mid=rs.mid;step=snap(rs.place/10);
+  $('#roundHint').textContent=`Bounding multiples of ${trim(rs.place)}: ${trim(rs.lower)} and ${trim(rs.upper)}; midpoint ${trim(rs.mid)}.`;}
+ if(min===max)max=min+10;const nl=$('#nl');nl.innerHTML='<div class="axis"></div>';
+if($('#showTicks').checked){let first=Math.ceil(min/step)*step,count=0;for(let x=first;x<=max+1e-9&&count<80;x+=step,count++){const p=pct(x,min,max);nl.innerHTML+=`<span class="tick" style="left:${p}%"></span>${$('#showLabels').checked?`<span class="label" style="left:${p}%">${trim(x)}</span>`:''}`}}
+const point=(x,cls='mark',lab=true)=>{const p=pct(x,min,max);nl.innerHTML+=`<span class="${cls}" style="left:${p}%"></span>${lab&&$('#showLabels').checked?`<span class="label" style="left:${p}%;top:170px;font-weight:700">${trim(x)}</span>`:''}`};if(purpose==='round'){point(rs.n)}else{point(a);point(b);}
+let ans='';if(purpose==='bridge'||purpose==='difference'){if(mid>min&&mid<max){point(mid,'mid',true)}if($('#showJumps').checked){addJump(nl,a,mid,min,max,`+${trim(mid-a)}`);addJump(nl,mid,b,min,max,`+${trim(b-mid)}`)}ans=purpose==='difference'?`Difference = ${trim(Math.abs(b-a))}`:`${trim(a)} → ${trim(mid)} → ${trim(b)}`;$('#teacherTalk').innerHTML='<strong>Teaching note:</strong> Bridge through a helpful landmark. Keep the jumps visible so pupils can explain the strategy rather than hold every step mentally.'}
+else if(purpose==='round'){point(mid,'mid',true);ans=`${trim(rs.n)} rounds to ${trim(rs.rounded)} (to the nearest ${trim(rs.place)})`;$('#teacherTalk').innerHTML='<strong>Teaching note:</strong> Identify the two bounding multiples first, then the midpoint. Avoid relying only on “5 or more”.'}
+else if(purpose==='negative'){ans=`Interval from ${trim(a)} to ${trim(b)} = ${trim(Math.abs(b-a))}`;$('#teacherTalk').innerHTML='<strong>Teaching note:</strong> Keep direction explicit when crossing zero; compare position and distance separately.'}
+else{ans=`Step size = ${trim(step)}`;$('#teacherTalk').innerHTML='<strong>Teaching note:</strong> Ask pupils to infer the interval from known labels rather than counting tiny marks one by one.'}
+$('#answer').textContent=mode==='challenge'&&!revealed?'':ans;$('#challengeText').textContent=challengeText(purpose,a,b,mid);}
+function addJump(nl,x1,x2,min,max,label){if(!isFinite(x1)||!isFinite(x2)||x1===x2)return;const l=Math.min(pct(x1,min,max),pct(x2,min,max)),r=Math.max(pct(x1,min,max),pct(x2,min,max));nl.innerHTML+=`<span class="jump" style="left:${l}%;width:${r-l}%"></span><span class="jumpLabel" style="left:${(l+r)/2}%">${label}</span>`}
+function trim(n){return Number.isInteger(n)?String(n):String(Math.round(n*1000)/1000)}function challengeText(p,a,b,m){
+ if(p==='round'){const r=roundState();return`Is ${trim(r.n)} nearer to ${trim(r.lower)} or to ${trim(r.upper)}? The midpoint is ${trim(r.mid)}. Predict, then reveal.`}
+ if(p==='difference')return`Find the difference between ${trim(a)} and ${trim(b)}. Would bridging through ${trim(m)} help?`;
+ if(p==='interval'){const st=Math.abs(val('#step'))||1;return`Each interval is worth ${trim(st)}. What number sits halfway between ${trim(Math.min(a,b))} and ${trim(Math.max(a,b))}?`}
+ if(p==='negative')return`How far is it from ${trim(a)} to ${trim(b)}? How much of that distance is below zero?`;
+ return`Predict the two jumps from ${trim(a)} to ${trim(m)} to ${trim(b)}, and their total, before revealing.`}
+function randomise(){const p=$('#purpose').value;if(p==='round'){const place=Math.abs(val('#roundTo'))||10;const lower=Math.floor(Math.random()*20)*place;$('#roundee').value=snap(lower+Math.random()*place)}else{const a=Math.floor(Math.random()*500);const jump=Math.floor(Math.random()*70)+10;$('#start').value=a;$('#end').value=a+jump;$('#bridge').value=Math.ceil(a/10)*10;$('#step').value=10}revealed=false;render()}
+['#purpose','#start','#end','#bridge','#step','#roundee','#roundTo','#showTicks','#showLabels','#showJumps'].forEach(id=>$(id).addEventListener('input',()=>{revealed=false;render()}));$('#random').onclick=randomise;$('#reset').onclick=()=>{$('#start').value=398;$('#end').value=425;$('#bridge').value=400;$('#step').value=5;render()};$('#reveal').onclick=()=>{revealed=true;render()};makeModeButtons();render();
+</script><div class="imt-footer"><div><strong>Number Line Lab v3</strong> · Interactive Maths Tools · designed to connect with the Primary Maths Curriculum Navigator.</div></div><script>
+(function(){
+ const tips={teach:'<strong>Teach:</strong> model deliberately, reveal one structural idea at a time, and ask pupils to explain what changes and what stays the same.',explore:'<strong>Explore:</strong> let pupils suggest or make changes, then describe patterns, invariants and alternative representations.',challenge:'<strong>Challenge:</strong> hide or vary part of the representation, ask for a prediction first, then use the tool to test and justify it.'};
+ const qs=new URLSearchParams(location.search);const year=qs.get('year'),focus=qs.get('focus');
+/* Prefer the Navigator's shortened label so a 259-character statutory title
+   does not push the controls down the page (audit 4.6). */
+ const ctxt=document.getElementById('imtContextText'),shortFocus=qs.get('label')||focus;if(ctxt&&(year||shortFocus)){ctxt.textContent=[year,shortFocus].filter(Boolean).join(' · ');if(focus)ctxt.title=focus;}
+ function setMode(mode){document.documentElement.dataset.imtMode=mode;document.querySelectorAll('[data-imt-mode]').forEach(b=>{const on=b.dataset.imtMode===mode;b.classList.toggle('active',on);b.setAttribute('aria-pressed',on?'true':'false')});const tip=document.getElementById('imtModeTip');if(tip)tip.innerHTML=tips[mode]||tips.teach;try{localStorage.setItem('imtMode',mode)}catch(e){}}
+ document.querySelectorAll('[data-imt-mode]').forEach(b=>b.addEventListener('click',()=>setMode(b.dataset.imtMode)));
+ let mode=qs.get('mode');if(!['teach','explore','challenge'].includes(mode)){try{mode=localStorage.getItem('imtMode')}catch(e){}}setMode(['teach','explore','challenge'].includes(mode)?mode:'teach');
+})();
+</script>
+<script>
+(function(){
+ const qs=new URLSearchParams(location.search),year=qs.get('year'),focus=qs.get('focus');
+ const freeze=document.getElementById('imtFreeze'),hide=document.getElementById('imtHide'),full=document.getElementById('imtFullscreen'),status=document.getElementById('imtClassStatus');
+ let frozen=false,hidden=false,presentation=false;
+ function setStatus(t){if(status)status.textContent=t;}
+ freeze?.addEventListener('click',()=>{frozen=!frozen;document.body.classList.toggle('imt-frozen',frozen);freeze.setAttribute('aria-pressed',String(frozen));freeze.textContent=frozen?'Unfreeze':'Freeze';setStatus(frozen?'Representation frozen for discussion':'Controls active');});
+ hide?.addEventListener('click',()=>{hidden=!hidden;document.body.classList.toggle('imt-hide-teaching',hidden);hide.setAttribute('aria-pressed',String(hidden));hide.textContent=hidden?'Reveal labels / answer':'Hide labels / answer';setStatus(hidden?'Labels and answers hidden — ask for a prediction':'Labels and answers revealed');});
+ document.getElementById('imtNew')?.addEventListener('click',()=>{try{document.getElementById('random')?.click();}catch(e){} setStatus('New example ready');});
+ async function toggleFull(){
+   try{if(!document.fullscreenElement){await document.documentElement.requestFullscreen();}else{await document.exitFullscreen();}}
+   catch(e){presentation=!presentation;document.body.classList.toggle('imt-presentation',presentation);full.setAttribute('aria-pressed',String(presentation));full.textContent=presentation?'Exit full screen':'Full screen';}
+ }
+ full?.addEventListener('click',toggleFull);
+ document.addEventListener('fullscreenchange',()=>{const on=!!document.fullscreenElement;document.body.classList.toggle('imt-presentation',on);full?.setAttribute('aria-pressed',String(on));if(full)full.textContent=on?'Exit full screen':'Full screen';});
+ // Synchronise the common Teach / Explore / Challenge bar with any native mode controls.
+ document.querySelectorAll('[data-imt-mode]').forEach(b=>b.addEventListener('click',()=>{const native=[...document.querySelectorAll('.wrap [data-mode]')].find(x=>x.dataset.mode===b.dataset.imtMode);if(native&&!native.classList.contains('active'))native.click();}));
+ 
+ const p=qs.get('purpose'); if(p&&document.getElementById('purpose')){document.getElementById('purpose').value=p; document.getElementById('purpose').dispatchEvent(new Event('input',{bubbles:true}));}
+ if(focus){const f=focus.toLowerCase();const purpose=document.getElementById('purpose');if(purpose&&!p){if(/round/.test(f))purpose.value='round';else if(/negative/.test(f))purpose.value='negative';else if(/difference|compare/.test(f))purpose.value='difference';else if(/interval|scale|number line/.test(f))purpose.value='interval';purpose.dispatchEvent(new Event('input',{bubbles:true}));}}
+ /* Year presets for rounding: a number to round plus the place value it is
+    rounded to. The bounding multiples follow from those two (audit 2.1). */
+ const purposeEl=document.getElementById('purpose');
+ if(purposeEl&&purposeEl.value==='round'&&year&&!qs.get('roundee')){
+  const dec=/decimal/.test((focus||'').toLowerCase());
+  const whole={'Year 3':[47,10],'Year 4':[3457,100],'Year 5':[32479,1000],'Year 6':[3247891,100000]};
+  const decs={'Year 4':[3.7,1],'Year 5':[3.47,0.1],'Year 6':[3.472,0.01]};
+  const pick=(dec&&decs[year])||whole[year];
+  if(pick){const rn=document.getElementById('roundee'),rt=document.getElementById('roundTo');
+   if(rn&&rt){rn.value=pick[0];rt.value=String(pick[1]);rn.dispatchEvent(new Event('input',{bubbles:true}));}}
+ }
+ 
+})();
+</script>
+</body></html>

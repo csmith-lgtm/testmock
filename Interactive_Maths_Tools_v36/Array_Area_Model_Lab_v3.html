@@ -1,0 +1,124 @@
+<!doctype html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>Array &amp; Area Model Lab v3</title><style>
+:root{--bg:#f5f7fb;--card:#fff;--ink:#20304a;--muted:#5c6779;--line:#d7ddea;--accent:#3157d5;--accent2:#13a38b;--font:"Lexend Deca","Lexend",Arial,sans-serif}*{box-sizing:border-box}body{margin:0;background:var(--bg);font-family:var(--font);color:var(--ink)}.wrap{max-width:1300px;margin:auto;padding:16px}.top,.panel{background:#fff;border:1px solid var(--line);border-radius:16px;box-shadow:0 8px 22px rgba(30,55,90,.08)}.top{padding:18px 20px;margin-bottom:16px}.grid{display:grid;grid-template-columns:330px 1fr;gap:16px}.panel{padding:16px}.stack{display:grid;gap:12px}.row{display:flex;gap:8px;flex-wrap:wrap}button,input,select{font:inherit}button{border:1px solid var(--line);background:#fff;padding:9px 12px;border-radius:11px;cursor:pointer}button.active{background:var(--accent);color:#fff}input,select{width:100%;padding:9px;border:1px solid var(--line);border-radius:10px}.small{font-size:.9rem;color:var(--muted)}h1{font-size:1.75rem;margin:0 0 6px}.bubble{background:#fffef6;border:1px solid #eadc9e;padding:10px 12px;border-radius:12px;line-height:1.45}.stage{min-height:420px;background:#fbfcff;border:1px solid var(--line);border-radius:14px;padding:20px}.array{display:grid;gap:7px;justify-content:center;margin:24px auto}.dot{width:24px;height:24px;border-radius:50%;background:#3157d5}.area{display:grid;gap:2px;max-width:720px;margin:26px auto;border:3px solid #31415d}.cell{min-height:100px;display:flex;align-items:center;justify-content:center;text-align:center;font-weight:800;border:1px solid #718096;background:#eaf0ff;padding:10px}.equations{display:grid;gap:8px;max-width:720px;margin:20px auto;font-size:1.1rem}.eq{background:#fff;border:1px solid var(--line);padding:10px 12px;border-radius:10px}.chips{display:flex;gap:8px;flex-wrap:wrap}.chip{padding:6px 10px;border-radius:999px;background:#eef3ff;color:#2645b3;font-size:.82rem;font-weight:700}@media(max-width:900px){.grid{grid-template-columns:1fr}}@media(max-width:600px){.wrap{padding:10px}.dot{width:18px;height:18px}.cell{min-height:80px;font-size:.85rem}}
+
+/* ===== Interactive Maths Tools v2 shared refinement ===== */
+:root{--imt-bg:#f5f7fb;--imt-ink:#20304a;--imt-muted:#5c6779;--imt-line:#d7ddea;--imt-blue:#3157d5;--imt-soft:#eef3ff}
+html{font-size:16px;scroll-behavior:smooth}
+body{min-height:100vh;background:var(--imt-bg)!important;color:var(--imt-ink)!important}
+button,input,select{min-height:42px}
+button:focus-visible,input:focus-visible,select:focus-visible,a:focus-visible{outline:3px solid #f0b429!important;outline-offset:2px!important}
+.imt-skip{position:fixed;left:10px;top:-70px;z-index:9999;background:#172033;color:#fff;padding:10px 14px;border-radius:8px}.imt-skip:focus{top:10px}
+.imt-commonbar{max-width:1400px;margin:12px auto 0;padding:0 16px}
+.imt-commoninner{display:flex;align-items:center;justify-content:space-between;gap:12px;flex-wrap:wrap;background:#fff;border:1px solid var(--imt-line);border-radius:14px;padding:10px 12px;box-shadow:0 5px 16px rgba(30,55,90,.06)}
+.imt-context{font-size:.82rem;color:var(--imt-muted);line-height:1.4}.imt-context strong{color:var(--imt-ink)}
+.imt-modebar{display:flex;gap:6px;flex-wrap:wrap}.imt-modebar button{min-height:38px;border:1px solid #cfd7e5;background:#fff;color:#33415a;border-radius:10px;padding:7px 10px;font:inherit;font-size:.82rem;font-weight:650;cursor:pointer}.imt-modebar button.active{background:var(--imt-blue);border-color:var(--imt-blue);color:#fff}
+.imt-mode-tip{max-width:1400px;margin:8px auto 0;padding:0 16px}.imt-mode-tip>div{background:#fffef6;border:1px solid #eadfae;border-radius:11px;padding:9px 12px;font-size:.84rem;line-height:1.45;color:#5e552f}
+.imt-footer{max-width:1400px;margin:14px auto 22px;padding:0 16px;color:var(--imt-muted);font-size:.75rem;line-height:1.5}.imt-footer>div{border-top:1px solid var(--imt-line);padding-top:9px}
+@media(max-width:720px){html{font-size:16px}.imt-commonbar,.imt-mode-tip,.imt-footer{padding-left:10px;padding-right:10px}.imt-commoninner{align-items:stretch}.imt-modebar{width:100%;display:grid;grid-template-columns:repeat(3,1fr)}.imt-modebar button{padding:8px 5px}body{overflow-x:hidden}.panel,.card,.stage,.controls,.toolbar{max-width:100%}}
+@media(prefers-reduced-motion:reduce){*,*::before,*::after{scroll-behavior:auto!important;animation-duration:.001ms!important;transition-duration:.001ms!important}}
+
+
+/* ===== v3 classroom interaction standard ===== */
+.imt-classroom-controls{max-width:1400px;margin:8px auto 0;padding:0 16px;position:relative;z-index:20}
+.imt-classroom-inner{display:flex;gap:7px;align-items:center;flex-wrap:wrap;background:#f8faff;border:1px solid #d8e0ee;border-radius:12px;padding:8px 10px}
+.imt-classroom-inner button{min-height:40px;border:1px solid #cbd5e5;background:#fff;color:#33415a;border-radius:9px;padding:7px 10px;font:inherit;font-size:.8rem;font-weight:700;cursor:pointer}
+.imt-classroom-inner button[aria-pressed="true"]{background:#3157d5;color:#fff;border-color:#3157d5}
+.imt-classroom-status{font-size:.76rem;color:#5c6779;margin-left:auto}
+body.imt-frozen .wrap input,body.imt-frozen .wrap select,body.imt-frozen .wrap button{pointer-events:none;opacity:.58}
+body.imt-presentation .top{display:none!important}
+body.imt-presentation .wrap{max-width:none!important;padding-top:8px!important}
+body.imt-presentation .imt-commonbar,body.imt-presentation .imt-mode-tip{display:none!important}
+body.imt-presentation .imt-classroom-controls{position:sticky;top:0;max-width:none;background:#f5f7fb;padding-top:6px;padding-bottom:6px}
+body.imt-hide-teaching .imt-hide-target{visibility:hidden!important}
+body.imt-hide-teaching .imt-hide-target::after{content:'?';visibility:visible;display:inline-block;color:#3157d5;font-weight:800}
+@media(max-width:720px){.imt-classroom-controls{padding-left:10px;padding-right:10px}.imt-classroom-inner{display:grid;grid-template-columns:repeat(2,minmax(0,1fr))}.imt-classroom-inner button{width:100%}.imt-classroom-status{grid-column:1/-1;margin-left:0;text-align:center}}
+
+/* Hide the outcome, keep the question. Every selector is scoped to the body
+   class - a bare comma list hides the rest of the list unconditionally. */
+body.imt-hide-teaching .cellprod,body.imt-hide-teaching .equations{visibility:hidden!important}
+
+.imt-challenge{max-width:1400px;margin:8px auto 0;padding:0 16px}
+.imt-challenge>div{background:#f5fbf8;border:1px solid #b9e4d6;border-radius:11px;padding:9px 12px;font-size:.84rem;line-height:1.45;color:#1d5c4a}
+
+/* Grid children default to min-width:auto, which stops the inner scroll
+   containers shrinking and pushes the whole page sideways on a phone. */
+.grid>*{min-width:0}.linebox,.chart,.stage,.pvscroll{max-width:100%}
+canvas.coord{max-width:100%;height:auto}
+</style></head><body>
+<a class="imt-skip" href="#imtToolMain">Skip to tool</a>
+<div class="imt-commonbar" aria-label="Interactive tool controls"><div class="imt-commoninner">
+  <div class="imt-context" id="imtContext"><strong>Interactive teaching tool</strong><br><span id="imtContextText">Use for whole-class modelling, pupil exploration or a quick reasoning challenge.</span></div>
+  <div class="imt-modebar" role="group" aria-label="Teaching mode">
+    <button type="button" data-imt-mode="teach" class="active">Teach</button><button type="button" data-imt-mode="explore">Explore</button><button type="button" data-imt-mode="challenge">Challenge</button>
+  </div>
+</div></div>
+<div class="imt-mode-tip"><div id="imtModeTip"><strong>Teach:</strong> model deliberately, reveal one structural idea at a time, and ask pupils to explain what changes and what stays the same.</div></div>
+<div class="imt-challenge"><div id="imtChallengeBox" hidden></div></div>
+<div id="imtToolMain" tabindex="-1"></div>
+<div class="imt-classroom-controls" aria-label="Classroom display controls"><div class="imt-classroom-inner">
+ <button type="button" id="imtFreeze" aria-pressed="false">Freeze</button>
+ <button type="button" id="imtHide" aria-pressed="false">Hide labels / answer</button>
+ <button type="button" id="imtNew">New example</button>
+ <button type="button" id="imtFullscreen" aria-pressed="false">Full screen</button>
+ <span class="imt-classroom-status" id="imtClassStatus">Ready for whole-class use</span>
+</div></div>
+
+<div class="wrap"><div class="top"><h1>Array & Area Model Lab <span class="small">v3</span></h1><div class="small">Move from equal groups and arrays to distributive partitioning, area models and grid-method partial products.</div><div class="chips" style="margin-top:10px"><span class="chip">Arrays</span><span class="chip">Commutativity</span><span class="chip">Distributivity</span><span class="chip">Grid method</span></div></div><div class="grid"><aside class="panel"><div class="stack"><div><div class="small">View</div><select id="view"><option value="array">Array</option><option value="area">Area / grid</option><option value="bridge">Array → area bridge</option></select></div><div><div class="small">First factor</div><input id="a" type="number" min="1" max="999" value="23"></div><div><div class="small">Second factor</div><input id="b" type="number" min="1" max="99" value="6"></div><div><label class="small"><input type="checkbox" id="partition" checked> Show partitioning</label></div><div class="row"><button id="swap">Rotate / swap factors</button><button id="random">Random</button></div></div></aside><main class="panel"><div class="bubble" id="talk"></div><div class="stage" id="stage"></div></main></div></div><script>
+const $=s=>document.querySelector(s);function parts(n){const s=String(Math.floor(Math.abs(n)));return s.split('').map((d,i)=>Number(d)*10**(s.length-i-1)).filter(Boolean)}function arrayHtml(rows,cols){const max=144;if(rows*cols>max)return`<div class="equations imt-hide-target"><div class="eq">Array too large to draw sensibly. Use the area model instead.</div></div>`;return`<div class="array" style="grid-template-columns:repeat(${cols},24px)">${Array.from({length:rows*cols},()=>'<span class="dot"></span>').join('')}</div>`}function areaHtml(a,b){const ap=parts(a),bp=parts(b);return`<div class="area" style="grid-template-columns:repeat(${ap.length},1fr)">${bp.map(y=>ap.map(x=>`<div class="cell">${x} × ${y}<br><span class="cellprod">= ${x*y}</span></div>`).join('')).join('')}</div><div class="equations imt-hide-target"><div class="eq">${a} × ${b} = ${bp.flatMap(y=>ap.map(x=>x*y)).join(' + ')}</div><div class="eq"><strong>${a*b}</strong></div></div>`}function render(){let a=Math.max(1,Number($('#a').value)||1),b=Math.max(1,Number($('#b').value)||1),v=$('#view').value;let html='';if(v==='array'){html=arrayHtml(Math.min(a,30),Math.min(b,30))+`<div class="equations imt-hide-target"><div class="eq">${a} groups of ${b} = ${a*b}</div><div class="eq">${a} × ${b} = ${b} × ${a}</div></div>`;$('#talk').innerHTML='<strong>Teaching note:</strong> Arrays make rows and columns visible and support commutativity without implying that the two factors play identical contextual roles.'}else if(v==='area'){html=areaHtml(a,b);$('#talk').innerHTML='<strong>Teaching note:</strong> Partition one or both factors into place-value parts. Each cell is a partial product; the whole area is the total product.'}else{const smallA=Math.min(a,12),smallB=Math.min(b,12);html=arrayHtml(smallB,smallA)+`<div class="equations imt-hide-target"><div class="eq">Same structure → partition ${a} into ${parts(a).join(' + ')}</div></div>`+areaHtml(a,b);$('#talk').innerHTML='<strong>Teaching note:</strong> The area model is not a new trick: it is the same row-and-column structure as the array, stretched to show place-value partitioning.'}$('#stage').innerHTML=html}
+['#view','#a','#b','#partition'].forEach(id=>$(id).addEventListener('input',render));$('#swap').onclick=()=>{const x=$('#a').value;$('#a').value=$('#b').value;$('#b').value=x;render()};$('#random').onclick=()=>{$('#a').value=Math.floor(Math.random()*80)+12;$('#b').value=Math.floor(Math.random()*8)+2;render()};render();
+</script><div class="imt-footer"><div><strong>Array &amp; Area Model Lab v2</strong> · Interactive Maths Tools · designed to connect with the Primary Maths Curriculum Navigator.</div></div><script>
+(function(){
+ const tips={teach:'<strong>Teach:</strong> model deliberately, reveal one structural idea at a time, and ask pupils to explain what changes and what stays the same.',explore:'<strong>Explore:</strong> let pupils suggest or make changes, then describe patterns, invariants and alternative representations.',challenge:'<strong>Challenge:</strong> hide or vary part of the representation, ask for a prediction first, then use the tool to test and justify it.'};
+ const qs=new URLSearchParams(location.search);const year=qs.get('year'),focus=qs.get('focus');
+/* Prefer the Navigator's shortened label so a 259-character statutory title
+   does not push the controls down the page (audit 4.6). */
+ const ctxt=document.getElementById('imtContextText'),shortFocus=qs.get('label')||focus;if(ctxt&&(year||shortFocus)){ctxt.textContent=[year,shortFocus].filter(Boolean).join(' · ');if(focus)ctxt.title=focus;}
+ function setMode(mode){document.documentElement.dataset.imtMode=mode;document.querySelectorAll('[data-imt-mode]').forEach(b=>{const on=b.dataset.imtMode===mode;b.classList.toggle('active',on);b.setAttribute('aria-pressed',on?'true':'false')});const tip=document.getElementById('imtModeTip');if(tip)tip.innerHTML=tips[mode]||tips.teach;try{localStorage.setItem('imtMode',mode)}catch(e){}}
+ document.querySelectorAll('[data-imt-mode]').forEach(b=>b.addEventListener('click',()=>setMode(b.dataset.imtMode)));
+ let mode=qs.get('mode');if(!['teach','explore','challenge'].includes(mode)){try{mode=localStorage.getItem('imtMode')}catch(e){}}setMode(['teach','explore','challenge'].includes(mode)?mode:'teach');
+})();
+</script>
+<script>
+(function(){
+ const qs=new URLSearchParams(location.search),year=qs.get('year'),focus=qs.get('focus');
+ const freeze=document.getElementById('imtFreeze'),hide=document.getElementById('imtHide'),full=document.getElementById('imtFullscreen'),status=document.getElementById('imtClassStatus');
+ let frozen=false,hidden=false,presentation=false;
+ function setStatus(t){if(status)status.textContent=t;}
+ freeze?.addEventListener('click',()=>{frozen=!frozen;document.body.classList.toggle('imt-frozen',frozen);freeze.setAttribute('aria-pressed',String(frozen));freeze.textContent=frozen?'Unfreeze':'Freeze';setStatus(frozen?'Representation frozen for discussion':'Controls active');});
+ hide?.addEventListener('click',()=>{hidden=!hidden;document.body.classList.toggle('imt-hide-teaching',hidden);hide.setAttribute('aria-pressed',String(hidden));hide.textContent=hidden?'Reveal labels / answer':'Hide labels / answer';setStatus(hidden?'Labels and answers hidden — ask for a prediction':'Labels and answers revealed');});
+ document.getElementById('imtNew')?.addEventListener('click',()=>{try{document.getElementById('random')?.click();}catch(e){} setStatus('New example ready');});
+ async function toggleFull(){
+   try{if(!document.fullscreenElement){await document.documentElement.requestFullscreen();}else{await document.exitFullscreen();}}
+   catch(e){presentation=!presentation;document.body.classList.toggle('imt-presentation',presentation);full.setAttribute('aria-pressed',String(presentation));full.textContent=presentation?'Exit full screen':'Full screen';}
+ }
+ full?.addEventListener('click',toggleFull);
+ document.addEventListener('fullscreenchange',()=>{const on=!!document.fullscreenElement;document.body.classList.toggle('imt-presentation',on);full?.setAttribute('aria-pressed',String(on));if(full)full.textContent=on?'Exit full screen':'Full screen';});
+ // Synchronise the common Teach / Explore / Challenge bar with any native mode controls.
+ document.querySelectorAll('[data-imt-mode]').forEach(b=>b.addEventListener('click',()=>{const native=[...document.querySelectorAll('.wrap [data-mode]')].find(x=>x.dataset.mode===b.dataset.imtMode);if(native&&!native.classList.contains('active'))native.click();}));
+ 
+ const v=qs.get('view'); if(v&&document.getElementById('view')){document.getElementById('view').value=v;document.getElementById('view').dispatchEvent(new Event('input',{bubbles:true}));}
+ if(focus&&!v){const f=focus.toLowerCase(),el=document.getElementById('view');if(el){if(/distribut/.test(f))el.value='bridge';else if(/area|grid|written|partition/.test(f))el.value='area';else el.value='array';el.dispatchEvent(new Event('input',{bubbles:true}));}}
+ 
+})();
+</script>
+<script>window.imtPrompt=function(){const a=+document.getElementById('a').value||1,b=+document.getElementById('b').value||1,v=document.getElementById('view').value;
+ return v==='array'?`Predict ${a} × ${b} from the array. How does ${b} × ${a} give the same total without recounting?`
+  :`Partition ${a} into its place-value parts. Predict each partial product, then their total.`;};</script>
+<script>
+/* Challenge prompts are built from the values currently on screen, so the
+   question changes with the example rather than being one fixed sentence
+   (audit 6). */
+(function(){
+ const box=document.getElementById('imtChallengeBox');
+ function refresh(){if(!box)return;
+  const on=document.documentElement.dataset.imtMode==='challenge';
+  box.hidden=!on;
+  if(on&&typeof window.imtPrompt==='function'){try{box.innerHTML='<strong>Challenge:</strong> '+window.imtPrompt()}catch(e){box.hidden=true}}
+ }
+ document.querySelectorAll('[data-imt-mode]').forEach(b=>b.addEventListener('click',()=>setTimeout(refresh,0)));
+ document.addEventListener('input',()=>setTimeout(refresh,0),true);
+ document.addEventListener('click',()=>setTimeout(refresh,0),true);
+ setTimeout(refresh,60);
+})();
+</script>
+</body></html>
