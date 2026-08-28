@@ -63,7 +63,7 @@ canvas.coord{max-width:100%;height:auto}
  <span class="imt-classroom-status" id="imtClassStatus">Ready for whole-class use</span>
 </div></div>
 
-<div class="wrap"><div class="top"><h1>Measurement Scale Lab <span class="small">v3</span></h1><div class="small">Create scales with labelled and unlabelled intervals for length, mass, capacity and temperature.</div><div class="chips" style="margin-top:10px"><span class="chip">Intervals</span><span class="chip">Scale reading</span><span class="chip">Units</span></div></div><div class="grid"><aside class="panel"><div class="stack"><label>Unit<select id="unit"><option>cm</option><option>m</option><option>g</option><option>kg</option><option>ml</option><option>l</option><option>°C</option></select></label><div class="row"><label style="flex:1">Minimum<input id="min" type="number" value="0"></label><label style="flex:1">Maximum<input id="max" type="number" value="100"></label></div><label>Major interval<input id="major" type="number" value="20"></label><label>Minor divisions per major interval<input id="minor" type="number" min="1" max="10" value="4"></label><label>Pointer value<input id="value" type="number" value="65"></label><label class="small"><input type="checkbox" id="hide" checked> Hide some labels</label><button id="random">Random pointer</button></div></aside><main class="panel"><div class="bubble"><strong>Teaching note:</strong> Ask “What is each small interval worth?” before asking for the reading.</div><div class="stage"><div class="scale" id="scale"></div><div class="eq imt-hide-target" id="eq"></div></div></main></div></div><script>
+<div class="wrap"><div class="top"><h1>Measurement Scale Lab <span class="small">v3</span></h1><div class="small">Create scales with labelled and unlabelled intervals for length, mass, capacity and temperature.</div><div class="chips" style="margin-top:10px"><span class="chip">Intervals</span><span class="chip">Scale reading</span><span class="chip">Units</span></div></div><div class="grid"><aside class="panel"><div class="stack"><div id="unitChips" class="chips" style="margin-bottom:6px"></div><label>Unit<select id="unit"><option>mm</option><option>cm</option><option>m</option><option>g</option><option>kg</option><option>ml</option><option>l</option><option>°C</option></select></label><div class="row"><label style="flex:1">Minimum<input id="min" type="number" value="0"></label><label style="flex:1">Maximum<input id="max" type="number" value="100"></label></div><label>Major interval<input id="major" type="number" value="20"></label><label>Minor divisions per major interval<input id="minor" type="number" min="1" max="10" value="4"></label><label>Pointer value<input id="value" type="number" value="65"></label><label class="small"><input type="checkbox" id="hide" checked> Hide some labels</label><button id="random">Random pointer</button></div></aside><main class="panel"><div class="bubble"><strong>Teaching note:</strong> Ask “What is each small interval worth?” before asking for the reading.</div><div class="stage"><div class="scale" id="scale"></div><div class="eq imt-hide-target" id="eq"></div></div></main></div></div><script>
 const $=s=>document.querySelector(s);function render(){const mn=Number($('#min').value),mx=Number($('#max').value),maj=Math.max(.001,Number($('#major').value)),div=Math.max(1,Math.floor(Number($('#minor').value))),val=Number($('#value').value),u=$('#unit').value;let html='<div class="axis"></div>';const minor=maj/div;let i=0;for(let x=mn;x<=mx+1e-9;x+=minor,i++){const p=5+90*(x-mn)/(mx-mn);const major=i%div===0;html+=`<span class="tick ${major?'':'minor'}" style="left:${p}%"></span>`;if(major&&(!$('#hide').checked||i%(div*2)===0))html+=`<span class="lbl" style="left:${p}%">${x}</span>`}const pp=5+90*(val-mn)/(mx-mn);html+=`<span class="pointer" style="left:${pp}%"></span>`;$('#scale').innerHTML=html;$('#eq').textContent=`Pointer = ${val} ${u}; each small interval = ${minor} ${u}`}
 ['#unit','#min','#max','#major','#minor','#value','#hide'].forEach(id=>$(id).addEventListener('input',render));$('#random').onclick=()=>{const mn=Number($('#min').value),mx=Number($('#max').value),maj=Number($('#major').value),div=Number($('#minor').value),step=maj/div;$('#value').value=Math.round((mn+Math.floor(Math.random()*((mx-mn)/step+1))*step)*1000)/1000;render()};render();
 </script><div class="imt-footer"><div><strong>Measurement Scale Lab v3</strong> · Interactive Maths Tools · designed to connect with the Primary Maths Curriculum Navigator.</div></div><script>
@@ -102,24 +102,56 @@ const $=s=>document.querySelector(s);function render(){const mn=Number($('#min')
   if(el){const marks=[[/temperature|celsius|°c|thermometer/,'°C'],[/\bmass\b|\bweight\b|\bgrams?\b|\bkilograms?\b|\bkg\b/,'g'],[/capacity|\bvolume\b|\blitres?\b|\bmillilitres?\b|\bml\b/,'ml'],[/\bmillimetres?\b|\bmm\b/,'cm'],[/\bcentimetres?\b|\bcm\b/,'cm'],[/\blengths?\b|\bheights?\b|\bmetres?\b/,'m']];
    let best='cm',bi=Infinity;marks.forEach(function(pair){const i=f.search(pair[0]);if(i>=0&&i<bi){bi=i;best=pair[1];}});
    el.value=best;el.dispatchEvent(new Event('input',{bubbles:true}));}}
- /* The range travels with the unit, so a mass scale is never given a length
-    scale's numbers (audit 2.3). */
- const setNum=(id,v)=>{const el=document.getElementById(id);if(el&&v!==null&&v!==''&&isFinite(Number(v))){el.value=Number(v);return true}return false};
- const gotRange=[['min',qs.get('min')],['max',qs.get('max')],['major',qs.get('interval')]].map(x=>setNum(x[0],x[1])).some(Boolean);
- if(gotRange){
-  const mn=Number(document.getElementById('min').value),mx=Number(document.getElementById('max').value),
-        maj=Math.max(.001,Number(document.getElementById('major').value));
-  /* Choose minor divisions that make each small interval a readable amount,
-     rather than leaving whatever the previous unit happened to use. */
+ /* The unit and the range are paired here rather than set independently, so
+    changing the unit by hand can no longer leave a mass scale running over a
+    length scale's numbers (audit 2.3). Only temperature goes below zero. */
+ const UNIT_RANGES={
+  mm:{1:[0,100,20],2:[0,100,20],3:[0,100,10],4:[0,150,10],5:[0,150,10],6:[0,150,10]},
+  cm:{1:[0,20,5],2:[0,30,5],3:[0,30,5],4:[0,100,20],5:[0,100,20],6:[0,100,20]},
+  m:{1:[0,10,1],2:[0,20,5],3:[0,50,10],4:[0,100,20],5:[0,100,20],6:[0,100,20]},
+  g:{1:[0,500,100],2:[0,1000,200],3:[0,1000,200],4:[0,1000,100],5:[0,2000,500],6:[0,2000,500]},
+  kg:{1:[0,10,2],2:[0,10,2],3:[0,20,5],4:[0,20,5],5:[0,50,10],6:[0,50,10]},
+  ml:{1:[0,500,100],2:[0,1000,200],3:[0,1000,200],4:[0,1000,100],5:[0,2000,500],6:[0,2000,500]},
+  l:{1:[0,5,1],2:[0,10,2],3:[0,10,2],4:[0,20,5],5:[0,20,5],6:[0,50,10]},
+  '\u00b0C':{1:[0,30,10],2:[0,30,10],3:[-10,40,10],4:[-10,40,10],5:[-20,50,10],6:[-20,50,10]}
+ };
+ const yearNum=Number(((year||'').match(/\d+/)||[4])[0])||4;
+ const gid=id=>document.getElementById(id);
+ /* Minor divisions that make each small interval a readable amount, and a
+    pointer that lands on an actual gridline so the reading is answerable. */
+ function applyRange(mn,mx,maj){
   const nice=[0.1,0.2,0.25,0.5,1,2,2.5,5,10,20,25,50,100,200,250,500];
   const isNice=v=>nice.some(n=>Math.abs(v-n)<1e-9);
   let divs=4;for(const d of [5,4,10,2]){if(isNice(Math.round((maj/d)*1e6)/1e6)){divs=d;break}}
-  document.getElementById('minor').value=divs;
-  const step=maj/divs,pv=document.getElementById('value');
-  /* Put the pointer on an actual gridline so the reading is answerable. */
-  if(pv){const k=Math.round(0.65*(mx-mn)/step);pv.value=Math.round((mn+k*step)*1000)/1000;}
-  document.getElementById('unit').dispatchEvent(new Event('input',{bubbles:true}));
+  gid('min').value=mn;gid('max').value=mx;gid('major').value=maj;gid('minor').value=divs;
+  const step=maj/divs,k=Math.round(0.65*(mx-mn)/step);
+  gid('value').value=Math.round((mn+k*step)*1000)/1000;
+  gid('unit').dispatchEvent(new Event('input',{bubbles:true}));
  }
+ function applyUnit(u){
+  if(!u)return;const sel=gid('unit');
+  if(![...sel.options].some(o=>o.value===u))return;
+  sel.value=u;
+  const r=(UNIT_RANGES[u]||{})[yearNum]||(UNIT_RANGES[u]||{})[4];
+  if(r)applyRange(r[0],r[1],r[2]);else sel.dispatchEvent(new Event('input',{bubbles:true}));
+  [...document.querySelectorAll('#unitChips button')].forEach(c=>c.setAttribute('aria-pressed',String(c.dataset.unit===u)));
+ }
+ /* A multi-measure objective names several units; offer them all so mass and
+    capacity stay reachable when length happens to be listed first. */
+ const named=(qs.get('units')||'').split(',').map(x=>x.trim()).filter(Boolean);
+ if(named.length>1){
+  const box=gid('unitChips');
+  box.innerHTML='<span class="small" style="width:100%">This objective names:</span>'+
+   named.map(u=>`<button type="button" class="chip" data-unit="${u}" aria-pressed="false" style="cursor:pointer;border:1px solid #cfd7e5">${u}</button>`).join('');
+  box.querySelectorAll('button').forEach(btn=>btn.addEventListener('click',()=>applyUnit(btn.dataset.unit)));
+ }
+ /* An explicit range from the Navigator wins on first load; after that the
+    range follows whichever unit is chosen. */
+ const setNum=(id,v)=>{const el=gid(id);if(el&&v!==null&&v!==''&&isFinite(Number(v))){el.value=Number(v);return true}return false};
+ const gotRange=[['min',qs.get('min')],['max',qs.get('max')],['major',qs.get('interval')]].map(x=>setNum(x[0],x[1])).some(Boolean);
+ if(gotRange)applyRange(Number(gid('min').value),Number(gid('max').value),Math.max(.001,Number(gid('major').value)));
+ [...document.querySelectorAll('#unitChips button')].forEach(c=>c.setAttribute('aria-pressed',String(c.dataset.unit===gid('unit').value)));
+ gid('unit').addEventListener('change',()=>applyUnit(gid('unit').value));
  
 })();
 </script>
