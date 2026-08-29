@@ -1,0 +1,107 @@
+<!doctype html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>Data &amp; Chart Lab v3</title><link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin><link href="https://fonts.googleapis.com/css2?family=Lexend+Deca:wght@400;500;600;700&display=swap" rel="stylesheet"><style>
+:root{--bg:#f5f7fb;--card:#fff;--ink:#20304a;--muted:#5c6779;--line:#d7ddea;--accent:#3157d5;--font:"Lexend Deca","Lexend",Arial,sans-serif}*{box-sizing:border-box}body{margin:0;background:var(--bg);font-family:var(--font);color:var(--ink)}.wrap{max-width:1200px;margin:auto;padding:16px}.top,.panel{background:#fff;border:1px solid var(--line);border-radius:16px;box-shadow:0 8px 22px rgba(30,55,90,.08)}.top{padding:18px 20px;margin-bottom:16px}.grid{display:grid;grid-template-columns:330px 1fr;gap:16px}.panel{padding:16px}.stack{display:grid;gap:12px}.row{display:flex;gap:8px;flex-wrap:wrap}button,input,select,textarea{font:inherit}button{border:1px solid var(--line);background:#fff;padding:9px 12px;border-radius:11px;cursor:pointer}input,select,textarea{width:100%;padding:9px;border:1px solid var(--line);border-radius:10px}.small{font-size:.9rem;color:var(--muted)}h1{font-size:1.75rem;margin:0 0 6px}.bubble{background:#fffef6;border:1px solid #eadc9e;border-radius:12px;padding:10px 12px}.stage{background:#fbfcff;border:1px solid var(--line);border-radius:14px;padding:14px;overflow:auto}.chart{display:flex;align-items:flex-end;gap:16px;min-height:360px;padding:20px 20px 40px;border-left:3px solid #31415d;border-bottom:3px solid #31415d;max-width:800px;margin:20px auto}.barwrap{flex:1;min-width:60px;text-align:center}.bar{background:#3157d5;min-height:2px;border-radius:8px 8px 0 0;display:flex;align-items:flex-start;justify-content:center;color:#fff;font-weight:800;padding-top:6px}.lbl{margin-top:8px;font-size:.85rem}.eq{text-align:center;font-weight:800;font-size:1.1rem}@media(max-width:850px){.grid{grid-template-columns:1fr}}@media(max-width:600px){.chart{gap:8px}.barwrap{min-width:46px}}
+
+/* ===== Interactive Maths Tools v2 shared refinement ===== */
+:root{--imt-bg:#f5f7fb;--imt-ink:#20304a;--imt-muted:#5c6779;--imt-line:#d7ddea;--imt-blue:#3157d5;--imt-soft:#eef3ff}
+html{font-size:16px;scroll-behavior:smooth}
+body{min-height:100vh;background:var(--imt-bg)!important;color:var(--imt-ink)!important}
+button,input,select{min-height:42px}
+button:focus-visible,input:focus-visible,select:focus-visible,a:focus-visible{outline:3px solid #f0b429!important;outline-offset:2px!important}
+.imt-skip{position:fixed;left:10px;top:-70px;z-index:9999;background:#172033;color:#fff;padding:10px 14px;border-radius:8px}.imt-skip:focus{top:10px}
+.imt-commonbar{max-width:1400px;margin:12px auto 0;padding:0 16px}
+.imt-commoninner{display:flex;align-items:center;justify-content:space-between;gap:12px;flex-wrap:wrap;background:#fff;border:1px solid var(--imt-line);border-radius:14px;padding:10px 12px;box-shadow:0 5px 16px rgba(30,55,90,.06)}
+.imt-context{font-size:.82rem;color:var(--imt-muted);line-height:1.4}.imt-context strong{color:var(--imt-ink)}
+.imt-modebar{display:flex;gap:6px;flex-wrap:wrap}.imt-modebar button{min-height:38px;border:1px solid #cfd7e5;background:#fff;color:#33415a;border-radius:10px;padding:7px 10px;font:inherit;font-size:.82rem;font-weight:650;cursor:pointer}.imt-modebar button.active{background:var(--imt-blue);border-color:var(--imt-blue);color:#fff}
+.imt-mode-tip{max-width:1400px;margin:8px auto 0;padding:0 16px}.imt-mode-tip>div{background:#fffef6;border:1px solid #eadfae;border-radius:11px;padding:9px 12px;font-size:.84rem;line-height:1.45;color:#5e552f}
+.imt-footer{max-width:1400px;margin:14px auto 22px;padding:0 16px;color:var(--imt-muted);font-size:.75rem;line-height:1.5}.imt-footer>div{border-top:1px solid var(--imt-line);padding-top:9px}
+@media(max-width:720px){html{font-size:16px}.imt-commonbar,.imt-mode-tip,.imt-footer{padding-left:10px;padding-right:10px}.imt-commoninner{align-items:stretch}.imt-modebar{width:100%;display:grid;grid-template-columns:repeat(3,1fr)}.imt-modebar button{padding:8px 5px}body{overflow-x:hidden}.panel,.card,.stage,.controls,.toolbar{max-width:100%}}
+@media(prefers-reduced-motion:reduce){*,*::before,*::after{scroll-behavior:auto!important;animation-duration:.001ms!important;transition-duration:.001ms!important}}
+
+
+/* ===== v3 classroom interaction standard ===== */
+.imt-classroom-controls{max-width:1400px;margin:8px auto 0;padding:0 16px;position:relative;z-index:20}
+.imt-classroom-inner{display:flex;gap:7px;align-items:center;flex-wrap:wrap;background:#f8faff;border:1px solid #d8e0ee;border-radius:12px;padding:8px 10px}
+.imt-classroom-inner button{min-height:40px;border:1px solid #cbd5e5;background:#fff;color:#33415a;border-radius:9px;padding:7px 10px;font:inherit;font-size:.8rem;font-weight:700;cursor:pointer}
+.imt-classroom-inner button[aria-pressed="true"]{background:#3157d5;color:#fff;border-color:#3157d5}
+.imt-classroom-status{font-size:.76rem;color:#5c6779;margin-left:auto}
+body.imt-frozen .wrap input,body.imt-frozen .wrap select,body.imt-frozen .wrap button{pointer-events:none;opacity:.58}
+body.imt-presentation .top{display:none!important}
+body.imt-presentation .wrap{max-width:none!important;padding-top:8px!important}
+body.imt-presentation .imt-commonbar,body.imt-presentation .imt-mode-tip{display:none!important}
+body.imt-presentation .imt-classroom-controls{position:sticky;top:0;max-width:none;background:#f5f7fb;padding-top:6px;padding-bottom:6px}
+body.imt-hide-teaching .imt-hide-target{visibility:hidden!important}
+body.imt-hide-teaching .imt-hide-target::after{content:'?';visibility:visible;display:inline-block;color:#3157d5;font-weight:800}
+@media(max-width:720px){.imt-classroom-controls{padding-left:10px;padding-right:10px}.imt-classroom-inner{display:grid;grid-template-columns:repeat(2,minmax(0,1fr))}.imt-classroom-inner button{width:100%}.imt-classroom-status{grid-column:1/-1;margin-left:0;text-align:center}}
+
+body.imt-hide-teaching #eq{visibility:hidden!important}
+.lineSvg{width:100%;height:auto;display:block}.datatable{border-collapse:collapse;margin:auto}.datatable th,.datatable td{border:1px solid var(--line);padding:8px 12px}.pictorow{display:grid;grid-template-columns:110px 1fr;gap:10px;align-items:start;padding:7px 0}.symbols{letter-spacing:4px;line-height:1.5}.pie{width:min(320px,80vw);aspect-ratio:1;border-radius:50%;margin:18px auto;border:1px solid var(--line)}.legend{display:flex;gap:10px;flex-wrap:wrap;justify-content:center}.meanline{border-top:3px dashed var(--accent2);margin:12px 0;padding-top:8px;text-align:center;font-weight:700}</style>
+<style>
+.grid>*{min-width:0}input[type="checkbox"]{width:auto;min-height:auto;padding:0}.stage{max-width:100%;overflow-x:auto}@media(max-width:720px){.wrap{width:100%;max-width:100%;padding:10px}.panel{min-width:0}.chart{max-width:100%;min-width:0}.pictorow{grid-template-columns:80px minmax(0,1fr)}.symbols{overflow-wrap:anywhere}}
+</style>
+</head><body>
+<a class="imt-skip" href="#imtToolMain">Skip to tool</a>
+<div class="imt-commonbar" aria-label="Interactive tool controls"><div class="imt-commoninner">
+  <div class="imt-context" id="imtContext"><strong>Interactive teaching tool</strong><br><span id="imtContextText">Use for whole-class modelling, pupil exploration or a quick reasoning challenge.</span></div>
+  <div class="imt-modebar" role="group" aria-label="Teaching mode">
+    <button type="button" data-imt-mode="teach" class="active">Teach</button><button type="button" data-imt-mode="explore">Explore</button><button type="button" data-imt-mode="challenge">Challenge</button>
+  </div>
+</div></div>
+<div class="imt-mode-tip"><div id="imtModeTip"><strong>Teach:</strong> model deliberately, reveal one structural idea at a time, and ask pupils to explain what changes and what stays the same.</div></div>
+<div id="imtToolMain" tabindex="-1"></div>
+<div class="imt-classroom-controls" aria-label="Classroom display controls"><div class="imt-classroom-inner">
+ <button type="button" id="imtFreeze" aria-pressed="false">Freeze</button>
+ <button type="button" id="imtHide" aria-pressed="false">Hide labels / answer</button>
+ <button type="button" id="imtNew">New example</button>
+ <button type="button" id="imtFullscreen" aria-pressed="false">Full screen</button>
+ <span class="imt-classroom-status" id="imtClassStatus">Ready for whole-class use</span>
+</div></div>
+
+<div class="wrap"><div class="top"><h1>Data & Chart Lab <span class="small">v3</span></h1><div class="small">Enter simple data and switch between bar, line, pictogram, table, mean and pie-chart views.</div></div><div class="grid"><aside class="panel"><div class="stack"><label>Chart / representation<select id="chartType"><option value="bar">Bar chart</option><option value="line">Line graph</option><option value="pictogram">Pictogram</option><option value="table">Table</option><option value="mean">Mean / equalisation</option><option value="pie">Pie chart</option></select></label><label>Categories (comma separated)<input id="cats" value="Red,Blue,Green,Yellow"></label><label>Values (comma separated)<input id="vals" value="8,12,5,10"></label><label>Scale maximum<input id="max" type="number" value="15"></label><label class="small"><input type="checkbox" id="showvals" checked> Show values on bars</label><div class="row"><button id="random">Random data</button><button id="sort">Sort by value</button></div></div></aside><main class="panel"><div class="bubble"><strong>Teaching note:</strong> Discuss the scale before interpreting the bars. The visual height only has meaning because of the numerical scale.</div><div class="stage"><div class="chart" id="chart"></div><div class="eq" id="eq"></div></div></main></div></div><script>
+const $=s=>document.querySelector(s);let sorted=false;function data(){let c=$('#cats').value.split(',').map(x=>x.trim()).filter(Boolean),v=$('#vals').value.split(',').map(Number);return c.map((x,i)=>[x,isFinite(v[i])?v[i]:0])}function render(){let d=data();if(sorted)d=d.sort((a,b)=>b[1]-a[1]);const mx=Math.max(1,Number($('#max').value)||1,...d.map(x=>x[1])),type=$('#chartType').value,show=$('#showvals').checked;let html='';if(type==='bar'){html=d.map(([c,v])=>`<div class="barwrap"><div class="bar" style="height:${Math.max(2,300*v/mx)}px">${show?v:''}</div><div class="lbl">${c}</div></div>`).join('')}else if(type==='line'){let W=620,H=330,p=45,pts=d.map((x,i)=>[p+(W-2*p)*(d.length===1?.5:i/(d.length-1)),H-p-(H-2*p)*x[1]/mx]);html=`<svg class="lineSvg" viewBox="0 0 ${W} ${H}" role="img" aria-label="Line graph"><line x1="${p}" y1="${H-p}" x2="${W-p}" y2="${H-p}" stroke="#34425b" stroke-width="2"/><line x1="${p}" y1="${p}" x2="${p}" y2="${H-p}" stroke="#34425b" stroke-width="2"/><polyline points="${pts.map(x=>x.join(',')).join(' ')}" fill="none" stroke="#3157d5" stroke-width="4"/>${pts.map((q,i)=>`<circle cx="${q[0]}" cy="${q[1]}" r="6" fill="#3157d5"/><text x="${q[0]}" y="${H-15}" text-anchor="middle" font-size="14">${d[i][0]}</text>${show?`<text x="${q[0]}" y="${q[1]-12}" text-anchor="middle" font-size="14">${d[i][1]}</text>`:''}`).join('')}</svg>`}else if(type==='pictogram'){html=d.map(([c,v])=>`<div class="pictorow"><strong>${c}</strong><div class="symbols">${'● '.repeat(Math.min(20,Math.max(0,Math.round(v))))}${v>20?'…':''}${show?` <span>${v}</span>`:''}</div></div>`).join('')}else if(type==='table'){html=`<table class="datatable"><thead><tr><th>Category</th><th>Value</th></tr></thead><tbody>${d.map(([c,v])=>`<tr><td>${c}</td><td>${show?v:'?'}</td></tr>`).join('')}</tbody></table>`}else if(type==='mean'){let mean=d.length?d.reduce((a,x)=>a+x[1],0)/d.length:0;html=d.map(([c,v])=>`<div class="barwrap"><div class="bar" style="height:${Math.max(2,250*v/mx)}px">${show?v:''}</div><div class="lbl">${c}</div></div>`).join('')+`<div class="meanline" style="width:100%">Mean = ${show?mean.toFixed(mean%1?1:0):'?'}</div>`}else{let total=d.reduce((a,x)=>a+Math.max(0,x[1]),0)||1,acc=0,series=['#3157d5','#13a38b','#d79b24','#8a67c7','#d26b7f','#6b7f95'],stops=d.map((x,i)=>{let a=acc/total*360;acc+=Math.max(0,x[1]);let b=acc/total*360;return `${series[i%series.length]} ${a}deg ${b}deg`});html=`<div class="pie" style="background:conic-gradient(${stops.join(',')})"></div><div class="legend">${d.map((x,i)=>`<span><b>${x[0]}</b>${show?' '+x[1]:''}</span>`).join('')}</div>`}$('#chart').innerHTML=html;if(d.length){const top=d.reduce((a,b)=>a[1]>=b[1]?a:b),low=d.reduce((a,b)=>a[1]<=b[1]?a:b);$('#eq').textContent=type==='mean'?`Total ${d.reduce((a,x)=>a+x[1],0)} shared equally across ${d.length} values.`:`Highest: ${top[0]} (${top[1]}); difference highest–lowest = ${top[1]-low[1]}`}}
+['#chartType','#cats','#vals','#max','#showvals'].forEach(id=>$(id).addEventListener('input',render));$('#random').onclick=()=>{const vals=Array.from({length:4},()=>Math.floor(Math.random()*15)+1);$('#vals').value=vals.join(',');render()};$('#sort').onclick=()=>{sorted=!sorted;render()};render();
+</script><div class="imt-footer"><div><strong>Data &amp; Chart Lab v3</strong> · Interactive Maths Tools · designed to connect with the Primary Maths Curriculum Navigator.</div></div><script>
+(function(){
+ const tips={teach:'<strong>Teach:</strong> model deliberately, reveal one structural idea at a time, and ask pupils to explain what changes and what stays the same.',explore:'<strong>Explore:</strong> let pupils suggest or make changes, then describe patterns, invariants and alternative representations.',challenge:'<strong>Challenge:</strong> hide or vary part of the representation, ask for a prediction first, then use the tool to test and justify it.'};
+ const qs=new URLSearchParams(location.search);const year=qs.get('year'),focus=qs.get('focus');
+ const ctxt=document.getElementById('imtContextText');if(ctxt&&(year||focus))ctxt.textContent=[year,focus].filter(Boolean).join(' · ');
+ function setMode(mode){document.documentElement.dataset.imtMode=mode;document.querySelectorAll('button[data-imt-mode]').forEach(b=>{const on=b.dataset.imtMode===mode;b.classList.toggle('active',on);b.setAttribute('aria-pressed',on?'true':'false')});const tip=document.getElementById('imtModeTip');if(tip)tip.innerHTML=tips[mode]||tips.teach;try{localStorage.setItem('imtMode',mode)}catch(e){}}
+ document.querySelectorAll('button[data-imt-mode]').forEach(b=>b.addEventListener('click',()=>setMode(b.dataset.imtMode)));
+ let mode=qs.get('mode');if(!['teach','explore','challenge'].includes(mode)){try{mode=localStorage.getItem('imtMode')}catch(e){}}setMode(['teach','explore','challenge'].includes(mode)?mode:'teach');
+})();
+</script>
+<script>
+(function(){
+ const qs=new URLSearchParams(location.search),year=qs.get('year'),focus=qs.get('focus');
+ const freeze=document.getElementById('imtFreeze'),hide=document.getElementById('imtHide'),full=document.getElementById('imtFullscreen'),status=document.getElementById('imtClassStatus');
+ let frozen=false,hidden=document.body.classList.contains('imt-hide-teaching'),presentation=false;
+ function setStatus(t){if(status)status.textContent=t;}
+ freeze?.addEventListener('click',()=>{frozen=!frozen;document.body.classList.toggle('imt-frozen',frozen);freeze.setAttribute('aria-pressed',String(frozen));freeze.textContent=frozen?'Unfreeze':'Freeze';setStatus(frozen?'Representation frozen for discussion':'Controls active');});
+ hide?.addEventListener('click',()=>{hidden=!hidden;document.body.classList.toggle('imt-hide-teaching',hidden);hide.setAttribute('aria-pressed',String(hidden));hide.textContent=hidden?'Reveal labels / answer':'Hide labels / answer';setStatus(hidden?'Labels and answers hidden — ask for a prediction':'Labels and answers revealed');});
+ hide?.addEventListener('click',()=>{const sv=document.getElementById('showvals');if(sv){sv.checked=!document.body.classList.contains('imt-hide-teaching');sv.dispatchEvent(new Event('input',{bubbles:true}));}});
+ document.getElementById('imtNew')?.addEventListener('click',()=>{try{document.getElementById('random')?.click();}catch(e){} setStatus('New example ready');});
+ async function toggleFull(){
+   try{if(!document.fullscreenElement){await document.documentElement.requestFullscreen();}else{await document.exitFullscreen();}}
+   catch(e){presentation=!presentation;document.body.classList.toggle('imt-presentation',presentation);full.setAttribute('aria-pressed',String(presentation));full.textContent=presentation?'Exit full screen':'Full screen';}
+ }
+ full?.addEventListener('click',toggleFull);
+ document.addEventListener('fullscreenchange',()=>{const on=!!document.fullscreenElement;document.body.classList.toggle('imt-presentation',on);full?.setAttribute('aria-pressed',String(on));if(full)full.textContent=on?'Exit full screen':'Full screen';});
+ function applySharedMode(m){
+   const shouldHide=m==='challenge';
+   hidden=shouldHide;
+   document.body.classList.toggle('imt-hide-teaching',hidden);
+   const sv=document.getElementById('showvals');if(sv){sv.checked=!hidden;sv.dispatchEvent(new Event('input',{bubbles:true}));}
+   if(hide){hide.setAttribute('aria-pressed',String(hidden));hide.textContent=hidden?'Reveal labels / answer':'Hide labels / answer';}
+   setStatus(hidden?'Challenge: labels/answer hidden — predict first':(m==='explore'?'Explore mode: controls active':'Teach mode: labels/answer visible'));
+ }
+ document.querySelectorAll('button[data-imt-mode]').forEach(b=>b.addEventListener('click',()=>applySharedMode(b.dataset.imtMode)));
+ // Synchronise the common Teach / Explore / Challenge bar with any native mode controls.
+ document.querySelectorAll('button[data-imt-mode]').forEach(b=>b.addEventListener('click',()=>{const native=[...document.querySelectorAll('.wrap [data-mode]')].find(x=>x.dataset.mode===b.dataset.imtMode);if(native&&!native.classList.contains('active'))native.click();}));
+ const initialSharedMode=document.documentElement.dataset.imtMode||'teach';const initialNative=[...document.querySelectorAll('.wrap [data-mode]')].find(x=>x.dataset.mode===initialSharedMode);if(initialNative&&!initialNative.classList.contains('active'))initialNative.click();applySharedMode(initialSharedMode);
+ 
+ const chart=qs.get('chart'); if(chart&&document.getElementById('chartType')){document.getElementById('chartType').value=chart;document.getElementById('chartType').dispatchEvent(new Event('input',{bubbles:true}));}
+ if(focus&&!chart){const f=focus.toLowerCase(),el=document.getElementById('chartType');if(el){if(/mean|average/.test(f))el.value='mean';else if(/pie chart/.test(f))el.value='pie';else if(/line graph/.test(f))el.value='line';else if(/pictogram/.test(f))el.value='pictogram';else if(/table|timetable/.test(f))el.value='table';else el.value='bar';el.dispatchEvent(new Event('input',{bubbles:true}));}}
+ 
+ if(year&&/Year [12]/.test(year)){document.getElementById('cats').value='Cats,Dogs,Fish,Birds';document.getElementById('vals').value='4,8,6,2';document.getElementById('max').value='10';document.getElementById('chartType').dispatchEvent(new Event('input',{bubbles:true}));}
+})();
+</script>
+</body></html>
