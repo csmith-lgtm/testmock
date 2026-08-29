@@ -38,7 +38,9 @@ body.imt-hide-teaching .imt-hide-target{visibility:hidden!important}
 body.imt-hide-teaching .imt-hide-target::after{content:'?';visibility:visible;display:inline-block;color:#3157d5;font-weight:800}
 @media(max-width:720px){.imt-classroom-controls{padding-left:10px;padding-right:10px}.imt-classroom-inner{display:grid;grid-template-columns:repeat(2,minmax(0,1fr))}.imt-classroom-inner button{width:100%}.imt-classroom-status{grid-column:1/-1;margin-left:0;text-align:center}}
 
-body.imt-hide-teaching .lbl,body.imt-hide-teaching #eq{visibility:hidden!important}
+/* .lbl is the scale's own numbering - a given. Hiding it left 21 unlabelled
+   ticks with nothing to read from. Only the reading itself hides. */
+body.imt-hide-teaching #eq{visibility:hidden!important}
 </style></head><body>
 <a class="imt-skip" href="#imtToolMain">Skip to tool</a>
 <div class="imt-commonbar" aria-label="Interactive tool controls"><div class="imt-commoninner">

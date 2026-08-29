@@ -114,6 +114,16 @@ $('#translate').onclick=()=>{const dx=Number($('#dx').value),dy=Number($('#dy').
   if(q==='1'||q==='4')document.getElementById('grid').value=q;
   else if(year)document.getElementById('grid').value=/Year 6/.test(year)?'4':'1';
   document.getElementById('grid').dispatchEvent(new Event('input',{bubbles:true}));}
+ /* Translations follow the year too: positive steps while the work stays in the
+    first quadrant, and a negative component once Year 6 opens all four. */
+ {const dx=document.getElementById('dx'),dy=document.getElementById('dy');
+  if(dx&&dy){
+   const px=qs.get('dx'),py=qs.get('dy');
+   if(px!==null&&isFinite(Number(px)))dx.value=Number(px);
+   else if(year)dx.value={'Year 4':2,'Year 5':3,'Year 6':-4}[year]!==undefined?{'Year 4':2,'Year 5':3,'Year 6':-4}[year]:2;
+   if(py!==null&&isFinite(Number(py)))dy.value=Number(py);
+   else if(year)dy.value={'Year 4':1,'Year 5':2,'Year 6':3}[year]!==undefined?{'Year 4':1,'Year 5':2,'Year 6':3}[year]:1;
+  }}
 })();
 </script>
 </body></html>
