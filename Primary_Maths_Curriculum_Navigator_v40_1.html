@@ -1081,6 +1081,16 @@ html.text-large .main,html.text-large .side,html.text-xlarge .main,html.text-xla
 .tools-hero{background:linear-gradient(180deg,#fff 0%,#f7f9ff 100%);border:1px solid var(--line);border-radius:18px;padding:18px 20px;margin-bottom:14px}.tools-hero h2{margin:0;font-size:1.7rem}.tools-hero p{margin:6px 0 0;color:var(--muted);font-size:.8125rem;line-height:1.55;max-width:850px}
 .tools-filter{display:flex;gap:6px;flex-wrap:wrap;margin:0 0 12px}.tools-filter button{border:1px solid #ccd5e5;background:#fff;color:#33415a;border-radius:999px;padding:7px 10px;font-size:.75rem;cursor:pointer}.tools-filter button.active{background:var(--blue);color:#fff;border-color:var(--blue)}
 .tools-grid{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:12px}.tool-card{background:#fff;border:1px solid #dce3ed;border-radius:14px;padding:14px;box-shadow:0 3px 10px #1720330a;display:flex;flex-direction:column;min-width:0}.tool-icon{width:40px;height:40px;border-radius:11px;background:#eef3ff;color:#3157d5;display:grid;place-items:center;font-weight:800}.tool-cat{font-size:.6875rem;text-transform:uppercase;letter-spacing:.06em;color:#5c6779;margin-top:10px}.tool-card h3{font-size:.9375rem;margin:4px 0 5px}.tool-card p{font-size:.78125rem;line-height:1.5;color:#5c6779;margin:0 0 10px}.tool-years{font-size:.71875rem;color:#5c6779;margin-top:auto;padding-top:4px}.tool-open{display:inline-flex;margin-top:9px;align-self:flex-start;border:1px solid #cbd5e6;background:#fff;border-radius:8px;padding:7px 9px;font-size:.75rem;font-weight:700;color:#3157d5;text-decoration:none}.tool-open:hover{background:#f3f6ff;text-decoration:none}
+.misc-group{background:white;border:1px solid var(--line);border-radius:14px;padding:14px 16px;box-shadow:0 3px 10px #1720330b}
+.misc-group h3{margin:0 0 3px;font-size:15px}
+.misc-group .misc-count{font-size:10px;color:var(--muted);margin-bottom:9px}
+.misc-item{border-top:1px solid #eef1f6;padding:9px 0}
+.misc-item:first-of-type{border-top:0}
+.misc-text{font-size:12px;line-height:1.5}
+.misc-meta{margin-top:5px;display:flex;gap:6px;flex-wrap:wrap;align-items:center}
+.misc-link{border:0;background:#eef2ff;color:#2944aa;border-radius:8px;padding:5px 8px;font-size:10px;cursor:pointer;font:inherit;font-size:10px;font-weight:650}
+.misc-link:hover{background:#e3e9ff}
+.misc-empty{font-size:12px;color:var(--muted);padding:10px 2px}
 .obj-tools{margin-top:8px;border-top:1px solid #e8ecf3;padding-top:8px}.obj-tools-title{font-size:.75rem;font-weight:700;color:#44516a;margin-bottom:6px}.obj-tool-links{display:flex;gap:6px;flex-wrap:wrap}.obj-tool-link{display:inline-flex;border:1px solid #cdd7e8;background:#f8faff;border-radius:8px;padding:6px 8px;font-size:.71875rem;font-weight:650;color:#3157d5;text-decoration:none}.obj-tool-link:hover{background:#eef3ff;text-decoration:none}
 @media(max-width:1050px){.tools-grid{grid-template-columns:repeat(2,minmax(0,1fr))}}@media(max-width:650px){.tools-grid{grid-template-columns:1fr}.tools-hero h2{font-size:1.35rem}}
 
@@ -1094,7 +1104,7 @@ html.text-large .main,html.text-large .side,html.text-xlarge .main,html.text-xla
 <div class="side-title">Platform view</div>
 <button class="navbtn active" data-view="dashboard">Staff home</button>
 <button class="navbtn" data-view="curriculum">Curriculum objectives</button>
-<button class="navbtn" data-view="calculation">Calculation progressions</button><button class="navbtn" data-view="journeys">Representation journeys</button><button class="navbtn" data-view="concepts">What changes by year?</button><button class="navbtn" data-view="consistency">Maths language & methods</button><button class="navbtn" data-view="yeargroup">Year group overview</button><button class="navbtn" data-view="tools">Interactive maths tools</button><button class="navbtn" data-view="parents">Parent maths guide</button>
+<button class="navbtn" data-view="calculation">Calculation progressions</button><button class="navbtn" data-view="journeys">Representation journeys</button><button class="navbtn" data-view="concepts">What changes by year?</button><button class="navbtn" data-view="consistency">Maths language & methods</button><button class="navbtn" data-view="yeargroup">Year group overview</button><button class="navbtn" data-view="tools">Interactive maths tools</button><button class="navbtn" data-view="misconceptions">Misconceptions index</button><button class="navbtn" data-view="parents">Parent maths guide</button>
 <div id="curriculumSide"><div class="side-title">Mathematical strand</div><div id="strandList"></div></div>
 <div id="calcSide" style="display:none"><div class="side-title">Operation</div><button class="strandbtn calcSideBtn active" data-op="Addition">Addition</button><button class="strandbtn calcSideBtn" data-op="Subtraction">Subtraction</button><button class="strandbtn calcSideBtn" data-op="Multiplication">Multiplication</button><button class="strandbtn calcSideBtn" data-op="Division">Division</button></div>
 <div class="side-title">Representation principle</div><div class="side-note">Part–whole models establish whole/part structure. The rectangular form can bridge deliberately into proportional bar models: later, bar length begins to carry magnitude as well as relationship.</div>
@@ -1102,7 +1112,8 @@ html.text-large .main,html.text-large .side,html.text-xlarge .main,html.text-xla
 <main class="main" id="mainContent" tabindex="-1">
 <section id="dashboardView" class="view active"><div class="dashboard-hero"><h2>Staff maths hub</h2><p>Start with the job you are doing: find a curriculum objective, follow a calculation or representation progression, check whole-school language, view a year group, or open the parent-facing method guide.</p></div><div class="dashboard-section-title">Curriculum & teaching</div><div class="dashboard-grid"><button class="dashboard-card" type="button" onclick="showView('curriculum')"><div class="dashboard-icon" aria-hidden="true">▦</div><h3>Curriculum objectives</h3><p>Statutory objectives with progression, small steps, teaching points, misconceptions, diagnostics, representations and curated resources.</p><span class="go">Open curriculum →</span></button><button class="dashboard-card" type="button" onclick="showView('calculation')"><div class="dashboard-icon" aria-hidden="true">＋</div><h3>Calculation progressions</h3><p>See how mental strategies, place-value reasoning, expanded recording and formal written methods develop.</p><span class="go">Open calculations →</span></button><button class="dashboard-card" type="button" onclick="showView('journeys')"><div class="dashboard-icon" aria-hidden="true">◇</div><h3>Representation journeys</h3><p>Follow the conceptual models that make structure visible, without confusing representations with calculation procedures.</p><span class="go">Open journeys →</span></button><button class="dashboard-card" type="button" onclick="showView('concepts')"><div class="dashboard-icon" aria-hidden="true">↕</div><h3>What changes by year?</h3><p>Track one mathematical concept from EYFS to Year 6: learning focus, representations, language and common watch-fors.</p><span class="go">Open concept progressions →</span></button><button class="dashboard-card" type="button" onclick="showView('yeargroup')"><div class="dashboard-icon" aria-hidden="true">Y</div><h3>Year group overview</h3><p>See the statutory picture for one year group and jump directly into individual objectives.</p><span class="go">Choose a year →</span></button><button class="dashboard-card" type="button" onclick="showView('tools')"><div class="dashboard-icon" aria-hidden="true">▣</div><h3>Interactive maths tools</h3><p>Open school-aligned manipulatives for place value, number lines, bars, fractions, calculation, angles, perimeter/area, measurement, geometry and data.</p><span class="go">Open teaching tools →</span></button><button class="dashboard-card" type="button" onclick="showView('consistency')"><div class="dashboard-icon" aria-hidden="true">≡</div><h3>Maths language & methods</h3><p>Whole-school conventions for terminology, representations and method language, including regrouping and exchange.</p><span class="go">Open consistency guide →</span></button><button class="dashboard-card" type="button" onclick="showView('parents')"><div class="dashboard-icon" aria-hidden="true">⌂</div><h3>Parent maths guide</h3><p>Parent-friendly explanations and animated examples of the representations, strategies and methods used from EYFS to Year 6.</p><span class="go">Open parent guide →</span></button></div><div class="dashboard-section-title">Quick actions</div><div class="dashboard-quick"><div class="dashboard-note"><b>Need one objective?</b><br>Open Curriculum objectives and use the search box to search objective wording, misconception, representation, vocabulary or depth prompt.</div><div class="dashboard-note"><b>Preparing CPD or a meeting?</b><br>Open the relevant view, then use <button class="print-btn" type="button" onclick="window.print()">Print current view</button> for a clean paper/PDF copy.</div><div class="dashboard-note"><b>External resources</b><br>Resource families and representative destination content were reviewed on 20 August 2026; soft-404 Dr Frost links were removed. Some third-party sites may require sign-in or anti-bot verification.</div></div><details class="changelog"><summary>Version &amp; change notes</summary><div class="changelog-body"><span class="audit-status">v37 · 28 Aug 2026</span><ul><li><b>v37:</b> post-review repair and expansion: fixed four blank core tools, hardened local-storage startup, corrected objective→tool routing and preset compatibility, added genuine short-division/remainder and chart modes, improved mobile containment, and added Angle &amp; Shape Lab plus Perimeter &amp; Area Builder.</li><li><b>v35:</b> applied the classroom interaction standard to all 12 then-current interactive tools; all now use Teach / Explore / Challenge, Freeze, Hide/Reveal, New Example and Full Screen controls, with broader objective-specific presets.</li><li><b>v34:</b> refined the four core teaching tools (Place Value, Bar Model, Fractions, Written Calculation) with hide/reveal, freeze, full-screen teaching mode, stronger challenges and objective-specific presets.</li><li><b>v33:</b> added Interactive Maths Tools view, objective-aware tool links and refined v2 tool bank.</li><li><b>v32:</b> final word-boundary cleanup in diagnostic matching (including centimetres/time and rectangle/angle false positives).</li><li><b>v31:</b> diagnostic probes diversified at objective level; inappropriate cross-topic reused probes removed; final stabilisation checks.</li><li><b>v30:</b> stabilisation audit; consolidated type overrides; shared diagnostic probes labelled transparently; resource-depth indicator clarified; maintenance/status notes added.</li><li><b>v29:</b> repaired mobile small-step formatting and animation controls/stacking.</li><li><b>v28:</b> global/debounced search, routing, persistence, print scopes, vocabulary/look-for completion and accessibility fixes.</li><li><b>v27:</b> resource-link audit and blue/grey background restored.</li><li><b>v24–26:</b> calculation-policy cross-reference, expanded→compact method bridges and powers-of-ten place-value movement.</li></ul></div></details></section>
 <section id="curriculumView" class="view"><div class="hero"><div><h2 id="strandTitle"></h2><p id="strandSub"></p></div><div class="pills" id="yearPills"></div></div><div id="strandSources" class="strand-sources"></div><div class="notice">Statutory objectives are kept as separate cards across all primary strands. Expand a card for progression, teaching points, misconceptions, representations, assessment checks and curated objective-specific resources. Broad source pages stay at strand level; objective cards only surface close mathematical matches.</div><div class="print-tools"><button type="button" onclick="printCurrentYear()">Print current year</button><button type="button" onclick="printShownObjectives()">Print everything shown</button></div><div class="objective-list" id="objectiveList"></div></section>
-<section id="journeysView" class="view"><div class="hero"><div><h2>Representation journeys</h2><p>See how representations deliberately change as mathematical thinking becomes more sophisticated. The aim is not to use every representation, but to know what each one makes visible and when it should give way to a more efficient model.</p></div></div><div class="journey-tabs" id="journeyTabs"></div><div id="journeyContent"></div></section><section id="conceptsView" class="view"><div class="hero"><div><h2>What changes by year?</h2><p>Choose a concept to see how the mathematical demand, representations, language and typical misconceptions develop from EYFS to Year 6.</p></div></div><div class="concept-tabs" id="conceptTabs"></div><div id="conceptContent"></div></section><section id="consistencyView" class="view"><div class="hero"><div><h2>Whole-school maths language & methods</h2><p>A shared reference for the mathematical language, method conventions and representation principles used across the school and in the Parent Maths Guide.</p></div></div><div class="consistency-intro"><b>Purpose:</b> consistency does not mean every calculation must look identical or that pupils use one method. It means that when the same mathematical idea appears in different year groups, adults use compatible language and explain the structure in the same way. The parent wording below is intentionally simpler, but preserves the same mathematics.</div><div class="consistency-tabs" id="consistencyTabs"></div><div id="consistencyContent"></div></section><section id="yeargroupView" class="view"><div class="hero"><div><h2>Year group overview</h2><p>See the full statutory picture for one year, then jump straight into any objective for teaching guidance and planning support.</p></div><div class="year-overview-controls" id="yearOverviewPills"></div></div><div class="year-overview-grid" id="yearOverviewGrid"></div></section><section id="toolsView" class="view"><div class="tools-hero"><h2>Interactive maths tools</h2><p>Purpose-built manipulatives and teaching tools aligned to the Navigator’s representation and calculation principles. Use <b>Teach</b> to model, <b>Explore</b> for pupil manipulation and discussion, and <b>Challenge</b> for prediction and reasoning. Tools open in a new tab and can also be embedded individually in Google Sites.</p></div><div class="tools-filter" id="toolsFilter"></div><div class="tools-grid" id="toolsGrid"></div></section><section id="parentsView" class="view"><div class="hero"><div><h2>Parent maths guide</h2><p>Choose a year group to see the representations, mental strategies and written methods pupils will meet, with short animated examples and the language we use in school.</p></div></div><div class="parent-year-tabs" id="parentYearTabs"></div><div id="parentGuideContent"></div></section><section id="calculationView" class="view"><div class="hero"><div><h2 id="calcTitle"></h2><p>Concrete/structured representation → structural visual → abstract/written method, with planning position and rationale.</p></div><div class="op-tabs" id="opTabs"></div></div><div class="calc-intro"><h3 id="calcFocusTitle"></h3><p id="calcIntro"></p><div id="operationRail"></div><div class="legend" style="justify-content:flex-start;margin-top:9px"><span class="item"><span class="sw hund"></span>Base 10 / concrete structure</span><span class="item"><span class="circ one"></span>Place-value counters</span><span class="item">▭ bar/area = relationship</span><span class="item">→ written method = calculation record</span></div></div><div class="calc-list" id="calcList"></div></section>
+<section id="journeysView" class="view"><div class="hero"><div><h2>Representation journeys</h2><p>See how representations deliberately change as mathematical thinking becomes more sophisticated. The aim is not to use every representation, but to know what each one makes visible and when it should give way to a more efficient model.</p></div></div><div class="journey-tabs" id="journeyTabs"></div><div id="journeyContent"></div></section><section id="conceptsView" class="view"><div class="hero"><div><h2>What changes by year?</h2><p>Choose a concept to see how the mathematical demand, representations, language and typical misconceptions develop from EYFS to Year 6.</p></div></div><div class="concept-tabs" id="conceptTabs"></div><div id="conceptContent"></div></section><section id="consistencyView" class="view"><div class="hero"><div><h2>Whole-school maths language & methods</h2><p>A shared reference for the mathematical language, method conventions and representation principles used across the school and in the Parent Maths Guide.</p></div></div><div class="consistency-intro"><b>Purpose:</b> consistency does not mean every calculation must look identical or that pupils use one method. It means that when the same mathematical idea appears in different year groups, adults use compatible language and explain the structure in the same way. The parent wording below is intentionally simpler, but preserves the same mathematics.</div><div class="consistency-tabs" id="consistencyTabs"></div><div id="consistencyContent"></div></section><section id="yeargroupView" class="view"><div class="hero"><div><h2>Year group overview</h2><p>See the full statutory picture for one year, then jump straight into any objective for teaching guidance and planning support.</p></div><div class="year-overview-controls" id="yearOverviewPills"></div></div><div class="year-overview-grid" id="yearOverviewGrid"></div></section><section id="toolsView" class="view"><div class="tools-hero"><h2>Interactive maths tools</h2><p>Purpose-built manipulatives and teaching tools aligned to the Navigator’s representation and calculation principles. Use <b>Teach</b> to model, <b>Explore</b> for pupil manipulation and discussion, and <b>Challenge</b> for prediction and reasoning. Tools open in a new tab and can also be embedded individually in Google Sites.</p></div><div class="tools-filter" id="toolsFilter"></div><div class="tools-grid" id="toolsGrid"></div></section><section id="misconceptionsView" class="view"><div class="hero"><div><h2>Misconceptions index</h2><p>Every "common misconception / watch-for" already recorded against a statutory objective, gathered in one place and grouped by strand. Nothing here is new: it is the same wording that appears on each objective card. Use it to plan what to watch for across a unit, then follow a link to the objective it belongs to.</p></div></div><div class="notice" id="miscSummary"></div><div class="pills" id="miscStrandFilter" role="group" aria-label="Filter by strand"></div><div class="pills" id="miscYearFilter" role="group" aria-label="Filter by year" style="margin-top:8px"></div><div id="miscList" class="objective-list" style="margin-top:14px"></div></section>
+<section id="parentsView" class="view"><div class="hero"><div><h2>Parent maths guide</h2><p>Choose a year group to see the representations, mental strategies and written methods pupils will meet, with short animated examples and the language we use in school.</p></div></div><div class="parent-year-tabs" id="parentYearTabs"></div><div id="parentGuideContent"></div></section><section id="calculationView" class="view"><div class="hero"><div><h2 id="calcTitle"></h2><p>Concrete/structured representation → structural visual → abstract/written method, with planning position and rationale.</p></div><div class="op-tabs" id="opTabs"></div></div><div class="calc-intro"><h3 id="calcFocusTitle"></h3><p id="calcIntro"></p><div id="operationRail"></div><div class="legend" style="justify-content:flex-start;margin-top:9px"><span class="item"><span class="sw hund"></span>Base 10 / concrete structure</span><span class="item"><span class="circ one"></span>Place-value counters</span><span class="item">▭ bar/area = relationship</span><span class="item">→ written method = calculation record</span></div></div><div class="calc-list" id="calcList"></div></section>
 <footer class="version-footer">Primary Maths Curriculum Navigator <b>v37</b> · repaired and expanded interactive-tool build · 28 August 2026.</footer></main></div>
 <script>
 function dots(n, cols=5){
@@ -1287,6 +1298,7 @@ const strands=[
 ];
 const objectives = [
   {
+    "id": "eyfs-pv-develop-a-strong-grounding-in-number-including-a-deep-understanding",
     "strand": "pv",
     "year": "EYFS",
     "title": "Develop a strong grounding in number, including a deep understanding of numbers to 10, the relationships between them and the patterns within those numbers.",
@@ -1370,6 +1382,7 @@ const objectives = [
     }
   },
   {
+    "id": "eyfs-as-explore-composition-and-the-relationships-between-quantities-through",
     "strand": "as",
     "year": "EYFS",
     "title": "Explore composition and the relationships between quantities through combining, separating and comparing in meaningful contexts.",
@@ -1452,6 +1465,7 @@ const objectives = [
     }
   },
   {
+    "id": "eyfs-md-experience-equal-groups-doubling-sharing-and-grouping-through-play",
     "strand": "md",
     "year": "EYFS",
     "title": "Experience equal groups, doubling, sharing and grouping through play and practical contexts.",
@@ -1526,6 +1540,7 @@ const objectives = [
     }
   },
   {
+    "id": "y1-pv-count-to-and-across-100-forwards-and-backwards-beginning-with-0-or-1",
     "strand": "pv",
     "year": "Year 1",
     "title": "count to and across 100, forwards and backwards, beginning with 0 or 1, or from any given number",
@@ -1617,6 +1632,7 @@ const objectives = [
     }
   },
   {
+    "id": "y1-pv-count-read-and-write-numbers-to-100-in-numerals-count-in-multiples-of",
     "strand": "pv",
     "year": "Year 1",
     "title": "count, read and write numbers to 100 in numerals; count in multiples of 2s, 5s and 10s",
@@ -1702,6 +1718,7 @@ const objectives = [
     }
   },
   {
+    "id": "y1-pv-given-a-number-identify-1-more-and-1-less",
     "strand": "pv",
     "year": "Year 1",
     "title": "given a number, identify 1 more and 1 less",
@@ -1780,6 +1797,7 @@ const objectives = [
     "move_on": "pupils identify one more/less from varied starting numbers, including across a ten boundary, and explain that exactly one unit changes."
   },
   {
+    "id": "y1-pv-identify-and-represent-numbers-using-objects-and-pictorial",
     "strand": "pv",
     "year": "Year 1",
     "title": "identify and represent numbers using objects and pictorial representations including the number line, and use the language of: equal to, more than, less than (fewer), most, least",
@@ -1872,6 +1890,7 @@ const objectives = [
     }
   },
   {
+    "id": "y1-pv-read-and-write-numbers-from-1-to-20-in-numerals-and-words",
     "strand": "pv",
     "year": "Year 1",
     "title": "read and write numbers from 1 to 20 in numerals and words",
@@ -1957,6 +1976,7 @@ const objectives = [
     }
   },
   {
+    "id": "y2-pv-count-in-steps-of-2-3-and-5-from-0-and-in-10s-from-any-number-forward",
     "strand": "pv",
     "year": "Year 2",
     "title": "count in steps of 2, 3, and 5 from 0, and in 10s from any number, forward and backward",
@@ -2048,6 +2068,7 @@ const objectives = [
     }
   },
   {
+    "id": "y2-pv-recognise-the-place-value-of-each-digit-in-a-two-digit-number-10s-1s",
     "strand": "pv",
     "year": "Year 2",
     "title": "recognise the place value of each digit in a two-digit number (10s, 1s)",
@@ -2136,6 +2157,7 @@ const objectives = [
     }
   },
   {
+    "id": "y2-pv-identify-represent-and-estimate-numbers-using-different",
     "strand": "pv",
     "year": "Year 2",
     "title": "identify, represent and estimate numbers using different representations, including the number line",
@@ -2228,6 +2250,7 @@ const objectives = [
     }
   },
   {
+    "id": "y2-pv-compare-and-order-numbers-from-0-up-to-100-use-and-signs",
     "strand": "pv",
     "year": "Year 2",
     "title": "compare and order numbers from 0 up to 100; use <, > and = signs",
@@ -2322,6 +2345,7 @@ const objectives = [
     }
   },
   {
+    "id": "y2-pv-read-and-write-numbers-to-at-least-100-in-numerals-and-in-words",
     "strand": "pv",
     "year": "Year 2",
     "title": "read and write numbers to at least 100 in numerals and in words",
@@ -2407,6 +2431,7 @@ const objectives = [
     }
   },
   {
+    "id": "y2-pv-use-place-value-and-number-facts-to-solve-problems",
     "strand": "pv",
     "year": "Year 2",
     "title": "use place value and number facts to solve problems",
@@ -2495,6 +2520,7 @@ const objectives = [
     }
   },
   {
+    "id": "y3-pv-count-from-0-in-multiples-of-4-8-50-and-100-find-10-or-100-more-or",
     "strand": "pv",
     "year": "Year 3",
     "title": "count from 0 in multiples of 4, 8, 50 and 100; find 10 or 100 more or less than a given number",
@@ -2587,6 +2613,7 @@ const objectives = [
     }
   },
   {
+    "id": "y3-pv-recognise-the-place-value-of-each-digit-in-a-3-digit-number-100s-10s",
     "strand": "pv",
     "year": "Year 3",
     "title": "recognise the place value of each digit in a 3-digit number (100s, 10s, 1s)",
@@ -2675,6 +2702,7 @@ const objectives = [
     }
   },
   {
+    "id": "y3-pv-compare-and-order-numbers-up-to-1-000",
     "strand": "pv",
     "year": "Year 3",
     "title": "compare and order numbers up to 1,000",
@@ -2770,6 +2798,7 @@ const objectives = [
     }
   },
   {
+    "id": "y3-pv-identify-represent-and-estimate-numbers-using-different",
     "strand": "pv",
     "year": "Year 3",
     "title": "identify, represent and estimate numbers using different representations",
@@ -2863,6 +2892,7 @@ const objectives = [
     }
   },
   {
+    "id": "y3-pv-read-and-write-numbers-up-to-1-000-in-numerals-and-in-words",
     "strand": "pv",
     "year": "Year 3",
     "title": "read and write numbers up to 1,000 in numerals and in words",
@@ -2949,6 +2979,7 @@ const objectives = [
     }
   },
   {
+    "id": "y3-pv-solve-number-problems-and-practical-problems-involving-these-ideas",
     "strand": "pv",
     "year": "Year 3",
     "title": "solve number problems and practical problems involving these ideas",
@@ -3042,6 +3073,7 @@ const objectives = [
     }
   },
   {
+    "id": "y4-pv-count-in-multiples-of-6-7-9-25-and-1-000",
     "strand": "pv",
     "year": "Year 4",
     "title": "count in multiples of 6, 7, 9, 25 and 1,000",
@@ -3133,6 +3165,7 @@ const objectives = [
     }
   },
   {
+    "id": "y4-pv-find-1-000-more-or-less-than-a-given-number",
     "strand": "pv",
     "year": "Year 4",
     "title": "find 1,000 more or less than a given number",
@@ -3224,6 +3257,7 @@ const objectives = [
     }
   },
   {
+    "id": "y4-pv-count-backwards-through-0-to-include-negative-numbers",
     "strand": "pv",
     "year": "Year 4",
     "title": "count backwards through 0 to include negative numbers",
@@ -3309,6 +3343,7 @@ const objectives = [
     }
   },
   {
+    "id": "y4-pv-recognise-the-place-value-of-each-digit-in-a-four-digit-number-1-000s",
     "strand": "pv",
     "year": "Year 4",
     "title": "recognise the place value of each digit in a four-digit number (1,000s, 100s, 10s, and 1s)",
@@ -3397,6 +3432,7 @@ const objectives = [
     }
   },
   {
+    "id": "y4-pv-order-and-compare-numbers-beyond-1-000",
     "strand": "pv",
     "year": "Year 4",
     "title": "order and compare numbers beyond 1,000",
@@ -3491,6 +3527,7 @@ const objectives = [
     }
   },
   {
+    "id": "y4-pv-identify-represent-and-estimate-numbers-using-different",
     "strand": "pv",
     "year": "Year 4",
     "title": "identify, represent and estimate numbers using different representations",
@@ -3583,6 +3620,7 @@ const objectives = [
     }
   },
   {
+    "id": "y4-pv-round-any-number-to-the-nearest-10-100-or-1-000",
     "strand": "pv",
     "year": "Year 4",
     "title": "round any number to the nearest 10, 100 or 1,000",
@@ -3671,6 +3709,7 @@ const objectives = [
     }
   },
   {
+    "id": "y4-pv-solve-number-and-practical-problems-that-involve-all-of-the-above-and",
     "strand": "pv",
     "year": "Year 4",
     "title": "solve number and practical problems that involve all of the above and with increasingly large positive numbers",
@@ -3763,6 +3802,7 @@ const objectives = [
     }
   },
   {
+    "id": "y4-pv-read-roman-numerals-to-100-i-to-c-and-know-that-over-time-the-numeral",
     "strand": "pv",
     "year": "Year 4",
     "title": "read Roman numerals to 100 (I to C) and know that over time, the numeral system changed to include the concept of 0 and place value",
@@ -3850,6 +3890,7 @@ const objectives = [
     }
   },
   {
+    "id": "y5-pv-read-write-order-and-compare-numbers-to-at-least-1-000-000-and",
     "strand": "pv",
     "year": "Year 5",
     "title": "read, write, order and compare numbers to at least 1,000,000 and determine the value of each digit",
@@ -3937,6 +3978,7 @@ const objectives = [
     }
   },
   {
+    "id": "y5-pv-count-forwards-or-backwards-in-steps-of-powers-of-10-for-any-given",
     "strand": "pv",
     "year": "Year 5",
     "title": "count forwards or backwards in steps of powers of 10 for any given number up to 1,000,000",
@@ -4028,6 +4070,7 @@ const objectives = [
     }
   },
   {
+    "id": "y5-pv-interpret-negative-numbers-in-context-count-forwards-and-backwards",
     "strand": "pv",
     "year": "Year 5",
     "title": "interpret negative numbers in context, count forwards and backwards with positive and negative whole numbers, including through 0",
@@ -4118,6 +4161,7 @@ const objectives = [
     }
   },
   {
+    "id": "y5-pv-round-any-number-up-to-1-000-000-to-the-nearest-10-100-1-000-10-000",
     "strand": "pv",
     "year": "Year 5",
     "title": "round any number up to 1,000,000 to the nearest 10, 100, 1,000, 10,000 and 100,000",
@@ -4206,6 +4250,7 @@ const objectives = [
     }
   },
   {
+    "id": "y5-pv-solve-number-problems-and-practical-problems-that-involve-all-of-the",
     "strand": "pv",
     "year": "Year 5",
     "title": "solve number problems and practical problems that involve all of the above",
@@ -4298,6 +4343,7 @@ const objectives = [
     }
   },
   {
+    "id": "y5-pv-read-roman-numerals-to-1-000-m-and-recognise-years-written-in-roman",
     "strand": "pv",
     "year": "Year 5",
     "title": "read Roman numerals to 1,000 (M) and recognise years written in Roman numerals",
@@ -4374,6 +4420,7 @@ const objectives = [
     }
   },
   {
+    "id": "y6-pv-read-write-order-and-compare-numbers-up-to-10-000-000-and-determine",
     "strand": "pv",
     "year": "Year 6",
     "title": "read, write, order and compare numbers up to 10,000,000 and determine the value of each digit",
@@ -4456,6 +4503,7 @@ const objectives = [
     }
   },
   {
+    "id": "y6-pv-round-any-whole-number-to-a-required-degree-of-accuracy",
     "strand": "pv",
     "year": "Year 6",
     "title": "round any whole number to a required degree of accuracy",
@@ -4539,6 +4587,7 @@ const objectives = [
     }
   },
   {
+    "id": "y6-pv-use-negative-numbers-in-context-and-calculate-intervals-across-0",
     "strand": "pv",
     "year": "Year 6",
     "title": "use negative numbers in context, and calculate intervals across 0",
@@ -4624,6 +4673,7 @@ const objectives = [
     }
   },
   {
+    "id": "y6-pv-solve-number-and-practical-problems-that-involve-all-of-the-above",
     "strand": "pv",
     "year": "Year 6",
     "title": "solve number and practical problems that involve all of the above",
@@ -4711,6 +4761,7 @@ const objectives = [
     }
   },
   {
+    "id": "y1-as-read-write-and-interpret-mathematical-statements-involving-addition",
     "strand": "as",
     "year": "Year 1",
     "title": "read, write and interpret mathematical statements involving addition (+), subtraction (−) and equals (=) signs",
@@ -4802,6 +4853,7 @@ const objectives = [
     }
   },
   {
+    "id": "y1-as-represent-and-use-number-bonds-and-related-subtraction-facts-within-20",
     "strand": "as",
     "year": "Year 1",
     "title": "represent and use number bonds and related subtraction facts within 20",
@@ -4893,6 +4945,7 @@ const objectives = [
     }
   },
   {
+    "id": "y1-as-add-and-subtract-one-digit-and-two-digit-numbers-to-20-including-0",
     "strand": "as",
     "year": "Year 1",
     "title": "add and subtract one-digit and two-digit numbers to 20, including 0",
@@ -4991,6 +5044,7 @@ const objectives = [
     }
   },
   {
+    "id": "y1-as-solve-one-step-problems-that-involve-addition-and-subtraction-using",
     "strand": "as",
     "year": "Year 1",
     "title": "solve one-step problems that involve addition and subtraction, using concrete objects and pictorial representations, and missing number problems",
@@ -5091,6 +5145,7 @@ const objectives = [
     }
   },
   {
+    "id": "y2-as-solve-problems-with-addition-and-subtraction-using-concrete-objects",
     "strand": "as",
     "year": "Year 2",
     "title": "solve problems with addition and subtraction using concrete objects and pictorial representations, including those involving numbers, quantities and measures, and applying increasing knowledge of mental and written methods",
@@ -5180,6 +5235,7 @@ const objectives = [
     }
   },
   {
+    "id": "y2-as-recall-and-use-addition-and-subtraction-facts-to-20-fluently-and",
     "strand": "as",
     "year": "Year 2",
     "title": "recall and use addition and subtraction facts to 20 fluently, and derive and use related facts up to 100",
@@ -5271,6 +5327,7 @@ const objectives = [
     }
   },
   {
+    "id": "y2-as-add-and-subtract-numbers-using-concrete-objects-pictorial",
     "strand": "as",
     "year": "Year 2",
     "title": "add and subtract numbers using concrete objects, pictorial representations, and mentally, including: a two-digit number and 1s; a two-digit number and 10s; 2 two-digit numbers; adding 3 one-digit numbers",
@@ -5360,6 +5417,7 @@ const objectives = [
     }
   },
   {
+    "id": "y2-as-show-that-addition-of-2-numbers-can-be-done-in-any-order-commutative",
     "strand": "as",
     "year": "Year 2",
     "title": "show that addition of 2 numbers can be done in any order (commutative) and subtraction of 1 number from another cannot",
@@ -5451,6 +5509,7 @@ const objectives = [
     }
   },
   {
+    "id": "y2-as-recognise-and-use-the-inverse-relationship-between-addition-and",
     "strand": "as",
     "year": "Year 2",
     "title": "recognise and use the inverse relationship between addition and subtraction and use this to check calculations and solve missing number problems",
@@ -5542,6 +5601,7 @@ const objectives = [
     }
   },
   {
+    "id": "y3-as-add-and-subtract-numbers-mentally-including-a-three-digit-number-and",
     "strand": "as",
     "year": "Year 3",
     "title": "add and subtract numbers mentally, including: a three-digit number and 1s; a three-digit number and 10s; a three-digit number and 100s",
@@ -5632,6 +5692,7 @@ const objectives = [
     }
   },
   {
+    "id": "y3-as-add-and-subtract-numbers-with-up-to-3-digits-using-formal-written",
     "strand": "as",
     "year": "Year 3",
     "title": "add and subtract numbers with up to 3 digits, using formal written methods of columnar addition and subtraction",
@@ -5718,6 +5779,7 @@ const objectives = [
     }
   },
   {
+    "id": "y3-as-estimate-the-answer-to-a-calculation-and-use-inverse-operations-to",
     "strand": "as",
     "year": "Year 3",
     "title": "estimate the answer to a calculation and use inverse operations to check answers",
@@ -5810,6 +5872,7 @@ const objectives = [
     }
   },
   {
+    "id": "y3-as-solve-problems-including-missing-number-problems-using-number-facts",
     "strand": "as",
     "year": "Year 3",
     "title": "solve problems, including missing number problems, using number facts, place value, and more complex addition and subtraction",
@@ -5902,6 +5965,7 @@ const objectives = [
     }
   },
   {
+    "id": "y4-as-add-and-subtract-numbers-with-up-to-4-digits-using-the-formal-written",
     "strand": "as",
     "year": "Year 4",
     "title": "add and subtract numbers with up to 4 digits using the formal written methods of columnar addition and subtraction where appropriate",
@@ -5988,6 +6052,7 @@ const objectives = [
     }
   },
   {
+    "id": "y4-as-estimate-and-use-inverse-operations-to-check-answers-to-a-calculation",
     "strand": "as",
     "year": "Year 4",
     "title": "estimate and use inverse operations to check answers to a calculation",
@@ -6079,6 +6144,7 @@ const objectives = [
     }
   },
   {
+    "id": "y4-as-solve-addition-and-subtraction-two-step-problems-in-contexts-deciding",
     "strand": "as",
     "year": "Year 4",
     "title": "solve addition and subtraction two-step problems in contexts, deciding which operations and methods to use and why",
@@ -6179,6 +6245,7 @@ const objectives = [
     }
   },
   {
+    "id": "y5-as-add-and-subtract-whole-numbers-with-more-than-4-digits-including",
     "strand": "as",
     "year": "Year 5",
     "title": "add and subtract whole numbers with more than 4 digits, including using formal written methods (columnar addition and subtraction)",
@@ -6265,6 +6332,7 @@ const objectives = [
     }
   },
   {
+    "id": "y5-as-add-and-subtract-numbers-mentally-with-increasingly-large-numbers",
     "strand": "as",
     "year": "Year 5",
     "title": "add and subtract numbers mentally with increasingly large numbers",
@@ -6354,6 +6422,7 @@ const objectives = [
     }
   },
   {
+    "id": "y5-as-use-rounding-to-check-answers-to-calculations-and-determine-in-the",
     "strand": "as",
     "year": "Year 5",
     "title": "use rounding to check answers to calculations and determine, in the context of a problem, levels of accuracy",
@@ -6442,6 +6511,7 @@ const objectives = [
     }
   },
   {
+    "id": "y5-as-solve-addition-and-subtraction-multi-step-problems-in-contexts",
     "strand": "as",
     "year": "Year 5",
     "title": "solve addition and subtraction multi-step problems in contexts, deciding which operations and methods to use and why",
@@ -6542,6 +6612,7 @@ const objectives = [
     }
   },
   {
+    "id": "y6-as-perform-mental-calculations-including-with-mixed-operations-and-large",
     "strand": "as",
     "year": "Year 6",
     "title": "perform mental calculations, including with mixed operations and large numbers",
@@ -6626,6 +6697,7 @@ const objectives = [
     }
   },
   {
+    "id": "y6-as-use-their-knowledge-of-the-order-of-operations-to-carry-out",
     "strand": "as",
     "year": "Year 6",
     "title": "use their knowledge of the order of operations to carry out calculations involving the 4 operations",
@@ -6697,6 +6769,7 @@ const objectives = [
     "move_on": "pupils identify and evaluate sub-expressions in the correct order, explain equal-precedence cases accurately, and use brackets to show intended grouping."
   },
   {
+    "id": "y6-as-solve-addition-and-subtraction-multi-step-problems-in-contexts",
     "strand": "as",
     "year": "Year 6",
     "title": "solve addition and subtraction multi-step problems in contexts, deciding which operations and methods to use and why",
@@ -6792,6 +6865,7 @@ const objectives = [
     }
   },
   {
+    "id": "y6-as-solve-problems-involving-addition-subtraction-multiplication-and",
     "strand": "as",
     "year": "Year 6",
     "title": "solve problems involving addition, subtraction, multiplication and division",
@@ -6887,6 +6961,7 @@ const objectives = [
     }
   },
   {
+    "id": "y6-as-use-estimation-to-check-answers-to-calculations-and-determine-in-the",
     "strand": "as",
     "year": "Year 6",
     "title": "use estimation to check answers to calculations and determine, in the context of a problem, an appropriate degree of accuracy",
@@ -6970,6 +7045,7 @@ const objectives = [
     }
   },
   {
+    "id": "y1-md-solve-one-step-problems-involving-multiplication-and-division-by",
     "strand": "md",
     "year": "Year 1",
     "title": "solve one-step problems involving multiplication and division, by calculating the answer using concrete objects, pictorial representations and arrays with the support of the teacher",
@@ -7066,6 +7142,7 @@ const objectives = [
     }
   },
   {
+    "id": "y2-md-recall-and-use-multiplication-and-division-facts-for-the-2-5-and-10",
     "strand": "md",
     "year": "Year 2",
     "title": "recall and use multiplication and division facts for the 2, 5 and 10 multiplication tables, including recognising odd and even numbers",
@@ -7148,6 +7225,7 @@ const objectives = [
     }
   },
   {
+    "id": "y2-md-calculate-mathematical-statements-for-multiplication-and-division",
     "strand": "md",
     "year": "Year 2",
     "title": "calculate mathematical statements for multiplication and division within the multiplication tables and write them using the multiplication (×), division (÷) and equals (=) signs",
@@ -7230,6 +7308,7 @@ const objectives = [
     }
   },
   {
+    "id": "y2-md-show-that-multiplication-of-2-numbers-can-be-done-in-any-order",
     "strand": "md",
     "year": "Year 2",
     "title": "show that multiplication of 2 numbers can be done in any order (commutative) and division of 1 number by another cannot",
@@ -7312,6 +7391,7 @@ const objectives = [
     }
   },
   {
+    "id": "y2-md-solve-problems-involving-multiplication-and-division-using-materials",
     "strand": "md",
     "year": "Year 2",
     "title": "solve problems involving multiplication and division, using materials, arrays, repeated addition, mental methods, and multiplication and division facts, including problems in contexts",
@@ -7394,6 +7474,7 @@ const objectives = [
     }
   },
   {
+    "id": "y3-md-recall-and-use-multiplication-and-division-facts-for-the-3-4-and-8",
     "strand": "md",
     "year": "Year 3",
     "title": "recall and use multiplication and division facts for the 3, 4 and 8 multiplication tables",
@@ -7476,6 +7557,7 @@ const objectives = [
     }
   },
   {
+    "id": "y3-md-write-and-calculate-mathematical-statements-for-multiplication-and",
     "strand": "md",
     "year": "Year 3",
     "title": "write and calculate mathematical statements for multiplication and division using the multiplication tables that they know, including for two-digit numbers times one-digit numbers, using mental and progressing to formal written methods",
@@ -7558,6 +7640,7 @@ const objectives = [
     }
   },
   {
+    "id": "y3-md-solve-problems-including-missing-number-problems-involving",
     "strand": "md",
     "year": "Year 3",
     "title": "solve problems, including missing number problems, involving multiplication and division, including positive integer scaling problems and correspondence problems in which n objects are connected to m objects",
@@ -7654,6 +7737,7 @@ const objectives = [
     }
   },
   {
+    "id": "y4-md-recall-multiplication-and-division-facts-for-multiplication-tables-up",
     "strand": "md",
     "year": "Year 4",
     "title": "recall multiplication and division facts for multiplication tables up to 12 × 12",
@@ -7736,6 +7820,7 @@ const objectives = [
     }
   },
   {
+    "id": "y4-md-use-place-value-known-and-derived-facts-to-multiply-and-divide",
     "strand": "md",
     "year": "Year 4",
     "title": "use place value, known and derived facts to multiply and divide mentally, including: multiplying by 0 and 1; dividing by 1; multiplying together 3 numbers",
@@ -7818,6 +7903,7 @@ const objectives = [
     }
   },
   {
+    "id": "y4-md-recognise-and-use-factor-pairs-and-commutativity-in-mental",
     "strand": "md",
     "year": "Year 4",
     "title": "recognise and use factor pairs and commutativity in mental calculations",
@@ -7900,6 +7986,7 @@ const objectives = [
     }
   },
   {
+    "id": "y4-md-multiply-two-digit-and-three-digit-numbers-by-a-one-digit-number",
     "strand": "md",
     "year": "Year 4",
     "title": "multiply two-digit and three-digit numbers by a one-digit number using formal written layout",
@@ -7982,6 +8069,7 @@ const objectives = [
     }
   },
   {
+    "id": "y4-md-solve-problems-involving-multiplying-and-adding-including-using-the",
     "strand": "md",
     "year": "Year 4",
     "title": "solve problems involving multiplying and adding, including using the distributive law to multiply two-digit numbers by 1 digit, integer scaling problems and harder correspondence problems",
@@ -8078,6 +8166,7 @@ const objectives = [
     }
   },
   {
+    "id": "y5-md-identify-multiples-and-factors-including-finding-all-factor-pairs-of",
     "strand": "md",
     "year": "Year 5",
     "title": "identify multiples and factors, including finding all factor pairs of a number, and common factors of 2 numbers",
@@ -8160,6 +8249,7 @@ const objectives = [
     }
   },
   {
+    "id": "y5-md-know-and-use-the-vocabulary-of-prime-numbers-prime-factors-and",
     "strand": "md",
     "year": "Year 5",
     "title": "know and use the vocabulary of prime numbers, prime factors and composite (non-prime) numbers",
@@ -8242,6 +8332,7 @@ const objectives = [
     }
   },
   {
+    "id": "y5-md-establish-whether-a-number-up-to-100-is-prime-and-recall-prime",
     "strand": "md",
     "year": "Year 5",
     "title": "establish whether a number up to 100 is prime and recall prime numbers up to 19",
@@ -8324,6 +8415,7 @@ const objectives = [
     }
   },
   {
+    "id": "y5-md-multiply-numbers-up-to-4-digits-by-a-one-or-two-digit-number-using-a",
     "strand": "md",
     "year": "Year 5",
     "title": "multiply numbers up to 4 digits by a one- or two-digit number using a formal written method, including long multiplication for two-digit numbers",
@@ -8406,6 +8498,7 @@ const objectives = [
     }
   },
   {
+    "id": "y5-md-multiply-and-divide-numbers-mentally-drawing-upon-known-facts",
     "strand": "md",
     "year": "Year 5",
     "title": "multiply and divide numbers mentally, drawing upon known facts",
@@ -8488,6 +8581,7 @@ const objectives = [
     }
   },
   {
+    "id": "y5-md-divide-numbers-up-to-4-digits-by-a-one-digit-number-using-the-formal",
     "strand": "md",
     "year": "Year 5",
     "title": "divide numbers up to 4 digits by a one-digit number using the formal written method of short division and interpret remainders appropriately for the context",
@@ -8570,6 +8664,7 @@ const objectives = [
     }
   },
   {
+    "id": "y5-md-multiply-and-divide-whole-numbers-and-those-involving-decimals-by-10",
     "strand": "md",
     "year": "Year 5",
     "title": "multiply and divide whole numbers and those involving decimals by 10, 100 and 1,000",
@@ -8655,6 +8750,7 @@ const objectives = [
     }
   },
   {
+    "id": "y5-md-recognise-and-use-square-numbers-and-cube-numbers-and-the-notation",
     "strand": "md",
     "year": "Year 5",
     "title": "recognise and use square numbers and cube numbers, and the notation for squared (²) and cubed (³)",
@@ -8727,6 +8823,7 @@ const objectives = [
     "move_on": "pupils generate examples systematically, use precise factor/multiple/prime language, and justify classifications rather than rely on memorised lists."
   },
   {
+    "id": "y5-md-solve-problems-involving-multiplication-and-division-including-using",
     "strand": "md",
     "year": "Year 5",
     "title": "solve problems involving multiplication and division, including using their knowledge of factors and multiples, squares and cubes",
@@ -8809,6 +8906,7 @@ const objectives = [
     }
   },
   {
+    "id": "y5-md-solve-problems-involving-addition-subtraction-multiplication-and",
     "strand": "md",
     "year": "Year 5",
     "title": "solve problems involving addition, subtraction, multiplication and division and a combination of these, including understanding the meaning of the equals sign",
@@ -8905,6 +9003,7 @@ const objectives = [
     }
   },
   {
+    "id": "y5-md-solve-problems-involving-multiplication-and-division-including",
     "strand": "md",
     "year": "Year 5",
     "title": "solve problems involving multiplication and division, including scaling by simple fractions and problems involving simple rates",
@@ -9001,6 +9100,7 @@ const objectives = [
     }
   },
   {
+    "id": "y6-md-multiply-multi-digit-numbers-up-to-4-digits-by-a-two-digit-whole",
     "strand": "md",
     "year": "Year 6",
     "title": "multiply multi-digit numbers up to 4 digits by a two-digit whole number using the formal written method of long multiplication",
@@ -9078,6 +9178,7 @@ const objectives = [
     }
   },
   {
+    "id": "y6-md-divide-numbers-up-to-4-digits-by-a-two-digit-whole-number-using-the",
     "strand": "md",
     "year": "Year 6",
     "title": "divide numbers up to 4 digits by a two-digit whole number using the formal written method of long division, and interpret remainders as whole number remainders, fractions, or by rounding, as appropriate for the context",
@@ -9155,6 +9256,7 @@ const objectives = [
     }
   },
   {
+    "id": "y6-md-divide-numbers-up-to-4-digits-by-a-two-digit-number-using-the-formal",
     "strand": "md",
     "year": "Year 6",
     "title": "divide numbers up to 4 digits by a two-digit number using the formal written method of short division where appropriate, interpreting remainders according to the context",
@@ -9232,6 +9334,7 @@ const objectives = [
     }
   },
   {
+    "id": "y6-md-perform-mental-calculations-including-with-mixed-operations-and-large",
     "strand": "md",
     "year": "Year 6",
     "title": "perform mental calculations, including with mixed operations and large numbers",
@@ -9309,6 +9412,7 @@ const objectives = [
     }
   },
   {
+    "id": "y6-md-identify-common-factors-common-multiples-and-prime-numbers",
     "strand": "md",
     "year": "Year 6",
     "title": "identify common factors, common multiples and prime numbers",
@@ -9386,6 +9490,7 @@ const objectives = [
     }
   },
   {
+    "id": "y6-md-use-their-knowledge-of-the-order-of-operations-to-carry-out",
     "strand": "md",
     "year": "Year 6",
     "title": "use their knowledge of the order of operations to carry out calculations involving the 4 operations",
@@ -9463,6 +9568,7 @@ const objectives = [
     }
   },
   {
+    "id": "y6-md-solve-problems-involving-addition-subtraction-multiplication-and",
     "strand": "md",
     "year": "Year 6",
     "title": "solve problems involving addition, subtraction, multiplication and division",
@@ -9554,6 +9660,7 @@ const objectives = [
     }
   },
   {
+    "id": "y6-md-use-estimation-to-check-answers-to-calculations-and-determine-in-the",
     "strand": "md",
     "year": "Year 6",
     "title": "use estimation to check answers to calculations and determine, in the context of a problem, an appropriate degree of accuracy",
@@ -9645,6 +9752,7 @@ const objectives = [
     }
   },
   {
+    "id": "eyfs-fr-explore-the-composition-of-numbers-to-10-and-notice-equal-and-unequal",
     "strand": "fr",
     "year": "EYFS",
     "source": "EYFS foundation (pre-NC)",
@@ -9711,6 +9819,7 @@ const objectives = [
     }
   },
   {
+    "id": "eyfs-meas-compare-length-weight-and-capacity-and-begin-to-use-everyday-language",
     "strand": "meas",
     "year": "EYFS",
     "source": "EYFS foundation (pre-NC)",
@@ -9768,6 +9877,7 @@ const objectives = [
     }
   },
   {
+    "id": "eyfs-geo-select-rotate-and-manipulate-shapes-to-develop-spatial-reasoning",
     "strand": "geo",
     "year": "EYFS",
     "source": "EYFS foundation (pre-NC)",
@@ -9823,6 +9933,7 @@ const objectives = [
     }
   },
   {
+    "id": "eyfs-stat-sort-match-compare-and-organise-objects-and-quantities-noticing",
     "strand": "stat",
     "year": "EYFS",
     "source": "EYFS foundation (pre-NC)",
@@ -9873,6 +9984,7 @@ const objectives = [
     "move_on": "children can state a sorting rule, organise objects consistently and compare the resulting groups using appropriate language."
   },
   {
+    "id": "eyfs-alg-continue-copy-and-create-repeating-patterns-and-describe-what-is",
     "strand": "alg",
     "year": "EYFS",
     "source": "EYFS foundation (pre-NC)",
@@ -9923,6 +10035,7 @@ const objectives = [
     "move_on": "children identify and describe the repeating unit, not just the next item, and can create an equivalent repeating pattern."
   },
   {
+    "id": "y1-fr-recognise-find-and-name-a-half-as-1-of-2-equal-parts-of-an-object",
     "strand": "fr",
     "year": "Year 1",
     "source": "NC: Number – fractions",
@@ -9984,6 +10097,7 @@ const objectives = [
     }
   },
   {
+    "id": "y1-fr-recognise-find-and-name-a-quarter-as-1-of-4-equal-parts-of-an-object",
     "strand": "fr",
     "year": "Year 1",
     "source": "NC: Number – fractions",
@@ -10045,6 +10159,7 @@ const objectives = [
     }
   },
   {
+    "id": "y2-fr-recognise-find-name-and-write-fractions-1-3-1-4-2-4-and-3-4-of-a",
     "strand": "fr",
     "year": "Year 2",
     "source": "NC: Number – fractions",
@@ -10106,6 +10221,7 @@ const objectives = [
     }
   },
   {
+    "id": "y2-fr-write-simple-fractions-for-example-1-2-of-6-3-and-recognise-the",
     "strand": "fr",
     "year": "Year 2",
     "source": "NC: Number – fractions",
@@ -10167,6 +10283,7 @@ const objectives = [
     }
   },
   {
+    "id": "y3-fr-count-up-and-down-in-tenths-recognise-that-tenths-arise-from-dividing",
     "strand": "fr",
     "year": "Year 3",
     "source": "NC: Number – fractions",
@@ -10228,6 +10345,7 @@ const objectives = [
     }
   },
   {
+    "id": "y3-fr-recognise-find-and-write-fractions-of-a-discrete-set-of-objects-unit",
     "strand": "fr",
     "year": "Year 3",
     "source": "NC: Number – fractions",
@@ -10289,6 +10407,7 @@ const objectives = [
     }
   },
   {
+    "id": "y3-fr-recognise-and-use-fractions-as-numbers-unit-fractions-and-non-unit",
     "strand": "fr",
     "year": "Year 3",
     "source": "NC: Number – fractions",
@@ -10350,6 +10469,7 @@ const objectives = [
     }
   },
   {
+    "id": "y3-fr-recognise-and-show-using-diagrams-equivalent-fractions-with-small",
     "strand": "fr",
     "year": "Year 3",
     "source": "NC: Number – fractions",
@@ -10411,6 +10531,7 @@ const objectives = [
     }
   },
   {
+    "id": "y3-fr-add-and-subtract-fractions-with-the-same-denominator-within-one-whole",
     "strand": "fr",
     "year": "Year 3",
     "source": "NC: Number – fractions",
@@ -10472,6 +10593,7 @@ const objectives = [
     }
   },
   {
+    "id": "y3-fr-compare-and-order-unit-fractions-and-fractions-with-the-same",
     "strand": "fr",
     "year": "Year 3",
     "source": "NC: Number – fractions",
@@ -10533,6 +10655,7 @@ const objectives = [
     }
   },
   {
+    "id": "y3-fr-solve-problems-that-involve-all-of-the-above",
     "strand": "fr",
     "year": "Year 3",
     "source": "NC: Number – fractions",
@@ -10594,6 +10717,7 @@ const objectives = [
     }
   },
   {
+    "id": "y4-fr-recognise-and-show-using-diagrams-families-of-common-equivalent",
     "strand": "fr",
     "year": "Year 4",
     "source": "NC: Number – fractions (including decimals)",
@@ -10655,6 +10779,7 @@ const objectives = [
     }
   },
   {
+    "id": "y4-fr-count-up-and-down-in-hundredths-recognise-that-hundredths-arise-when",
     "strand": "fr",
     "year": "Year 4",
     "source": "NC: Number – fractions (including decimals)",
@@ -10716,6 +10841,7 @@ const objectives = [
     }
   },
   {
+    "id": "y4-fr-solve-problems-involving-increasingly-harder-fractions-to-calculate",
     "strand": "fr",
     "year": "Year 4",
     "source": "NC: Number – fractions (including decimals)",
@@ -10794,6 +10920,7 @@ const objectives = [
     }
   },
   {
+    "id": "y4-fr-add-and-subtract-fractions-with-the-same-denominator",
     "strand": "fr",
     "year": "Year 4",
     "source": "NC: Number – fractions (including decimals)",
@@ -10855,6 +10982,7 @@ const objectives = [
     }
   },
   {
+    "id": "y4-fr-recognise-and-write-decimal-equivalents-of-any-number-of-tenths-or",
     "strand": "fr",
     "year": "Year 4",
     "source": "NC: Number – fractions (including decimals)",
@@ -10916,6 +11044,7 @@ const objectives = [
     }
   },
   {
+    "id": "y4-fr-recognise-and-write-decimal-equivalents-to-1-4-1-2-and-3-4",
     "strand": "fr",
     "year": "Year 4",
     "source": "NC: Number – fractions (including decimals)",
@@ -10977,6 +11106,7 @@ const objectives = [
     }
   },
   {
+    "id": "y4-fr-find-the-effect-of-dividing-a-one-or-two-digit-number-by-10-and-100",
     "strand": "fr",
     "year": "Year 4",
     "source": "NC: Number – fractions (including decimals)",
@@ -11038,6 +11168,7 @@ const objectives = [
     }
   },
   {
+    "id": "y4-fr-round-decimals-with-1-decimal-place-to-the-nearest-whole-number",
     "strand": "fr",
     "year": "Year 4",
     "source": "NC: Number – fractions (including decimals)",
@@ -11098,6 +11229,7 @@ const objectives = [
     }
   },
   {
+    "id": "y4-fr-compare-numbers-with-the-same-number-of-decimal-places-up-to-2",
     "strand": "fr",
     "year": "Year 4",
     "source": "NC: Number – fractions (including decimals)",
@@ -11159,6 +11291,7 @@ const objectives = [
     }
   },
   {
+    "id": "y4-fr-solve-simple-measure-and-money-problems-involving-fractions-and",
     "strand": "fr",
     "year": "Year 4",
     "source": "NC: Number – fractions (including decimals)",
@@ -11219,6 +11352,7 @@ const objectives = [
     }
   },
   {
+    "id": "y5-fr-compare-and-order-fractions-whose-denominators-are-all-multiples-of",
     "strand": "fr",
     "year": "Year 5",
     "source": "NC: Number – fractions (including decimals and percentages)",
@@ -11280,6 +11414,7 @@ const objectives = [
     }
   },
   {
+    "id": "y5-fr-identify-name-and-write-equivalent-fractions-of-a-given-fraction",
     "strand": "fr",
     "year": "Year 5",
     "source": "NC: Number – fractions (including decimals and percentages)",
@@ -11341,6 +11476,7 @@ const objectives = [
     }
   },
   {
+    "id": "y5-fr-recognise-mixed-numbers-and-improper-fractions-and-convert-from-one",
     "strand": "fr",
     "year": "Year 5",
     "source": "NC: Number – fractions (including decimals and percentages)",
@@ -11402,6 +11538,7 @@ const objectives = [
     }
   },
   {
+    "id": "y5-fr-add-and-subtract-fractions-with-the-same-denominator-and-denominators",
     "strand": "fr",
     "year": "Year 5",
     "source": "NC: Number – fractions (including decimals and percentages)",
@@ -11463,6 +11600,7 @@ const objectives = [
     }
   },
   {
+    "id": "y5-fr-multiply-proper-fractions-and-mixed-numbers-by-whole-numbers",
     "strand": "fr",
     "year": "Year 5",
     "source": "NC: Number – fractions (including decimals and percentages)",
@@ -11541,6 +11679,7 @@ const objectives = [
     }
   },
   {
+    "id": "y5-fr-read-and-write-decimal-numbers-as-fractions-for-example-0-71-71-100",
     "strand": "fr",
     "year": "Year 5",
     "source": "NC: Number – fractions (including decimals and percentages)",
@@ -11601,6 +11740,7 @@ const objectives = [
     }
   },
   {
+    "id": "y5-fr-recognise-and-use-thousandths-and-relate-them-to-tenths-hundredths",
     "strand": "fr",
     "year": "Year 5",
     "source": "NC: Number – fractions (including decimals and percentages)",
@@ -11662,6 +11802,7 @@ const objectives = [
     }
   },
   {
+    "id": "y5-fr-round-decimals-with-2-decimal-places-to-the-nearest-whole-number-and",
     "strand": "fr",
     "year": "Year 5",
     "source": "NC: Number – fractions (including decimals and percentages)",
@@ -11722,6 +11863,7 @@ const objectives = [
     }
   },
   {
+    "id": "y5-fr-read-write-order-and-compare-numbers-with-up-to-3-decimal-places",
     "strand": "fr",
     "year": "Year 5",
     "source": "NC: Number – fractions (including decimals and percentages)",
@@ -11783,6 +11925,7 @@ const objectives = [
     }
   },
   {
+    "id": "y5-fr-solve-problems-involving-number-up-to-3-decimal-places",
     "strand": "fr",
     "year": "Year 5",
     "source": "NC: Number – fractions (including decimals and percentages)",
@@ -11843,6 +11986,7 @@ const objectives = [
     }
   },
   {
+    "id": "y5-fr-recognise-the-per-cent-symbol-and-understand-that-per-cent-relates-to",
     "strand": "fr",
     "year": "Year 5",
     "source": "NC: Number – fractions (including decimals and percentages)",
@@ -11903,6 +12047,7 @@ const objectives = [
     }
   },
   {
+    "id": "y5-fr-solve-problems-which-require-knowing-percentage-and-decimal",
     "strand": "fr",
     "year": "Year 5",
     "source": "NC: Number – fractions (including decimals and percentages)",
@@ -11964,6 +12109,7 @@ const objectives = [
     }
   },
   {
+    "id": "y6-fr-use-common-factors-to-simplify-fractions-use-common-multiples-to",
     "strand": "fr",
     "year": "Year 6",
     "source": "NC: Number – fractions (including decimals and percentages)",
@@ -12020,6 +12166,7 @@ const objectives = [
     }
   },
   {
+    "id": "y6-fr-compare-and-order-fractions-including-fractions-greater-than-1",
     "strand": "fr",
     "year": "Year 6",
     "source": "NC: Number – fractions (including decimals and percentages)",
@@ -12076,6 +12223,7 @@ const objectives = [
     }
   },
   {
+    "id": "y6-fr-add-and-subtract-fractions-with-different-denominators-and-mixed",
     "strand": "fr",
     "year": "Year 6",
     "source": "NC: Number – fractions (including decimals and percentages)",
@@ -12132,6 +12280,7 @@ const objectives = [
     }
   },
   {
+    "id": "y6-fr-multiply-simple-pairs-of-proper-fractions-writing-the-answer-in-its",
     "strand": "fr",
     "year": "Year 6",
     "source": "NC: Number – fractions (including decimals and percentages)",
@@ -12205,6 +12354,7 @@ const objectives = [
     }
   },
   {
+    "id": "y6-fr-divide-proper-fractions-by-whole-numbers",
     "strand": "fr",
     "year": "Year 6",
     "source": "NC: Number – fractions (including decimals and percentages)",
@@ -12278,6 +12428,7 @@ const objectives = [
     }
   },
   {
+    "id": "y6-fr-associate-a-fraction-with-division-and-calculate-decimal-fraction",
     "strand": "fr",
     "year": "Year 6",
     "source": "NC: Number – fractions (including decimals and percentages)",
@@ -12334,6 +12485,7 @@ const objectives = [
     }
   },
   {
+    "id": "y6-fr-identify-the-value-of-each-digit-in-numbers-given-to-3-decimal-places",
     "strand": "fr",
     "year": "Year 6",
     "source": "NC: Number – fractions (including decimals and percentages)",
@@ -12407,6 +12559,7 @@ const objectives = [
     }
   },
   {
+    "id": "y6-fr-multiply-one-digit-numbers-with-up-to-2-decimal-places-by-whole",
     "strand": "fr",
     "year": "Year 6",
     "source": "NC: Number – fractions (including decimals and percentages)",
@@ -12480,6 +12633,7 @@ const objectives = [
     }
   },
   {
+    "id": "y6-fr-use-written-division-methods-in-cases-where-the-answer-has-up-to-2",
     "strand": "fr",
     "year": "Year 6",
     "source": "NC: Number – fractions (including decimals and percentages)",
@@ -12535,6 +12689,7 @@ const objectives = [
     }
   },
   {
+    "id": "y6-fr-solve-problems-which-require-answers-to-be-rounded-to-specified",
     "strand": "fr",
     "year": "Year 6",
     "source": "NC: Number – fractions (including decimals and percentages)",
@@ -12591,6 +12746,7 @@ const objectives = [
     }
   },
   {
+    "id": "y6-fr-recall-and-use-equivalences-between-simple-fractions-decimals-and",
     "strand": "fr",
     "year": "Year 6",
     "source": "NC: Number – fractions (including decimals and percentages)",
@@ -12647,6 +12803,7 @@ const objectives = [
     }
   },
   {
+    "id": "y1-meas-compare-describe-and-solve-practical-problems-for-lengths-and-heights",
     "strand": "meas",
     "year": "Year 1",
     "source": "NC: Measurement",
@@ -12714,6 +12871,7 @@ const objectives = [
     }
   },
   {
+    "id": "y1-meas-measure-and-begin-to-record-lengths-and-heights-mass-weight-capacity",
     "strand": "meas",
     "year": "Year 1",
     "source": "NC: Measurement",
@@ -12781,6 +12939,7 @@ const objectives = [
     }
   },
   {
+    "id": "y1-meas-recognise-and-know-the-value-of-different-denominations-of-coins-and",
     "strand": "meas",
     "year": "Year 1",
     "source": "NC: Measurement",
@@ -12843,6 +13002,7 @@ const objectives = [
     }
   },
   {
+    "id": "y1-meas-sequence-events-in-chronological-order-using-appropriate-language",
     "strand": "meas",
     "year": "Year 1",
     "source": "NC: Measurement",
@@ -12905,6 +13065,7 @@ const objectives = [
     }
   },
   {
+    "id": "y1-meas-recognise-and-use-language-relating-to-dates-including-days-of-the",
     "strand": "meas",
     "year": "Year 1",
     "source": "NC: Measurement",
@@ -12967,6 +13128,7 @@ const objectives = [
     }
   },
   {
+    "id": "y1-meas-tell-the-time-to-the-hour-and-half-past-the-hour-and-draw-the-hands",
     "strand": "meas",
     "year": "Year 1",
     "source": "NC: Measurement",
@@ -13034,6 +13196,7 @@ const objectives = [
     }
   },
   {
+    "id": "y2-meas-choose-and-use-appropriate-standard-units-to-estimate-and-measure",
     "strand": "meas",
     "year": "Year 2",
     "source": "NC: Measurement",
@@ -13096,6 +13259,7 @@ const objectives = [
     }
   },
   {
+    "id": "y2-meas-compare-and-order-lengths-mass-volume-capacity-and-record-the-results",
     "strand": "meas",
     "year": "Year 2",
     "source": "NC: Measurement",
@@ -13158,6 +13322,7 @@ const objectives = [
     }
   },
   {
+    "id": "y2-meas-recognise-and-use-symbols-for-pounds-and-pence-p-combine-amounts-to",
     "strand": "meas",
     "year": "Year 2",
     "source": "NC: Measurement",
@@ -13225,6 +13390,7 @@ const objectives = [
     }
   },
   {
+    "id": "y2-meas-find-different-combinations-of-coins-that-equal-the-same-amounts-of",
     "strand": "meas",
     "year": "Year 2",
     "source": "NC: Measurement",
@@ -13292,6 +13458,7 @@ const objectives = [
     }
   },
   {
+    "id": "y2-meas-solve-simple-problems-in-a-practical-context-involving-addition-and",
     "strand": "meas",
     "year": "Year 2",
     "source": "NC: Measurement",
@@ -13359,6 +13526,7 @@ const objectives = [
     }
   },
   {
+    "id": "y2-meas-compare-and-sequence-intervals-of-time",
     "strand": "meas",
     "year": "Year 2",
     "source": "NC: Measurement",
@@ -13426,6 +13594,7 @@ const objectives = [
     }
   },
   {
+    "id": "y2-meas-tell-and-write-the-time-to-five-minutes-including-quarter-past-to-the",
     "strand": "meas",
     "year": "Year 2",
     "source": "NC: Measurement",
@@ -13493,6 +13662,7 @@ const objectives = [
     }
   },
   {
+    "id": "y2-meas-know-the-number-of-minutes-in-an-hour-and-the-number-of-hours-in-a-day",
     "strand": "meas",
     "year": "Year 2",
     "source": "NC: Measurement",
@@ -13555,6 +13725,7 @@ const objectives = [
     }
   },
   {
+    "id": "y3-meas-measure-compare-add-and-subtract-lengths-m-cm-mm-mass-kg-g-volume",
     "strand": "meas",
     "year": "Year 3",
     "source": "NC: Measurement",
@@ -13617,6 +13788,7 @@ const objectives = [
     }
   },
   {
+    "id": "y3-meas-measure-the-perimeter-of-simple-2d-shapes",
     "strand": "meas",
     "year": "Year 3",
     "source": "NC: Measurement",
@@ -13677,6 +13849,7 @@ const objectives = [
     }
   },
   {
+    "id": "y3-meas-add-and-subtract-amounts-of-money-to-give-change-using-both-and-p-in",
     "strand": "meas",
     "year": "Year 3",
     "source": "NC: Measurement",
@@ -13744,6 +13917,7 @@ const objectives = [
     }
   },
   {
+    "id": "y3-meas-tell-and-write-the-time-from-an-analogue-clock-including-using-roman",
     "strand": "meas",
     "year": "Year 3",
     "source": "NC: Measurement",
@@ -13811,6 +13985,7 @@ const objectives = [
     }
   },
   {
+    "id": "y3-meas-estimate-and-read-time-with-increasing-accuracy-to-the-nearest-minute",
     "strand": "meas",
     "year": "Year 3",
     "source": "NC: Measurement",
@@ -13878,6 +14053,7 @@ const objectives = [
     }
   },
   {
+    "id": "y3-meas-know-the-number-of-seconds-in-a-minute-and-the-number-of-days-in-each",
     "strand": "meas",
     "year": "Year 3",
     "source": "NC: Measurement",
@@ -13940,6 +14116,7 @@ const objectives = [
     }
   },
   {
+    "id": "y3-meas-compare-durations-of-events",
     "strand": "meas",
     "year": "Year 3",
     "source": "NC: Measurement",
@@ -14002,6 +14179,7 @@ const objectives = [
     }
   },
   {
+    "id": "y4-meas-convert-between-different-units-of-measure",
     "strand": "meas",
     "year": "Year 4",
     "source": "NC: Measurement",
@@ -14064,6 +14242,7 @@ const objectives = [
     }
   },
   {
+    "id": "y4-meas-measure-and-calculate-the-perimeter-of-a-rectilinear-figure-including",
     "strand": "meas",
     "year": "Year 4",
     "source": "NC: Measurement",
@@ -14131,6 +14310,7 @@ const objectives = [
     }
   },
   {
+    "id": "y4-meas-find-the-area-of-rectilinear-shapes-by-counting-squares",
     "strand": "meas",
     "year": "Year 4",
     "source": "NC: Measurement",
@@ -14192,6 +14372,7 @@ const objectives = [
     }
   },
   {
+    "id": "y4-meas-estimate-compare-and-calculate-different-measures-including-money-in",
     "strand": "meas",
     "year": "Year 4",
     "source": "NC: Measurement",
@@ -14259,6 +14440,7 @@ const objectives = [
     }
   },
   {
+    "id": "y4-meas-read-write-and-convert-time-between-analogue-and-digital-12-and-24",
     "strand": "meas",
     "year": "Year 4",
     "source": "NC: Measurement",
@@ -14326,6 +14508,7 @@ const objectives = [
     }
   },
   {
+    "id": "y4-meas-solve-problems-involving-converting-from-hours-to-minutes-minutes-to",
     "strand": "meas",
     "year": "Year 4",
     "source": "NC: Measurement",
@@ -14388,6 +14571,7 @@ const objectives = [
     }
   },
   {
+    "id": "y5-meas-convert-between-different-units-of-metric-measure",
     "strand": "meas",
     "year": "Year 5",
     "source": "NC: Measurement",
@@ -14450,6 +14634,7 @@ const objectives = [
     }
   },
   {
+    "id": "y5-meas-understand-and-use-approximate-equivalences-between-metric-units-and",
     "strand": "meas",
     "year": "Year 5",
     "source": "NC: Measurement",
@@ -14512,6 +14697,7 @@ const objectives = [
     }
   },
   {
+    "id": "y5-meas-measure-and-calculate-the-perimeter-of-composite-rectilinear-shapes",
     "strand": "meas",
     "year": "Year 5",
     "source": "NC: Measurement",
@@ -14579,6 +14765,7 @@ const objectives = [
     }
   },
   {
+    "id": "y5-meas-calculate-and-compare-the-area-of-rectangles-including-squares",
     "strand": "meas",
     "year": "Year 5",
     "source": "NC: Measurement",
@@ -14646,6 +14833,7 @@ const objectives = [
     }
   },
   {
+    "id": "y5-meas-estimate-volume-and-capacity",
     "strand": "meas",
     "year": "Year 5",
     "source": "NC: Measurement",
@@ -14708,6 +14896,7 @@ const objectives = [
     }
   },
   {
+    "id": "y5-meas-solve-problems-involving-converting-between-units-of-time",
     "strand": "meas",
     "year": "Year 5",
     "source": "NC: Measurement",
@@ -14775,6 +14964,7 @@ const objectives = [
     }
   },
   {
+    "id": "y5-meas-use-all-four-operations-to-solve-problems-involving-measure-using",
     "strand": "meas",
     "year": "Year 5",
     "source": "NC: Measurement",
@@ -14837,6 +15027,7 @@ const objectives = [
     }
   },
   {
+    "id": "y6-meas-solve-problems-involving-the-calculation-and-conversion-of-units-of",
     "strand": "meas",
     "year": "Year 6",
     "source": "NC: Measurement",
@@ -14894,6 +15085,7 @@ const objectives = [
     }
   },
   {
+    "id": "y6-meas-use-read-write-and-convert-between-standard-units-converting",
     "strand": "meas",
     "year": "Year 6",
     "source": "NC: Measurement",
@@ -14956,6 +15148,7 @@ const objectives = [
     }
   },
   {
+    "id": "y6-meas-convert-between-miles-and-kilometres",
     "strand": "meas",
     "year": "Year 6",
     "source": "NC: Measurement",
@@ -15013,6 +15206,7 @@ const objectives = [
     }
   },
   {
+    "id": "y6-meas-recognise-that-shapes-with-the-same-areas-can-have-different",
     "strand": "meas",
     "year": "Year 6",
     "source": "NC: Measurement",
@@ -15068,6 +15262,7 @@ const objectives = [
     }
   },
   {
+    "id": "y6-meas-recognise-when-it-is-possible-to-use-formulae-for-area-and-volume-of",
     "strand": "meas",
     "year": "Year 6",
     "source": "NC: Measurement",
@@ -15124,6 +15319,7 @@ const objectives = [
     }
   },
   {
+    "id": "y6-meas-calculate-the-area-of-parallelograms-and-triangles",
     "strand": "meas",
     "year": "Year 6",
     "source": "NC: Measurement",
@@ -15180,6 +15376,7 @@ const objectives = [
     }
   },
   {
+    "id": "y6-meas-calculate-estimate-and-compare-volume-of-cubes-and-cuboids-using",
     "strand": "meas",
     "year": "Year 6",
     "source": "NC: Measurement",
@@ -15242,6 +15439,7 @@ const objectives = [
     }
   },
   {
+    "id": "y1-geo-recognise-and-name-common-2d-and-3d-shapes-including-rectangles",
     "strand": "geo",
     "year": "Year 1",
     "source": "NC: Geometry – properties of shapes",
@@ -15302,6 +15500,7 @@ const objectives = [
     }
   },
   {
+    "id": "y1-geo-describe-position-direction-and-movement-including-whole-half-quarter",
     "strand": "geo",
     "year": "Year 1",
     "source": "NC: Geometry – position and direction",
@@ -15362,6 +15561,7 @@ const objectives = [
     }
   },
   {
+    "id": "y2-geo-identify-and-describe-the-properties-of-2d-shapes-including-the",
     "strand": "geo",
     "year": "Year 2",
     "source": "NC: Geometry – properties of shapes",
@@ -15422,6 +15622,7 @@ const objectives = [
     }
   },
   {
+    "id": "y2-geo-identify-and-describe-the-properties-of-3d-shapes-including-the",
     "strand": "geo",
     "year": "Year 2",
     "source": "NC: Geometry – properties of shapes",
@@ -15482,6 +15683,7 @@ const objectives = [
     }
   },
   {
+    "id": "y2-geo-identify-2d-shapes-on-the-surface-of-3d-shapes",
     "strand": "geo",
     "year": "Year 2",
     "source": "NC: Geometry – properties of shapes",
@@ -15542,6 +15744,7 @@ const objectives = [
     }
   },
   {
+    "id": "y2-geo-compare-and-sort-common-2d-and-3d-shapes-and-everyday-objects",
     "strand": "geo",
     "year": "Year 2",
     "source": "NC: Geometry – properties of shapes",
@@ -15602,6 +15805,7 @@ const objectives = [
     }
   },
   {
+    "id": "y2-geo-order-and-arrange-combinations-of-mathematical-objects-in-patterns",
     "strand": "geo",
     "year": "Year 2",
     "source": "NC: Geometry – position and direction",
@@ -15662,6 +15866,7 @@ const objectives = [
     }
   },
   {
+    "id": "y2-geo-use-mathematical-vocabulary-to-describe-position-direction-and",
     "strand": "geo",
     "year": "Year 2",
     "source": "NC: Geometry – position and direction",
@@ -15722,6 +15927,7 @@ const objectives = [
     }
   },
   {
+    "id": "y3-geo-draw-2d-shapes-and-make-3d-shapes-using-modelling-materials-recognise",
     "strand": "geo",
     "year": "Year 3",
     "source": "NC: Geometry – properties of shapes",
@@ -15782,6 +15988,7 @@ const objectives = [
     }
   },
   {
+    "id": "y3-geo-recognise-angles-as-a-property-of-shape-or-a-description-of-a-turn",
     "strand": "geo",
     "year": "Year 3",
     "source": "NC: Geometry – properties of shapes",
@@ -15842,6 +16049,7 @@ const objectives = [
     }
   },
   {
+    "id": "y3-geo-identify-right-angles-recognise-that-2-right-angles-make-a-half-turn",
     "strand": "geo",
     "year": "Year 3",
     "source": "NC: Geometry – properties of shapes",
@@ -15902,6 +16110,7 @@ const objectives = [
     }
   },
   {
+    "id": "y3-geo-identify-horizontal-and-vertical-lines-and-pairs-of-perpendicular-and",
     "strand": "geo",
     "year": "Year 3",
     "source": "NC: Geometry – properties of shapes",
@@ -15962,6 +16171,7 @@ const objectives = [
     }
   },
   {
+    "id": "y4-geo-compare-and-classify-geometric-shapes-including-quadrilaterals-and",
     "strand": "geo",
     "year": "Year 4",
     "source": "NC: Geometry – properties of shapes",
@@ -16022,6 +16232,7 @@ const objectives = [
     }
   },
   {
+    "id": "y4-geo-identify-acute-and-obtuse-angles-and-compare-and-order-angles-up-to-2",
     "strand": "geo",
     "year": "Year 4",
     "source": "NC: Geometry – properties of shapes",
@@ -16082,6 +16293,7 @@ const objectives = [
     }
   },
   {
+    "id": "y4-geo-identify-lines-of-symmetry-in-2d-shapes-presented-in-different",
     "strand": "geo",
     "year": "Year 4",
     "source": "NC: Geometry – properties of shapes",
@@ -16142,6 +16354,7 @@ const objectives = [
     }
   },
   {
+    "id": "y4-geo-complete-a-simple-symmetric-figure-with-respect-to-a-specific-line-of",
     "strand": "geo",
     "year": "Year 4",
     "source": "NC: Geometry – properties of shapes",
@@ -16202,6 +16415,7 @@ const objectives = [
     }
   },
   {
+    "id": "y4-geo-describe-positions-on-a-2d-grid-as-coordinates-in-the-first-quadrant",
     "strand": "geo",
     "year": "Year 4",
     "source": "NC: Geometry – position and direction",
@@ -16262,6 +16476,7 @@ const objectives = [
     }
   },
   {
+    "id": "y4-geo-describe-movements-between-positions-as-translations-of-a-given-unit",
     "strand": "geo",
     "year": "Year 4",
     "source": "NC: Geometry – position and direction",
@@ -16322,6 +16537,7 @@ const objectives = [
     }
   },
   {
+    "id": "y4-geo-plot-specified-points-and-draw-sides-to-complete-a-given-polygon",
     "strand": "geo",
     "year": "Year 4",
     "source": "NC: Geometry – position and direction",
@@ -16382,6 +16598,7 @@ const objectives = [
     }
   },
   {
+    "id": "y5-geo-identify-3d-shapes-including-cubes-and-other-cuboids-from-2d",
     "strand": "geo",
     "year": "Year 5",
     "source": "NC: Geometry – properties of shapes",
@@ -16442,6 +16659,7 @@ const objectives = [
     }
   },
   {
+    "id": "y5-geo-know-angles-are-measured-in-degrees-estimate-and-compare-acute-obtuse",
     "strand": "geo",
     "year": "Year 5",
     "source": "NC: Geometry – properties of shapes",
@@ -16502,6 +16720,7 @@ const objectives = [
     }
   },
   {
+    "id": "y5-geo-draw-given-angles-and-measure-them-in-degrees",
     "strand": "geo",
     "year": "Year 5",
     "source": "NC: Geometry – properties of shapes",
@@ -16562,6 +16781,7 @@ const objectives = [
     }
   },
   {
+    "id": "y5-geo-identify-angles-at-a-point-and-one-whole-turn-total-360-angles-at-a",
     "strand": "geo",
     "year": "Year 5",
     "source": "NC: Geometry – properties of shapes",
@@ -16622,6 +16842,7 @@ const objectives = [
     }
   },
   {
+    "id": "y5-geo-use-the-properties-of-rectangles-to-deduce-related-facts-and-find",
     "strand": "geo",
     "year": "Year 5",
     "source": "NC: Geometry – properties of shapes",
@@ -16682,6 +16903,7 @@ const objectives = [
     }
   },
   {
+    "id": "y5-geo-distinguish-between-regular-and-irregular-polygons-based-on-reasoning",
     "strand": "geo",
     "year": "Year 5",
     "source": "NC: Geometry – properties of shapes",
@@ -16742,6 +16964,7 @@ const objectives = [
     }
   },
   {
+    "id": "y5-geo-identify-describe-and-represent-the-position-of-a-shape-following-a",
     "strand": "geo",
     "year": "Year 5",
     "source": "NC: Geometry – position and direction",
@@ -16802,6 +17025,7 @@ const objectives = [
     }
   },
   {
+    "id": "y6-geo-draw-2d-shapes-using-given-dimensions-and-angles",
     "strand": "geo",
     "year": "Year 6",
     "source": "NC: Geometry – properties of shapes",
@@ -16857,6 +17081,7 @@ const objectives = [
     }
   },
   {
+    "id": "y6-geo-recognise-describe-and-build-simple-3d-shapes-including-making-nets",
     "strand": "geo",
     "year": "Year 6",
     "source": "NC: Geometry – properties of shapes",
@@ -16912,6 +17137,7 @@ const objectives = [
     }
   },
   {
+    "id": "y6-geo-compare-and-classify-geometric-shapes-based-on-their-properties-and",
     "strand": "geo",
     "year": "Year 6",
     "source": "NC: Geometry – properties of shapes",
@@ -16967,6 +17193,7 @@ const objectives = [
     }
   },
   {
+    "id": "y6-geo-illustrate-and-name-parts-of-circles-including-radius-diameter-and",
     "strand": "geo",
     "year": "Year 6",
     "source": "NC: Geometry – properties of shapes",
@@ -17022,6 +17249,7 @@ const objectives = [
     }
   },
   {
+    "id": "y6-geo-recognise-angles-where-they-meet-at-a-point-are-on-a-straight-line-or",
     "strand": "geo",
     "year": "Year 6",
     "source": "NC: Geometry – properties of shapes",
@@ -17077,6 +17305,7 @@ const objectives = [
     }
   },
   {
+    "id": "y6-geo-describe-positions-on-the-full-coordinate-grid-all-4-quadrants",
     "strand": "geo",
     "year": "Year 6",
     "source": "NC: Geometry – position and direction",
@@ -17132,6 +17361,7 @@ const objectives = [
     }
   },
   {
+    "id": "y6-geo-draw-and-translate-simple-shapes-on-the-coordinate-plane-and-reflect",
     "strand": "geo",
     "year": "Year 6",
     "source": "NC: Geometry – position and direction",
@@ -17187,6 +17417,7 @@ const objectives = [
     }
   },
   {
+    "id": "y2-stat-interpret-and-construct-simple-pictograms-tally-charts-block-diagrams",
     "strand": "stat",
     "year": "Year 2",
     "source": "NC: Statistics",
@@ -17242,6 +17473,7 @@ const objectives = [
     }
   },
   {
+    "id": "y2-stat-ask-and-answer-simple-questions-by-counting-the-number-of-objects-in",
     "strand": "stat",
     "year": "Year 2",
     "source": "NC: Statistics",
@@ -17297,6 +17529,7 @@ const objectives = [
     }
   },
   {
+    "id": "y2-stat-ask-and-answer-questions-about-totalling-and-comparing-categorical",
     "strand": "stat",
     "year": "Year 2",
     "source": "NC: Statistics",
@@ -17352,6 +17585,7 @@ const objectives = [
     }
   },
   {
+    "id": "y3-stat-interpret-and-present-data-using-bar-charts-pictograms-and-tables",
     "strand": "stat",
     "year": "Year 3",
     "source": "NC: Statistics",
@@ -17412,6 +17646,7 @@ const objectives = [
     }
   },
   {
+    "id": "y3-stat-solve-one-step-and-two-step-questions-using-information-presented-in",
     "strand": "stat",
     "year": "Year 3",
     "source": "NC: Statistics",
@@ -17472,6 +17707,7 @@ const objectives = [
     }
   },
   {
+    "id": "y4-stat-interpret-and-present-discrete-and-continuous-data-using-appropriate",
     "strand": "stat",
     "year": "Year 4",
     "source": "NC: Statistics",
@@ -17532,6 +17768,7 @@ const objectives = [
     }
   },
   {
+    "id": "y4-stat-solve-comparison-sum-and-difference-problems-using-information",
     "strand": "stat",
     "year": "Year 4",
     "source": "NC: Statistics",
@@ -17592,6 +17829,7 @@ const objectives = [
     }
   },
   {
+    "id": "y5-stat-solve-comparison-sum-and-difference-problems-using-information",
     "strand": "stat",
     "year": "Year 5",
     "source": "NC: Statistics",
@@ -17652,6 +17890,7 @@ const objectives = [
     }
   },
   {
+    "id": "y5-stat-complete-read-and-interpret-information-in-tables-including-timetables",
     "strand": "stat",
     "year": "Year 5",
     "source": "NC: Statistics",
@@ -17712,6 +17951,7 @@ const objectives = [
     }
   },
   {
+    "id": "y6-stat-interpret-and-construct-pie-charts-and-line-graphs-and-use-these-to",
     "strand": "stat",
     "year": "Year 6",
     "source": "NC: Statistics",
@@ -17767,6 +18007,7 @@ const objectives = [
     }
   },
   {
+    "id": "y6-stat-calculate-and-interpret-the-mean-as-an-average",
     "strand": "stat",
     "year": "Year 6",
     "source": "NC: Statistics",
@@ -17836,6 +18077,7 @@ const objectives = [
     }
   },
   {
+    "id": "y6-ratio-solve-problems-involving-the-relative-sizes-of-2-quantities-where",
     "strand": "ratio",
     "year": "Year 6",
     "source": "NC: Ratio and proportion",
@@ -17892,6 +18134,7 @@ const objectives = [
     }
   },
   {
+    "id": "y6-ratio-solve-problems-involving-the-calculation-of-percentages-and-the-use",
     "strand": "ratio",
     "year": "Year 6",
     "source": "NC: Ratio and proportion",
@@ -17943,6 +18186,7 @@ const objectives = [
     "move_on": "pupils identify the multiplicative relationship, generate equivalent ratios by scaling both quantities together, and connect ratio to fractions/percentage where appropriate."
   },
   {
+    "id": "y6-ratio-solve-problems-involving-similar-shapes-where-the-scale-factor-is",
     "strand": "ratio",
     "year": "Year 6",
     "source": "NC: Ratio and proportion",
@@ -17994,6 +18238,7 @@ const objectives = [
     "move_on": "pupils identify the multiplicative relationship, generate equivalent ratios by scaling both quantities together, and connect ratio to fractions/percentage where appropriate."
   },
   {
+    "id": "y6-ratio-solve-problems-involving-unequal-sharing-and-grouping-using-knowledge",
     "strand": "ratio",
     "year": "Year 6",
     "source": "NC: Ratio and proportion",
@@ -18050,6 +18295,7 @@ const objectives = [
     }
   },
   {
+    "id": "y6-alg-use-simple-formulae",
     "strand": "alg",
     "year": "Year 6",
     "source": "NC: Algebra",
@@ -18101,6 +18347,7 @@ const objectives = [
     "move_on": "pupils interpret symbols as numbers/variables, preserve equality, and verify a generalisation or solution by substitution."
   },
   {
+    "id": "y6-alg-generate-and-describe-linear-number-sequences",
     "strand": "alg",
     "year": "Year 6",
     "source": "NC: Algebra",
@@ -18161,6 +18408,7 @@ const objectives = [
     "move_on": "pupils distinguish term-to-term and position-to-term reasoning, test a rule on distant terms and explain why it continues."
   },
   {
+    "id": "y6-alg-express-missing-number-problems-algebraically",
     "strand": "alg",
     "year": "Year 6",
     "source": "NC: Algebra",
@@ -18212,6 +18460,7 @@ const objectives = [
     "move_on": "the pupil treats symbols as numbers/variables and checks generalisations by substitution."
   },
   {
+    "id": "y6-alg-find-pairs-of-numbers-that-satisfy-an-equation-with-2-unknowns",
     "strand": "alg",
     "year": "Year 6",
     "source": "NC: Algebra",
@@ -18262,6 +18511,7 @@ const objectives = [
     "move_on": "pupils generate solutions systematically, test the constraint, avoid duplicates and justify why the set is complete within the stated domain."
   },
   {
+    "id": "y6-alg-enumerate-possibilities-of-combinations-of-2-variables",
     "strand": "alg",
     "year": "Year 6",
     "source": "NC: Algebra",
@@ -18851,6 +19101,60 @@ function renderObjectiveTools(o){
  const links=entries.slice(0,4).map(e=>`<a class="obj-tool-link" href="Interactive_Maths_Tools_v40_1/${e.tool.file}?${new URLSearchParams(e.params)}" target="_blank" rel="noopener noreferrer" onclick="event.stopPropagation()">${e.label} ↗</a>`);
  return `<div class="obj-tools"><div class="obj-tool-links">${links.join('')}</div></div>`;
 }
+/* A different cut of data already in the bank: every misconception recorded
+   against an objective, grouped by strand and filterable by strand and year.
+   No wording is added or changed here. */
+let miscStrand='All', miscYear='All';
+function misconceptionEntries(){
+ const out=[];
+ objectives.forEach(o=>(o.misconceptions||[]).forEach((text,i)=>out.push({text,o,i})));
+ return out;
+}
+function renderMisconceptions(){
+ const all=misconceptionEntries();
+ /* Same ordering the curriculum view uses; only years that actually carry a
+    recorded misconception are offered. */
+ const ALLYEARS=['EYFS','Year 1','Year 2','Year 3','Year 4','Year 5','Year 6'];
+ const years=['All',...ALLYEARS.filter(y=>all.some(e=>e.o.year===y))];
+ const sf=document.getElementById('miscStrandFilter'),yf=document.getElementById('miscYearFilter');
+ const list=document.getElementById('miscList'),sum=document.getElementById('miscSummary');
+ if(!sf||!yf||!list)return;
+ const strandOpts=[{id:'All',name:'All strands'},...strands];
+ sf.innerHTML=strandOpts.map(x=>`<button type="button" class="pill${x.id===miscStrand?' active':''}" data-misc-strand="${x.id}">${x.name}</button>`).join('');
+ yf.innerHTML=years.map(y=>`<button type="button" class="pill${y===miscYear?' active':''}" data-misc-year="${y}">${y==='All'?'All years':y}</button>`).join('');
+ sf.querySelectorAll('[data-misc-strand]').forEach(b=>b.onclick=()=>{miscStrand=b.dataset.miscStrand;renderMisconceptions();syncHash('misconceptions');});
+ yf.querySelectorAll('[data-misc-year]').forEach(b=>b.onclick=()=>{miscYear=b.dataset.miscYear;renderMisconceptions();syncHash('misconceptions');});
+
+ const shown=all.filter(e=>(miscStrand==='All'||e.o.strand===miscStrand)&&(miscYear==='All'||e.o.year===miscYear));
+ sum.innerHTML=`Showing <b>${shown.length}</b> of <b>${all.length}</b> recorded misconceptions, across <b>${new Set(shown.map(e=>e.o.id)).size}</b> objectives. Each one is the wording already shown on that objective's card.`;
+
+ const groups=strands.filter(st=>shown.some(e=>e.o.strand===st.id));
+ if(!groups.length){list.innerHTML='<div class="misc-empty">No misconceptions are recorded for that combination of strand and year.</div>';return;}
+ list.innerHTML=groups.map(st=>{
+  const rows=shown.filter(e=>e.o.strand===st.id);
+  return `<section class="misc-group"><h3>${st.name}</h3><div class="misc-count">${rows.length} watch-for${rows.length===1?'':'s'} across ${new Set(rows.map(e=>e.o.id)).size} objective${new Set(rows.map(e=>e.o.id)).size===1?'':'s'}</div>`+
+   rows.map(e=>`<div class="misc-item"><div class="misc-text">${e.text}</div><div class="misc-meta">`+
+     `<span class="tag">${e.o.year}</span>`+
+     `<button type="button" class="misc-link" onclick="openObjectiveById('${e.o.id}')">${e.o.title.length>90?e.o.title.slice(0,90)+'…':e.o.title} →</button>`+
+     `</div></div>`).join('')+`</section>`;
+ }).join('');
+}
+/* Follow a misconception back to the objective it belongs to, using the frozen id. */
+function openObjectiveById(id){
+ const o=objectiveById.get(id); if(!o)return;
+ currentStrand=o.strand; currentYear=o.year;
+ showView('curriculum');
+ renderCurriculum();
+ syncHash('curriculum',objectiveSlug(o));
+ setTimeout(()=>{try{
+  const esc=(window.CSS&&CSS.escape)?CSS.escape(id):id;
+  const el=document.querySelector('.obj[data-slug="'+esc+'"]');
+  if(!el)return;
+  el.classList.add('open');
+  const head=el.querySelector('.obj-head'); if(head)head.setAttribute('aria-expanded','true');
+  el.scrollIntoView({block:'start'});
+ }catch(e){}},0);
+}
 function renderTools(){
  const filters=['All',...new Set(interactiveTools.map(t=>t.cat))];const f=document.getElementById('toolsFilter'),g=document.getElementById('toolsGrid');if(!f||!g)return;
  f.innerHTML=filters.map(x=>`<button type="button" class="${x===currentToolFilter?'active':''}" data-tool-filter="${x}">${x}</button>`).join('');
@@ -18865,6 +19169,7 @@ function hubHash(view=currentView,slug=''){
  if(view==='curriculum'){parts.push(currentStrand,encodeURIComponent(currentYear));if(slug)parts.push(slug)}
  if(view==='parents'&&typeof currentParentYear!=='undefined')parts.push(encodeURIComponent(currentParentYear));
  if(view==='concepts'&&typeof currentConcept!=='undefined')parts.push(currentConcept);
+ if(view==='misconceptions')parts.push(miscStrand,encodeURIComponent(miscYear));
  return '#'+parts.join('/');
 }
 let applyingHash=false;
@@ -18873,13 +19178,36 @@ function syncHash(view=currentView,slug='',replace=false){
 }
 function applyHashState(){
  const raw=(location.hash||'').replace(/^#/,'');if(!raw)return false;
- const parts=raw.split('/');const view=parts[0];if(!['dashboard','curriculum','calculation','yeargroup','journeys','concepts','consistency','tools','parents'].includes(view))return false;
+ const parts=raw.split('/');const view=parts[0];if(!['dashboard','curriculum','calculation','yeargroup','journeys','concepts','consistency','tools','parents','misconceptions'].includes(view))return false;
  applyingHash=true;
- if(view==='curriculum'){if(parts[1]&&strands.some(s=>s.id===parts[1]))currentStrand=parts[1];if(parts[2])currentYear=decodeURIComponent(parts[2]);}
+ /* The strand was already validated; the year was not, so a hand-edited or
+    stale link like .../Year%209 left the curriculum view empty. Both now fall
+    back to what is currently selected. */
+ if(view==='curriculum'){
+  if(parts[1]&&strands.some(s=>s.id===parts[1]))currentStrand=parts[1];
+  if(parts[2]){const y=decodeURIComponent(parts[2]);
+   if(y==='All'||['EYFS','Year 1','Year 2','Year 3','Year 4','Year 5','Year 6'].includes(y))currentYear=y;}
+ }
  if(view==='parents'&&parts[1])currentParentYear=decodeURIComponent(parts[1]);
  if(view==='concepts'&&parts[1])currentConcept=parts[1];
+ if(view==='misconceptions'){
+  const st=parts[1]&&decodeURIComponent(parts[1]);
+  if(st&&(st==='All'||strands.some(x=>x.id===st)))miscStrand=st;
+  const yr=parts[2]&&decodeURIComponent(parts[2]);
+  if(yr&&(yr==='All'||['EYFS','Year 1','Year 2','Year 3','Year 4','Year 5','Year 6'].includes(yr)))miscYear=yr;
+ }
  showView(view,true);
- if(view==='curriculum'){renderCurriculum();const slug=parts[3];if(slug)setTimeout(()=>{const el=document.querySelector(`.obj[data-slug="${CSS.escape(slug)}"]`);if(el){el.classList.add('open');const head=el.querySelector('.obj-head');if(head)head.setAttribute('aria-expanded','true');el.scrollIntoView({block:'start'});}},0);}
+ if(view==='curriculum'){renderCurriculum();const slug=parts[3];
+  /* An id that is not in the bank, or is filtered out by the current strand or
+     year, leaves the strand/year view showing rather than erroring. */
+  if(slug)setTimeout(()=>{try{
+    const esc=(window.CSS&&CSS.escape)?CSS.escape(slug):slug.replace(/["\\]/g,'\\$&');
+    const el=document.querySelector('.obj[data-slug="'+esc+'"]');
+    if(!el)return;
+    el.classList.add('open');
+    const head=el.querySelector('.obj-head');if(head)head.setAttribute('aria-expanded','true');
+    el.scrollIntoView({block:'start'});
+  }catch(e){}},0);}
  applyingHash=false;saveHubState();return true;
 }
 window.addEventListener('hashchange',applyHashState);
@@ -18896,6 +19224,7 @@ function showView(view,fromHash=false){
  document.getElementById('consistencyView').classList.toggle('active',view==='consistency');
  document.getElementById('toolsView').classList.toggle('active',view==='tools');
  document.getElementById('parentsView').classList.toggle('active',view==='parents');
+ document.getElementById('misconceptionsView').classList.toggle('active',view==='misconceptions');
  document.getElementById('curriculumSide').style.display=view==='curriculum'?'block':'none';
  document.getElementById('calcSide').style.display=view==='calculation'?'block':'none';
  document.getElementById('search').style.display='block';
@@ -18907,6 +19236,7 @@ function showView(view,fromHash=false){
  if(view==='concepts')renderConceptProgressions();
  if(view==='consistency')renderConsistency();
  if(view==='tools')renderTools();
+ if(view==='misconceptions')renderMisconceptions();
  if(view==='parents')renderParentGuide();
  if(!fromHash)syncHash(view);saveHubState();
 }
@@ -20233,12 +20563,32 @@ function objectiveCard(o){
   <div class="panel"><h4>Diagnostic assessment</h4>${renderDiagnostics(o)}</div>
   <div class="panel" style="grid-column:1/-1"><h4>Look-fors in pupil work</h4>${renderPupilLookFors(o)}</div>
   <div class="panel" style="grid-column:1/-1"><h4>Planning support</h4>${renderPlanningSupport(o)}</div>
-  <div class="panel" style="grid-column:1/-1"><h4>Objective-specific resources <button class="obj-print-btn" type="button" onclick="event.stopPropagation();printObjective('${slug}')">Print this objective</button></h4>${resourceBlock}</div>
+  <div class="panel" style="grid-column:1/-1"><h4>Objective-specific resources <button class="obj-print-btn" type="button" onclick="event.stopPropagation();printObjective('${slug}')">Print this objective</button> <button class="obj-print-btn" type="button" onclick="event.stopPropagation();copyObjectiveLink('${slug}',this)" title="Copy a direct link to this objective">Copy link</button></h4>${resourceBlock}</div>
  </div>
  <div class="guidancebox"><div class="guidegrid"><div class="guideitem"><div class="gtitle">DfE Ready-to-Progress / guidance</div><span class="codechip">${o.rtp_code}</span>${o.rtp_text}${dfeYearGuidance[o.year]?`<div class="resources" style="margin-top:6px"><a class="resource" href="${dfeYearGuidance[o.year]}" target="_blank" rel="noopener noreferrer">Open ${o.year} DfE guidance ↗</a></div>`:''}</div><div class="guideitem"><div class="gtitle">Closest NCETM mastery segment</div><b>${o.ncetm_segment}</b><br>${o.ncetm_focus}${ncetmSpecificResources(o).length?`<div class="resources" style="margin-top:6px">${ncetmSpecificResources(o).map(r=>`<a class="resource" href="${r.url}" target="_blank" rel="noopener noreferrer">${r.label} ↗</a>`).join('')}</div>`:''}</div></div></div>
  </div></article>`;
 }
-function objectiveSlug(o){return (o.title||'objective').toLowerCase().normalize('NFKD').replace(/[^a-z0-9]+/g,'-').replace(/^-|-$/g,'').slice(0,90);}
+/* Objective ids are stored in the bank and frozen. They are never derived from
+   the title at runtime: editing a title would otherwise change the id and break
+   every link already shared. The fallback exists only so a bank entry added
+   without an id still renders. */
+function objectiveSlug(o){return o.id||('untitled-'+(o.strand||'x')+'-'+(o.year||'').toLowerCase().replace(/[^a-z0-9]+/g,''));}
+const objectiveById=(()=>{const m=new Map();objectives.forEach(o=>{if(o.id)m.set(o.id,o)});return m;})();
+function objectiveLink(o){return location.href.split('#')[0]+hubHashFor(o);}
+function hubHashFor(o){return '#curriculum/'+o.strand+'/'+encodeURIComponent(o.year)+'/'+objectiveSlug(o);}
+function copyObjectiveLink(id,btn){
+ const o=objectiveById.get(id); if(!o)return;
+ const url=objectiveLink(o);
+ const done=ok=>{if(!btn)return;const t=btn.textContent;btn.textContent=ok?'Link copied':'Press Ctrl+C';
+   btn.setAttribute('aria-live','polite');setTimeout(()=>{btn.textContent=t;},1800);};
+ if(navigator.clipboard&&window.isSecureContext){navigator.clipboard.writeText(url).then(()=>done(true),()=>fallback());}
+ else fallback();
+ /* file:// and other non-secure contexts have no clipboard API, so select the
+    text and let the teacher copy it. */
+ function fallback(){try{const ta=document.createElement('textarea');ta.value=url;
+   ta.style.cssText='position:fixed;left:-2000px';document.body.appendChild(ta);ta.select();
+   const ok=document.execCommand&&document.execCommand('copy');ta.remove();done(!!ok);}catch(e){done(false);}}
+}
 const objectiveSearchCache=new WeakMap();
 function objectiveSearchBlob(o){
  if(objectiveSearchCache.has(o))return objectiveSearchCache.get(o);
