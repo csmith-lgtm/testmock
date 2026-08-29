@@ -103,21 +103,17 @@ $('#translate').onclick=()=>{const dx=Number($('#dx').value),dy=Number($('#dy').
  document.querySelectorAll('button[data-imt-mode]').forEach(b=>b.addEventListener('click',()=>{const native=[...document.querySelectorAll('.wrap [data-mode]')].find(x=>x.dataset.mode===b.dataset.imtMode);if(native&&!native.classList.contains('active'))native.click();}));
  const initialSharedMode=document.documentElement.dataset.imtMode||'teach';const initialNative=[...document.querySelectorAll('.wrap [data-mode]')].find(x=>x.dataset.mode===initialSharedMode);if(initialNative&&!initialNative.classList.contains('active'))initialNative.click();applySharedMode(initialSharedMode);
  
- /* Four quadrants only where the objective actually reaches negative
-    coordinates; Year 4 and Year 5 stay in the first quadrant. */
- const gridEl=document.getElementById('grid'),q=qs.get('quadrants');
- if(gridEl){
-  const y=Number(((year||'').match(/\d+/)||[4])[0])||4,f=(focus||'').toLowerCase();
-  const wantsFour=/all 4 quadrants|four quadrants|full coordinate grid|\bnegative\b|in the axes|both axes/.test(f);
-  gridEl.value=(q==='1'||q==='4')?q:((y>=6&&wantsFour)?'4':'1');
-  gridEl.dispatchEvent(new Event('input',{bubbles:true}));
- }
  const action=qs.get('action');
  if(action==='reflect-x')setTimeout(()=>document.getElementById('reflectX')?.click(),50);
  else if(action==='reflect-y')setTimeout(()=>document.getElementById('reflectY')?.click(),50);
  else if(action==='translate'&&focus){ /* retain starting shape; translation controls remain ready */ }
  
- if(year&&document.getElementById('grid')){document.getElementById('grid').value=/Year 6/.test(year)?'4':'1';document.getElementById('grid').dispatchEvent(new Event('input',{bubbles:true}));}
+ /* The tool's own year rule: only Year 6 reaches negative coordinates. An
+    explicit quadrants parameter, if one is ever sent, takes precedence. */
+ if(document.getElementById('grid')){const q=qs.get('quadrants');
+  if(q==='1'||q==='4')document.getElementById('grid').value=q;
+  else if(year)document.getElementById('grid').value=/Year 6/.test(year)?'4':'1';
+  document.getElementById('grid').dispatchEvent(new Event('input',{bubbles:true}));}
 })();
 </script>
 </body></html>
