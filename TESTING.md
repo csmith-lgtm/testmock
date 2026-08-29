@@ -51,14 +51,19 @@ Properties Lab's six mathematical acceptance criteria — Euler's formula, lines
 of symmetry at rotated orientations, whether each net genuinely folds, the
 diameter being twice the radius, parallel and perpendicular pairs, and stated
 properties against the drawn polygon — plus a seventh covering the three viewing
-orientations of every solid, which is what caught a tetrahedron that showed a
-single face and a hexagonal prism with a 0.7% sliver. It reads the rendered SVG
-rather than the captions, needs Playwright rather than jsdom, and exits 1 on
-failure:
+orientations of every solid (which caught a tetrahedron showing a single face
+and a hexagonal prism with a 0.7% sliver) and an eighth on the dropdown and the
+caption never disagreeing (which catches a view silently substituting a shape it
+cannot draw). It reads the rendered SVG rather than the captions, needs
+Playwright and a Chromium binary rather than jsdom, and exits 1 on failure:
 
 ```
-node shape_criteria.test.js
+node shape_criteria.test.js            # or: npm run test:shape
 ```
+
+It finds the tool relative to itself, so it can be run from anywhere and
+survives a version rename. If Playwright or Chromium is missing it says which
+and exits 1, rather than passing silently.
 
 It also does not check mathematical correctness in general. Where maths has been verified — angles drawn matching angles stated, polygon interior angles against drawn vertices, rounding across place values and negatives — that was done with one-off probes. If you want any of those as permanent checks, they can be added as a section 7.
 

@@ -4,17 +4,66 @@
  *   node shape_criteria.test.js
  *
  * Checks the six criteria in SHAPE_LAB_SPEC.md, plus a seventh on the three
- * solid orientations, against what the SVG actually
+ * solid orientations and an eighth on dropdown/caption agreement, against what
+ * the SVG actually
  * draws, not against what the caption claims. Needs a browser, so it is kept
  * separate from tools.test.js, which runs under jsdom and has no geometry.
  * Exits 1 on failure.
  */
-const {chromium}=require('playwright');
-const D='file:///home/user/testmock/Interactive_Maths_Tools_v40_1/Shape_Properties_Lab_v1.html';
+const fs=require('fs'), path=require('path'), {pathToFileURL}=require('url');
+
+let chromium;
+try{ ({chromium}=require('playwright')); }
+catch(e){
+  console.error('This check drives a real browser and needs Playwright:\n' +
+                '  npm install            (installs it from package.json)\n' +
+                'Then, unless a Chromium is already present, either\n' +
+                '  npx playwright install chromium\n' +
+                'or point CHROMIUM_PATH at an existing binary.');
+  process.exit(1);
+}
+
+/* Locate the tool relative to this script, so the check keeps working when the
+   package is moved or the version in the folder name changes. */
+function findTool(root){
+  const walk=(dir,depth)=>{
+    if(depth>3) return null;
+    let entries; try{ entries=fs.readdirSync(dir,{withFileTypes:true}); }catch(e){ return null; }
+    for(const e of entries){
+      if(e.isFile() && e.name==='Shape_Properties_Lab_v1.html') return path.join(dir,e.name);
+    }
+    for(const e of entries){
+      if(e.isDirectory() && e.name!=='node_modules' && !e.name.startsWith('.')){
+        const r=walk(path.join(dir,e.name),depth+1); if(r) return r;
+      }
+    }
+    return null;
+  };
+  return walk(path.resolve(root),0);
+}
+const file=findTool(process.argv[2]||__dirname);
+if(!file){
+  console.error('Could not find Shape_Properties_Lab_v1.html under ' +
+                path.resolve(process.argv[2]||__dirname) +
+                '\nRun this from the package root, or pass the path as an argument.');
+  process.exit(1);
+}
+const D=pathToFileURL(file).href;
+console.log('Tool: '+path.relative(process.cwd(),file)+'\n');
+
 let bad=0; const chk=(ok,msg)=>{if(!ok)bad++;console.log((ok?'  OK   ':'  BAD  ')+msg)};
 (async()=>{
- const exe=process.env.CHROMIUM_PATH||'/opt/pw-browsers/chromium-1194/chrome-linux/chrome';
- const b=await chromium.launch(require('fs').existsSync(exe)?{executablePath:exe}:{});
+ /* Use a bundled Chromium if Playwright has one; otherwise fall back to a
+    known sandbox path or CHROMIUM_PATH. */
+ const candidates=[process.env.CHROMIUM_PATH,'/opt/pw-browsers/chromium-1194/chrome-linux/chrome']
+   .filter(Boolean).filter(p=>fs.existsSync(p));
+ let b;
+ try{ b=await chromium.launch(candidates.length?{executablePath:candidates[0]}:{}); }
+ catch(e){
+   console.error('Could not start Chromium: '+e.message.split('\n')[0]+
+     '\nInstall one with "npx playwright install chromium", or set CHROMIUM_PATH.');
+   process.exit(1);
+ }
  const ctx=await b.newContext();
  await ctx.route('**',r=>{const u=r.request().url();(u.startsWith('file:')||u.startsWith('data:'))?r.continue():r.abort()});
  const p=await ctx.newPage();
@@ -113,7 +162,37 @@ let bad=0; const chk=(ok,msg)=>{if(!ok)bad++;console.log((ok?'  OK   ':'  BAD  '
      `${sname.padEnd(12)} orientation ${o}: ${areas.length} faces, thinnest ${(thin*100).toFixed(1)}% of silhouette`);
   }
  }
- console.log(bad?`\n${bad} CRITERIA FAILURES`:'\nAll seven acceptance checks hold against the rendered SVG.');
+ console.log('8. The dropdown and the caption never disagree');
+ {
+  /* A view that cannot draw the selected shape must say so, not swap silently.
+     The circle has no polygon points, which is where this went wrong. */
+  const SH=['circle','square','rectangle','kite','hexagon','scalene'];
+  for(const v of ['name','properties2d','symmetry','lines']){
+   for(const sh of SH){
+    const q=await ctx.newPage();
+    await q.goto(D+'?view='+v,{waitUntil:'load'});await q.waitForTimeout(180);
+    const r=await q.evaluate(sh=>{
+      const el=document.getElementById('shape');
+      const opt=[...el.options].find(o=>o.value===sh);
+      if(!opt.disabled){el.value=sh;el.dispatchEvent(new Event('input',{bubbles:true}));}
+      const sel=[...el.options].find(o=>o.value===el.value);
+      return {picked:el.value,pickedLabel:sel?sel.textContent.trim():'',disabled:opt.disabled,
+        answer:document.getElementById('answerline').textContent.trim(),
+        note:document.getElementById('shapeNote').hidden?null:document.getElementById('shapeNote').textContent};
+    },sh);
+    await q.close();
+    /* The caption must name whatever the dropdown is currently showing. The
+       original bug left the dropdown on "Circle" while the caption read
+       "Regular hexagon", so comparing the dropdown against itself proves
+       nothing — it has to be compared against the caption. */
+    const agrees = r.answer.toLowerCase().indexOf(r.pickedLabel.toLowerCase())>=0;
+    const honest = r.disabled || agrees || !!r.note;
+    chk(honest, `${v.padEnd(13)} ${sh.padEnd(10)} -> dropdown "${r.pickedLabel}", caption "${r.answer}"` +
+      (r.disabled?'  (option disabled here)':r.note?'  + note explains the swap':agrees?'':'  MISMATCH'));
+   }
+  }
+ }
+ console.log(bad?`\n${bad} CRITERIA FAILURES`:'\nAll eight acceptance checks hold against the rendered SVG.');
  await b.close();
  process.exit(bad?1:0);
 })();

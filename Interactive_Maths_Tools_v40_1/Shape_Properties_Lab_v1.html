@@ -47,6 +47,7 @@ svg{width:min(100%,620px);height:auto;display:block}
 .hline,.vline{stroke:#8fa2bd;stroke-width:3;stroke-dasharray:6 5}
 .diameter{stroke:#a83232;stroke-width:4}.radius{stroke:#0f8d7a;stroke-width:5}
 .lbl{font-size:15px;font-weight:700;fill:#34425b;font-family:var(--font)}
+.swapnote{display:block;background:#fffdf4;border:1px solid #eadfae;border-radius:8px;padding:6px 8px;margin:4px 0;font-size:.82rem;color:#6a5a20}
 .challenge{background:#f8fbff;border:1px solid #dbe7ff;border-radius:11px;padding:10px 11px;font-size:.9rem;margin-top:10px}
 .locked select,.locked input{pointer-events:none;opacity:.55}
 body.imt-frozen .stack select,body.imt-frozen .stack input{pointer-events:none;opacity:.55}
@@ -80,7 +81,7 @@ body.imt-hide-teaching .propval,body.imt-hide-teaching .answerline{visibility:hi
 <div class="context">Name, sort and describe 2-D and 3-D shapes; lines, symmetry, nets and the parts of a circle. Every property shown is measured from the drawing.</div></section>
 <div class="grid"><aside class="panel"><div class="stack">
 <label for="view">View<select id="view"><option value="name">Name the shape</option><option value="properties2d">2-D properties</option><option value="properties3d">3-D properties</option><option value="sort">Compare and sort</option><option value="lines">Lines: parallel and perpendicular</option><option value="symmetry">Symmetry</option><option value="nets">Nets</option><option value="circle">Parts of a circle</option></select></label>
-<label for="shape" id="shapeBox">2-D shape<select id="shape"><option value="circle">Circle</option><option value="triangle">Equilateral triangle</option><option value="isosceles">Isosceles triangle</option><option value="scalene">Scalene triangle</option><option value="rightangled">Right-angled triangle</option><option value="square" selected>Square</option><option value="rectangle">Rectangle</option><option value="rhombus">Rhombus</option><option value="parallelogram">Parallelogram</option><option value="trapezium">Isosceles trapezium</option><option value="kite">Kite</option><option value="pentagon">Regular pentagon</option><option value="hexagon">Regular hexagon</option><option value="octagon">Regular octagon</option></select></label>
+<label for="shape" id="shapeBox">2-D shape<span id="shapeNote" class="swapnote" hidden>A circle has no straight sides, so this view shows a rectangle.</span><select id="shape"><option value="circle">Circle</option><option value="triangle">Equilateral triangle</option><option value="isosceles">Isosceles triangle</option><option value="scalene">Scalene triangle</option><option value="rightangled">Right-angled triangle</option><option value="square" selected>Square</option><option value="rectangle">Rectangle</option><option value="rhombus">Rhombus</option><option value="parallelogram">Parallelogram</option><option value="trapezium">Isosceles trapezium</option><option value="kite">Kite</option><option value="pentagon">Regular pentagon</option><option value="hexagon">Regular hexagon</option><option value="octagon">Regular octagon</option></select></label>
 <label for="solid" id="solidBox" hidden>3-D solid<select id="solid"><option value="cube">Cube</option><option value="cuboid">Cuboid</option><option value="pyramid">Square-based pyramid</option><option value="tetrahedron">Tetrahedron</option><option value="triprism">Triangular prism</option><option value="hexprism">Hexagonal prism</option><option value="sphere">Sphere</option><option value="cylinder">Cylinder</option><option value="cone">Cone</option></select></label>
 <label for="sortA" id="sortBox" hidden>Compare<select id="sortA"><option value="circle">Circle</option><option value="triangle">Equilateral triangle</option><option value="isosceles">Isosceles triangle</option><option value="scalene">Scalene triangle</option><option value="rightangled">Right-angled triangle</option><option value="square" selected>Square</option><option value="rectangle">Rectangle</option><option value="rhombus">Rhombus</option><option value="parallelogram">Parallelogram</option><option value="trapezium">Isosceles trapezium</option><option value="kite">Kite</option><option value="pentagon">Regular pentagon</option><option value="hexagon">Regular hexagon</option><option value="octagon">Regular octagon</option></select><select id="sortB" style="margin-top:6px"><option value="circle">Circle</option><option value="triangle">Equilateral triangle</option><option value="isosceles">Isosceles triangle</option><option value="scalene">Scalene triangle</option><option value="rightangled">Right-angled triangle</option><option value="square">Square</option><option value="rectangle" selected>Rectangle</option><option value="rhombus">Rhombus</option><option value="parallelogram">Parallelogram</option><option value="trapezium">Isosceles trapezium</option><option value="kite">Kite</option><option value="pentagon">Regular pentagon</option><option value="hexagon">Regular hexagon</option><option value="octagon">Regular octagon</option></select></label>
 <label for="net" id="netBox" hidden>Net<select id="net"><option value="cross">Cross arrangement</option><option value="stair">Stepped arrangement</option><option value="tee">T arrangement</option><option value="rect23">2 by 3 rectangle</option><option value="line">Six in a row</option></select></label>
@@ -393,6 +394,9 @@ function viewSort(a,b,rot){
 }
 
 function viewLines(key,rot){
+  /* A circle has no straight sides, so there are no parallel or perpendicular
+     pairs to find. render() disables the option and swaps in a rectangle; the
+     swap is stated on screen rather than left to look like a bug. */
   const s=SHAPES2D[key].circle?SHAPES2D.rectangle:SHAPES2D[key];
   const rp=rotatePts(s.pts,rot||0), f=fit(rp,110), pts=rp.map(f);
   /* Relationships are read off the drawn coordinates, so the labels cannot
@@ -420,6 +424,18 @@ function viewLines(key,rot){
 }
 
 function viewSymmetry(key,rot,complete,revealed){
+  if(SHAPES2D[key].circle&&!complete){
+    /* Every line through the centre is a mirror line, so this is a real case
+       rather than one to substitute away from. Six are drawn to stand for
+       infinitely many. */
+    const cx=300,cy=230,R=150;
+    let inner='<circle class="shape" cx="300" cy="230" r="150"/>';
+    for(let i=0;i<6;i++){const a=i*Math.PI/6;
+      inner+=line([cx-R*Math.cos(a),cy-R*Math.sin(a)],[cx+R*Math.cos(a),cy+R*Math.sin(a)],'mirror');}
+    return {svg:svg(inner,'Circle with lines of symmetry'),answer:'Circle',
+      props:propRow('Lines of symmetry','infinitely many'),
+      prompt:'Every line through the centre is a line of symmetry, so a circle has infinitely many. Six of them are drawn here.'};
+  }
   const s=SHAPES2D[key].circle?SHAPES2D.hexagon:SHAPES2D[key];
   const rp=rotatePts(s.pts,rot||0), f=fit(rp,110), c=centroid(rp);
   const axes=symmetryAxes(rp);
@@ -523,6 +539,15 @@ function render(){
  if(v==='nets')$('netBox').hidden=false;
  if(v==='symmetry')$('compBox').hidden=false;
 
+ /* The circle has no polygon points, so the lines view cannot use it. Disable
+    it there and swap to a rectangle with a visible note, rather than leaving
+    the dropdown reading "Circle" while the caption reads something else. */
+ const noCircle=(v==='lines');
+ const circleOpt=[].slice.call($('shape').options).filter(o=>o.value==='circle')[0];
+ if(circleOpt)circleOpt.disabled=noCircle;
+ let swapped=false;
+ if(noCircle&&$('shape').value==='circle'){$('shape').value='rectangle';swapped=true;}
+ $('shapeNote').hidden=!swapped;
  const shape=$('shape').value,solid=$('solid').value,rot=Number($('orient').value)||0;
  let out;
  if(v==='name')            out=viewNameShape(shape,rot);
