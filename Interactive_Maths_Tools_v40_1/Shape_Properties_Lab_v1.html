@@ -266,16 +266,24 @@ function solidSvg(s,yaw,pitch){
     const fc=[0,1,2].map(k=>face.reduce((t,j)=>t+P[j][k],0)/face.length);
     const out=[fc[0]-ctr[0],fc[1]-ctr[1],fc[2]-ctr[2]];
     if(n[0]*out[0]+n[1]*out[1]+n[2]*out[2]<0)n=[-n[0],-n[1],-n[2]];
-    return {face,i,front:n[2]>0,depth:fc[2]};
+    return {face,i,front:n[2]>0,depth:fc[2],n:n};
   });
   let out='';
   info.filter(f=>!f.front).forEach(fo=>{
     const pts=fo.face.map(j=>f2([P[j][0],P[j][1]]));
     out+=poly(pts,'hiddenface');
   });
+  /* Shade each face by how squarely it faces the light. Flat fills of nearly the
+     same colour left a tetrahedron reading as a triangle with a line drawn on
+     it, at every orientation; shading gives the form away immediately. */
+  const L=(function(){const v=[-0.35,0.55,0.75],m=Math.hypot(v[0],v[1],v[2]);return [v[0]/m,v[1]/m,v[2]/m];})();
   info.filter(f=>f.front).sort((a,b)=>a.depth-b.depth).forEach(fo=>{
+    const n=fo.n, m=Math.hypot(n[0],n[1],n[2])||1;
+    const lam=Math.max(0,(n[0]*L[0]+n[1]*L[1]+n[2]*L[2])/m);
+    const light=Math.round(96-30*lam), sat=Math.round(52+18*lam);
     const pts=fo.face.map(j=>f2([P[j][0],P[j][1]]));
-    out+=poly(pts,'face f'+(fo.i%6));
+    out+='<polygon class="face" fill="hsl(218,'+sat+'%,'+light+'%)" points="'+
+         pts.map(q=>q[0].toFixed(4)+','+q[1].toFixed(4)).join(' ')+'"/>';
   });
   return out;
 }
@@ -330,9 +338,27 @@ function viewProperties2d(key,rot){
 
 function viewProperties3d(key,orient){
   const s=SOLIDS[key];
-  /* Orientation 0 turns the cross-section towards the viewer: at a steeper yaw a
-     hexagonal prism foreshortens into something that reads as a wedge. */
-  const yaw=[0.30,1.05,2.10][orient%3], pitch=[0.26,0.48,0.16][orient%3];
+  /* Chosen by sweeping the yaw/pitch space against all six polyhedra: each of the
+     three shows at least two faces, with no visible face under 8% of the
+     silhouette. Earlier angles gave the tetrahedron a single visible face (it
+     read as a flat triangle) and the hexagonal prism a 0.7% sliver. */
+  /* Per solid, because no single pair of angles suits all of them: a square
+     pyramid seen from above can never show more than two faces, so the rule
+     that works for a cube is impossible for it. Each triple was picked by
+     sweeping yaw/pitch and keeping only views where every visible face is at
+     least 7% of the silhouette, none is foreshortened below 15% of its true
+     area, and the outline has no mirror symmetry — a symmetric outline reads
+     as a flat figure however many faces are showing. */
+  const SOLID_VIEWS={
+   cube:[[0.733,0.593],[1.257,0.314],[2.409,0.593]],
+   cuboid:[[1.152,0.454],[1.990,0.454],[2.513,0.314]],
+   pyramid:[[1.257,0.524],[0.733,0.908],[2.409,0.908]],
+   tetrahedron:[[2.409,0.977],[1.676,0.105],[3.037,0.105]],
+   triprism:[[0.785,0.105],[0.262,0.279],[2.880,0.279]],
+   hexprism:[[0.942,0.942],[2.199,0.942],[2.723,0.628]]
+  };
+  const vw=(SOLID_VIEWS[key]||[[0.733,0.593],[1.257,0.314],[2.409,0.593]])[orient%3];
+  const yaw=vw[0], pitch=vw[1];
   if(!s.poly)
     return {svg:svg(roundSolidSvg(s.round),s.name),answer:s.name,
       props:propRow('Flat faces',s.faces)+propRow('Edges',s.edges)+propRow('Vertices',s.verts),

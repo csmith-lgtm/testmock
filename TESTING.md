@@ -50,8 +50,11 @@ Those need a real browser and your eyes. The test guards the plumbing; you guard
 Properties Lab's six mathematical acceptance criteria — Euler's formula, lines
 of symmetry at rotated orientations, whether each net genuinely folds, the
 diameter being twice the radius, parallel and perpendicular pairs, and stated
-properties against the drawn polygon. It reads the rendered SVG rather than the
-captions, needs Playwright rather than jsdom, and exits 1 on failure:
+properties against the drawn polygon — plus a seventh covering the three viewing
+orientations of every solid, which is what caught a tetrahedron that showed a
+single face and a hexagonal prism with a 0.7% sliver. It reads the rendered SVG
+rather than the captions, needs Playwright rather than jsdom, and exits 1 on
+failure:
 
 ```
 node shape_criteria.test.js

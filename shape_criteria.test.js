@@ -3,7 +3,8 @@
  *
  *   node shape_criteria.test.js
  *
- * Checks the six criteria in SHAPE_LAB_SPEC.md against what the SVG actually
+ * Checks the six criteria in SHAPE_LAB_SPEC.md, plus a seventh on the three
+ * solid orientations, against what the SVG actually
  * draws, not against what the caption claims. Needs a browser, so it is kept
  * separate from tools.test.js, which runs under jsdom and has no geometry.
  * Exits 1 on failure.
@@ -82,7 +83,37 @@ let bad=0; const chk=(ok,msg)=>{if(!ok)bad++;console.log((ok?'  OK   ':'  BAD  '
   chk(r.drawn===sides && +r.sides===sides && +r.verts===sides && r.dots===sides,
     `${sh.padEnd(10)} polygon points=${r.drawn} vertex dots=${r.dots} stated sides=${r.sides} vertices=${r.verts} expected=${sides}`);
  }
- console.log(bad?`\n${bad} CRITERIA FAILURES`:'\nAll six acceptance criteria hold against the rendered SVG.');
+ console.log('7. Every solid reads as a solid in all three orientations');
+ {
+  const SOL=['cube','cuboid','pyramid','tetrahedron','triprism','hexprism'];
+  const area=pp=>{let a=0;for(let i=0;i<pp.length;i++){const q=pp[(i+1)%pp.length];a+=pp[i][0]*q[1]-q[0]*pp[i][1];}return Math.abs(a)/2;};
+  const hull=pts=>{const t=pts.slice().sort((a,b)=>a[0]-b[0]||a[1]-b[1]);
+   const cr=(o,a,b)=>(a[0]-o[0])*(b[1]-o[1])-(a[1]-o[1])*(b[0]-o[0]);
+   const lo=[];for(const q of t){while(lo.length>=2&&cr(lo[lo.length-2],lo[lo.length-1],q)<=0)lo.pop();lo.push(q);}
+   const up=[];for(let i=t.length-1;i>=0;i--){const q=t[i];while(up.length>=2&&cr(up[up.length-2],up[up.length-1],q)<=0)up.pop();up.push(q);}
+   return lo.slice(0,-1).concat(up.slice(0,-1));};
+  for(const sname of SOL)for(let o=0;o<3;o++){
+   /* Fresh page per combination: the orientation counter lives in the page, so
+      clicking cumulatively wraps 0 -> 1 -> 3 = 0 and silently retests 0. */
+   const q=await ctx.newPage();
+   await q.goto(D+'?view=properties3d',{waitUntil:'load'});await q.waitForTimeout(200);
+   const polys=await q.evaluate(({sname,o})=>{
+    for(let i=0;i<o;i++)document.getElementById('imtNew').click();
+    document.getElementById('solid').value=sname;
+    document.getElementById('solid').dispatchEvent(new Event('input',{bubbles:true}));
+    return [...document.querySelectorAll('#stage polygon.face')].map(el=>
+      el.getAttribute('points').trim().split(/\s+/).map(t=>t.split(',').map(Number)));
+   },{sname,o});
+   await q.close();
+   const areas=polys.map(area).sort((x,y)=>x-y);
+   const H=area(hull([].concat.apply([],polys)));
+   const sum=areas.reduce((a,c)=>a+c,0);
+   const thin=areas.length?areas[0]/H:0, tile=Math.abs(sum-H)/H;
+   chk(areas.length>=2&&thin>=0.03&&tile<0.02,
+     `${sname.padEnd(12)} orientation ${o}: ${areas.length} faces, thinnest ${(thin*100).toFixed(1)}% of silhouette`);
+  }
+ }
+ console.log(bad?`\n${bad} CRITERIA FAILURES`:'\nAll seven acceptance checks hold against the rendered SVG.');
  await b.close();
  process.exit(bad?1:0);
 })();
