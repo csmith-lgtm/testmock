@@ -46,6 +46,17 @@ jsdom is a DOM and JavaScript runtime with **no layout engine**. It cannot see:
 
 Those need a real browser and your eyes. The test guards the plumbing; you guard the appearance.
 
+`shape_criteria.test.js` is a second, browser-based check covering the Shape
+Properties Lab's six mathematical acceptance criteria — Euler's formula, lines
+of symmetry at rotated orientations, whether each net genuinely folds, the
+diameter being twice the radius, parallel and perpendicular pairs, and stated
+properties against the drawn polygon. It reads the rendered SVG rather than the
+captions, needs Playwright rather than jsdom, and exits 1 on failure:
+
+```
+node shape_criteria.test.js
+```
+
 It also does not check mathematical correctness in general. Where maths has been verified — angles drawn matching angles stated, polygon interior angles against drawn vertices, rounding across place values and negatives — that was done with one-off probes. If you want any of those as permanent checks, they can be added as a section 7.
 
 ## Maintaining it

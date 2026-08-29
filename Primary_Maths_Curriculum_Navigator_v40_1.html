@@ -18733,6 +18733,7 @@ const interactiveTools=[
  {id:'coordinates',name:'Coordinate & Transformation Lab',file:'Coordinate_Transformation_Lab_v3.html',icon:'⌖',cat:'Geometry',years:'Y4–Y6',desc:'Plot, translate and reflect points and shapes on coordinate grids with classroom prediction controls.',strands:['geo']},
  {id:'data',name:'Data & Chart Lab',file:'Data_Chart_Lab_v3.html',icon:'▥',cat:'Statistics',years:'Y2–Y6',desc:'Create, read and discuss charts with purposeful scales; hide values and generate fresh examples quickly.',strands:['stat']},
  {id:'angle-shape',name:'Angle & Shape Lab',file:'Angle_Shape_Lab_v2.html',icon:'∠',cat:'Geometry',years:'Y2–Y6',desc:'Explore angle as turn and size, benchmark/classify angles, and connect angle reasoning to polygon properties.',strands:['geo']},
+ {id:'shape-properties',name:'Shape Properties Lab',file:'Shape_Properties_Lab_v1.html',icon:'◇',cat:'Geometry',years:'Y1–Y6',desc:'Name, sort and describe 2-D and 3-D shapes, symmetry, nets and parts of a circle.',strands:['geo']},
  {id:'perimeter-area',name:'Perimeter & Area Builder',file:'Perimeter_Area_Builder_v2.html',icon:'▧',cat:'Measurement',years:'Y3–Y6',desc:'Build rectangles and rectilinear shapes, calculate boundary and surface measures, and compare equal-area/different-perimeter examples.',strands:['meas']}
 ];
 let currentToolFilter='All';
@@ -18765,6 +18766,18 @@ function toolPresetParams(tool,o){
   /* otherwise the parameter is omitted rather than sent empty */
  }
  if(tool.id==='data')p.chart=/\bmean\b|average/.test(t)?'mean':/pie chart/.test(t)?'pie':/line graph/.test(t)?'line':/pictogram/.test(t)?'pictogram':/table|timetable/.test(t)?'table':'bar';
+ /* Keyed off the objective wording; every value is a real option in the
+    tool's view select, since a select given an unknown value goes blank. */
+ if(tool.id==='shape-properties')p.view=
+   /radius|diameter|circumference|parts of circles/.test(t)?'circle'
+  :/\bnets?\b/.test(t)?'nets'
+  :/properties of 2-d/.test(t)?'properties2d'
+  :/symmetr/.test(t)?'symmetry'
+  :/perpendicular|parallel|horizontal and vertical/.test(t)?'lines'
+  :/compare and sort|compare and classify|classify geometric|\bsort\b/.test(t)?'sort'
+  :/edges|vertices|faces|identify 3-d shapes|2-d representations|surface of 3-d|make 3-d shapes/.test(t)?'properties3d'
+  :/\bsides\b|properties/.test(t)?'properties2d'
+  :'name';
  if(tool.id==='angle-shape')p.view=/polygon|triangle|quadrilateral|regular|irregular|classif/.test(t)?'polygon':/turn|right angle/.test(t)?'turn':'angle';
  if(tool.id==='perimeter-area')p.view=/same areas?.*different perimeters?|different perimeters?.*same areas?|vice versa/.test(t)?'sameArea':/parallelogram/.test(t)?'parallelogram':/triangle/.test(t)?'triangle':/rectilinear|composite/.test(t)?'rectilinear':'rect';
  return p;
@@ -18801,6 +18814,8 @@ function toolsForObjective(o){
  }
  if(o.strand==='stat')add('data');
  if(o.strand==='geo'&&yearNum>=4&&/coordinate|plot specified points|translation|translate|reflection|reflect/.test(t))add('coordinates');
+ /* Shape naming, properties, lines, symmetry, nets and circle parts. */
+ if(o.strand==='geo'&&/recognise and name|common 2-d and 3-d|\bsides\b|edges|vertices|faces|symmetr|perpendicular|parallel|horizontal and vertical|\bnets?\b|radius|diameter|circumference|compare and sort|compare and classify|classify geometric|identify 3-d shapes|draw 2-d shapes|make 3-d shapes|2-d shapes on the surface/.test(t))add('shape-properties');
  if(o.strand==='geo'&&yearNum>=2&&!/plot specified points/.test(t)&&(/\bangle(s)?\b|right angles?|acute|obtuse|reflex|whole turn|half-turn|quarter-turn|three-quarter|straight line|vertically opposite|rotation as a turn/.test(t)||((/polygon|triangle|quadrilateral|regular|irregular|classify geometric shapes/.test(t))&&yearNum>=4)))add('angle-shape');
  if(o.strand==='meas'){
    if(/\btime\b|\bclock\b|duration|\bhours?\b|\bminutes?\b|\bseconds?\b|timetable/.test(t))add('clock');

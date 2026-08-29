@@ -267,7 +267,8 @@ const PRESET_TARGET = {
   'coordinates':         ['action',    null],
   'data':                ['chart',     'chartType'],
   'angle-shape':         ['view',      'view'],
-  'perimeter-area':      ['view',      'view']
+  'perimeter-area':      ['view',      'view'],
+  'shape-properties':    ['view',      'view']
 };
 
 if (hub) {
