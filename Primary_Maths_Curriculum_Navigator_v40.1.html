@@ -3,7 +3,7 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<title>Primary Maths Curriculum Navigator v40</title>
+<title>Primary Maths Curriculum Navigator v40.1</title>
 <style>
 /* Lexend Deca (latin subset, variable 100-900), embedded so the tools keep
    their typeface with no network - Open Font License 1.1, Bonnie Shaver-Troup
@@ -18769,7 +18769,7 @@ function toolPresetParams(tool,o){
  if(tool.id==='perimeter-area')p.view=/same areas?.*different perimeters?|different perimeters?.*same areas?|vice versa/.test(t)?'sameArea':/parallelogram/.test(t)?'parallelogram':/triangle/.test(t)?'triangle':/rectilinear|composite/.test(t)?'rectilinear':'rect';
  return p;
 }
-function toolHref(tool,o=null){const base='Interactive_Maths_Tools_v40/'+tool.file;if(!o)return base;const q=new URLSearchParams(toolPresetParams(tool,o));return base+'?'+q.toString();}
+function toolHref(tool,o=null){const base='Interactive_Maths_Tools_v40.1/'+tool.file;if(!o)return base;const q=new URLSearchParams(toolPresetParams(tool,o));return base+'?'+q.toString();}
 function toolsForObjective(o){
  if(o.year==='EYFS')return [];
  const t=o.title.toLowerCase(),yearNum=Number((o.year.match(/\d+/)||['0'])[0]);let ids=[];
@@ -18833,7 +18833,7 @@ function renderObjectiveTools(o){
     its own link rather than never being emitted at all. */
  if(o.strand==='geo'&&/reflect/.test(t)&&!/y-axis/.test(t))ensureVariant('coordinates','Coordinate · reflect in y-axis',{action:'reflect-y'});
  if(!entries.length)return '';
- const links=entries.slice(0,4).map(e=>`<a class="obj-tool-link" href="Interactive_Maths_Tools_v40/${e.tool.file}?${new URLSearchParams(e.params)}" target="_blank" rel="noopener noreferrer" onclick="event.stopPropagation()">${e.label} ↗</a>`);
+ const links=entries.slice(0,4).map(e=>`<a class="obj-tool-link" href="Interactive_Maths_Tools_v40.1/${e.tool.file}?${new URLSearchParams(e.params)}" target="_blank" rel="noopener noreferrer" onclick="event.stopPropagation()">${e.label} ↗</a>`);
  return `<div class="obj-tools"><div class="obj-tool-links">${links.join('')}</div></div>`;
 }
 function renderTools(){
