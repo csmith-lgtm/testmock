@@ -76,24 +76,43 @@ Checks `Parent_Maths_Guide_v40_1.html`, the standalone parent guide, against
 node parent_guide.test.js              # or: npm run test:guide
 ```
 
-It needs jsdom only, finds both files relative to itself, and exits 1 on
-failure. It asserts that
+It needs jsdom only, finds its files relative to itself, and exits 1 on
+failure. Eight sections:
 
-1. every word of the markdown appears on the page, in order, so the copy has
-   not been edited, trimmed or reordered;
-2. all twelve bracketed image placeholders survive verbatim as figure
-   captions;
-3. every wired figure actually renders something;
-4. each renderer on the page is byte-identical to the one in the hub — the
-   page draws nothing of its own, so a hub fix reaches the guide;
-5. `pvc` and `numberLine` carry `data-mstep`, numbered from the smallest
-   place and from the first hop respectively;
-6. the area model and the expanded written method share step indices, checked
-   by stepping the block and reading which elements are actually highlighted
-   in each panel, not by reading the markup.
+1. **The copy is the source, unedited.** Every word of the markdown appears on
+   the page, in order. Renderer output, the contents rail, the panel labels and
+   the year chips are stripped out first: they are furniture, not copy.
+2. **Nothing on the page that was not written for parents.** Entry 14 is the
+   last thing in the page, nothing follows it, and no draft commentary survives
+   anywhere — no "Open questions", no "Bute House", no notes to the author.
+   The equipment copy is checked to have survived its move into entry 3.
+3. **Every method carries the same three-part strip.** Entries 1–12 each show
+   three drawn panels labelled *With objects / As a picture / Written down*, no
+   placeholder is left undrawn, and all twelve bracketed lines survive verbatim
+   as captions.
+4. **The four questions, and the year chip.** All four headings on entries
+   1–13, a chip of 60 characters or fewer on each, and the full "when you'll
+   see it" paragraph still present in the prose.
+5. **Getting around.** Fourteen contents links that all resolve, readable and
+   unique anchor ids, a back-to-contents link in every entry, every entry
+   collapsed at load, and `#division` opening the division entry. Also that the
+   guide links back to the hub and the hub links forward to the guide.
+6. **Every visual is a hub renderer, unmodified.** Twenty-one renderers are
+   compared byte-for-byte with the hub's, so the page draws nothing of its own
+   and a hub fix reaches the guide.
+7. **Staged reveal.** `pvc` numbers its columns from the ones and `numberLine`
+   marks its hops; the area model and the expanded written method light up 80
+   and 12 together; the counters and the column subtraction light the same
+   place together; `longMult` stages ones-row first and `longDiv` left to
+   right, one step per quotient digit. All read from what is actually
+   highlighted after stepping the block, not from the markup.
+8. **Self-contained.** No external requests, the font embedded, and the hub's
+   `:root` custom properties inlined intact — that last one is here because
+   leaving the hub's own `<style>` tags in the inlined CSS silently swallowed
+   the whole `:root` block and every `var()` on the page fell back to nothing.
 
-Check 6 was tested against a copy with the shared indices removed, and fails
-there with three errors.
+Sections 2, 3, 6, 7 and 8 have each been run against a copy with the defect
+reintroduced, and fail there.
 
 ## Maintaining it
 

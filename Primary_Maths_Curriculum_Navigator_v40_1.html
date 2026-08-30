@@ -1094,6 +1094,25 @@ html.text-large .main,html.text-large .side,html.text-xlarge .main,html.text-xla
 .obj-tools{margin-top:8px;border-top:1px solid #e8ecf3;padding-top:8px}.obj-tools-title{font-size:.75rem;font-weight:700;color:#44516a;margin-bottom:6px}.obj-tool-links{display:flex;gap:6px;flex-wrap:wrap}.obj-tool-link{display:inline-flex;border:1px solid #cdd7e8;background:#f8faff;border-radius:8px;padding:6px 8px;font-size:.71875rem;font-weight:650;color:#3157d5;text-decoration:none}.obj-tool-link:hover{background:#eef3ff;text-decoration:none}
 @media(max-width:1050px){.tools-grid{grid-template-columns:repeat(2,minmax(0,1fr))}}@media(max-width:650px){.tools-grid{grid-template-columns:1fr}.tools-hero h2{font-size:1.35rem}}
 
+
+/* Column layouts for multiplication and division. Built on .coltable so the
+   staged reveal, the mini-panel sizing and the print rules already apply.
+   The bus stop is drawn with borders rather than a bracket glyph, so it lines
+   up with the digit grid at any font size. */
+.coltable td.divisor{width:auto;min-width:24px;padding-right:5px;font-weight:700;border-color:transparent;background:transparent}
+.coltable td.blank{border-color:transparent;background:transparent}
+.coltable tr.divrow td.inbracket{border-top:2px solid #39445c}
+.coltable tr.divrow td.bracketstart{border-left:2px solid #39445c}
+.coltable td.rowwhy{width:auto;min-width:0;padding:0 0 0 9px;text-align:left;white-space:nowrap;font-size:9px;font-weight:400;color:#687386;border-color:transparent;background:transparent}
+.coltable tr.workrow td{height:30px;font-size:13px}
+.coltable td.ruled{border-bottom:2px solid #39445c}
+.smallcarry{position:absolute;left:3px;top:1px;font-size:9px;color:#2944aa;font-weight:700}
+.miniMethod .coltable td.rowwhy{white-space:normal}
+
+/* The parent maths guide is a standalone page, so its nav entry is a link. */
+.navbtn.navlink{text-decoration:none;color:#273142}
+.navbtn.navlink:hover{background:#f2f5fb}
+.navbtn.navlink::after{content:"\2197";float:right;color:#8a94a6;font-size:11px;line-height:1.35}
 </style>
 </head>
 <body>
@@ -1104,7 +1123,7 @@ html.text-large .main,html.text-large .side,html.text-xlarge .main,html.text-xla
 <div class="side-title">Platform view</div>
 <button class="navbtn active" data-view="dashboard">Staff home</button>
 <button class="navbtn" data-view="curriculum">Curriculum objectives</button>
-<button class="navbtn" data-view="calculation">Calculation progressions</button><button class="navbtn" data-view="journeys">Representation journeys</button><button class="navbtn" data-view="concepts">What changes by year?</button><button class="navbtn" data-view="consistency">Maths language & methods</button><button class="navbtn" data-view="yeargroup">Year group overview</button><button class="navbtn" data-view="tools">Interactive maths tools</button><button class="navbtn" data-view="misconceptions">Misconceptions index</button><button class="navbtn" data-view="parents">Parent maths guide</button>
+<button class="navbtn" data-view="calculation">Calculation progressions</button><button class="navbtn" data-view="journeys">Representation journeys</button><button class="navbtn" data-view="concepts">What changes by year?</button><button class="navbtn" data-view="consistency">Maths language & methods</button><button class="navbtn" data-view="yeargroup">Year group overview</button><button class="navbtn" data-view="tools">Interactive maths tools</button><button class="navbtn" data-view="misconceptions">Misconceptions index</button><button class="navbtn" data-view="parents">Parent guide by year</button><a class="navbtn navlink" href="Parent_Maths_Guide_v40_1.html">Parent maths guide</a>
 <div id="curriculumSide"><div class="side-title">Mathematical strand</div><div id="strandList"></div></div>
 <div id="calcSide" style="display:none"><div class="side-title">Operation</div><button class="strandbtn calcSideBtn active" data-op="Addition">Addition</button><button class="strandbtn calcSideBtn" data-op="Subtraction">Subtraction</button><button class="strandbtn calcSideBtn" data-op="Multiplication">Multiplication</button><button class="strandbtn calcSideBtn" data-op="Division">Division</button></div>
 <div class="side-title">Representation principle</div><div class="side-note">Part–whole models establish whole/part structure. The rectangular form can bridge deliberately into proportional bar models: later, bar length begins to carry magnitude as well as relationship.</div>
@@ -1249,6 +1268,90 @@ function expandedSubTable(labels,orig,regrouped,sub,result){
  const heads=labels.map((l,i)=>`<th data-mstep="${stepFor(i)}" data-unit="${unitFor(i)}">${l}</th>`).join('');
  const row=(name,vals,cls='method-input')=>`<tr><th>${name}</th>${vals.map((d,i)=>`<td class="${cls}" data-mstep="${stepFor(i)}" data-unit="${unitFor(i)}">${d}</td>`).join('')}</tr>`;
  return `<table class="exptable written-method"><tr><th></th>${heads}</tr>${row('Minuend',orig)}${row('After regrouping',regrouped,'method-work reg')}${row('Subtrahend',sub)}<tr class="line"><td colspan="${labels.length+1}"></td></tr>${row('Difference',result,'method-output reg')}</table>`;
+}
+
+/* --- Column multiplication and division -------------------------------------
+   Four renderers that were missing, so the guide and the hub can show the
+   compact records themselves rather than describing them.
+
+   Multiplication is staged from the ones, like columnAdd and columnSub: in
+   short multiplication one step per column, in long multiplication one step
+   per partial product, smallest first, matching gridMethod's row numbering.
+   Division is staged the other way, left to right, because that is the order
+   the method is actually worked in.                                       */
+const PLACE_NAMES=['ones','tens','hundreds','thousands','ten-thousands','hundred-thousands','millions'];
+function placeName(colsFromRight){return PLACE_NAMES[colsFromRight]||`place ${colsFromRight+1}`;}
+function padCells(a,n){return Array.from({length:Math.max(0,n-a.length)},()=>'').concat(a);}
+
+function shortMult(top,multiplier,result,carries=[]){
+ const n=Math.max(top.length,result.length,multiplier.length);
+ const t=padCells(top,n), m=padCells(multiplier,n), r=padCells(result,n), c=padCells(carries,n);
+ const stepFor=i=>n-i, unitFor=i=>placeName(n-1-i);
+ const cell=(d,cls,i)=>d===''?`<td class="blank"></td>`
+   :`<td class="${cls}" data-mstep="${stepFor(i)}" data-unit="${unitFor(i)}">${d}</td>`;
+ const row=(vals,cls)=>vals.map((d,i)=>cell(d,cls,i)).join('');
+ const res=r.map((d,i)=>d===''?`<td class="blank"></td>`
+   :`<td class="base method-output" data-mstep="${stepFor(i)}" data-unit="${unitFor(i)}"><span class="resultdigit">${d}</span></td>`).join('');
+ const car=c.map((d,i)=>`<td class="method-exchange" data-mstep="${stepFor(i)}" data-unit="${unitFor(i)}">${d?`<span class="carrydigit">${d}</span>`:''}</td>`).join('');
+ return `<div class="colwrap written-method"><table class="coltable"><tr><td class="op"></td>${row(t,'base method-input')}</tr><tr><td class="op">×</td>${row(m,'base method-input')}</tr><tr class="line"><td></td><td colspan="${n}"></td></tr><tr><td class="op"></td>${res}</tr><tr class="line"><td></td><td colspan="${n}"></td></tr><tr class="carry"><td class="op"></td>${car}</tr></table></div>`;
+}
+
+/* partials: [{digits:[...], why:'3,247 × 6'}, ...] ones row first. The why
+   column is what answers the question parents ask about the trailing zero. */
+function longMult(top,multiplier,partials,result){
+ const n=Math.max(top.length,result.length,...partials.map(x=>x.digits.length));
+ const t=padCells(top,n), m=padCells(multiplier,n), r=padCells(result,n);
+ const maxStep=partials.length+1;
+ const plain=vals=>vals.map(d=>d===''?`<td class="blank"></td>`:`<td class="base method-input">${d}</td>`).join('');
+ const partialRows=partials.map((pt,k)=>{
+   const step=k+1, unit=`${pt.why||'partial product'} row`;   // partials are given ones row first
+   const cells=padCells(pt.digits,n).map(d=>d===''?`<td class="blank" data-mstep="${step}" data-unit="${unit}"></td>`
+     :`<td class="base method-work" data-mstep="${step}" data-unit="${unit}">${d}</td>`).join('');
+   return `<tr class="workrow"><td class="op">${k===0?'':'+'}</td>${cells}${pt.why?`<td class="rowwhy" data-mstep="${step}" data-unit="${unit}">${pt.why}</td>`:''}</tr>`;
+ }).join('');
+ const res=r.map(d=>d===''?`<td class="blank"></td>`
+   :`<td class="base method-output" data-mstep="${maxStep}" data-unit="total">${d}</td>`).join('');
+ const span=n+1+(partials.some(x=>x.why)?1:0);
+ return `<div class="colwrap written-method"><table class="coltable"><tr><td class="op"></td>${plain(t)}</tr><tr><td class="op">×</td>${plain(m)}</tr><tr class="line"><td colspan="${span}"></td></tr>${partialRows}<tr class="line"><td colspan="${span}"></td></tr><tr><td class="op"></td>${res}</tr></table></div>`;
+}
+
+/* Short division. carries[i] is the digit exchanged into column i, drawn as a
+   small figure in front of that digit the way it is written by hand. */
+function shortDiv(divisor,dividend,quotient,carries=[]){
+ const n=dividend.length;
+ const q=padCells(quotient,n), c=padCells(carries,n);
+ const stepAt=i=>i+1, unitAt=i=>placeName(n-1-i);
+ const qCells=q.map((d,i)=>d===''?`<td class="blank"></td>`
+   :`<td class="base method-output" data-mstep="${stepAt(i)}" data-unit="${unitAt(i)}"><span class="resultdigit">${d}</span></td>`).join('');
+ const dCells=dividend.map((d,i)=>`<td class="base method-input inbracket${i===0?' bracketstart':''}" data-mstep="${stepAt(i)}" data-unit="${unitAt(i)}">${c[i]?`<span class="smallcarry">${c[i]}</span>`:''}${d}</td>`).join('');
+ return `<div class="colwrap written-method"><table class="coltable"><tr><td class="blank"></td>${qCells}</tr><tr class="divrow"><td class="divisor">${divisor}</td>${dCells}</tr></table></div>`;
+}
+
+/* Long division. working rows are given in the dividend's column grid, '' for
+   a blank column; each row takes the step of the quotient digit above its
+   rightmost figure, so subtracting and bringing down reveal with the digit
+   they belong to. */
+function longDiv(divisor,dividend,quotient,working=[]){
+ const n=dividend.length;
+ const q=padCells(quotient,n);
+ const unitAt=i=>placeName(n-1-i);
+ // Steps count the quotient digits in the order they are found, not the
+ // columns: 4,368 divided by 24 has three steps, not four.
+ const order=new Map(); let k=0;
+ q.forEach((d,i)=>{if(d!=='') order.set(i,++k)});
+ const qStep=i=>{for(let j=i;j>=0;j--) if(order.has(j)) return order.get(j); return 1;};
+ const qCells=q.map((d,i)=>d===''?`<td class="blank"></td>`
+   :`<td class="base method-output" data-mstep="${qStep(i)}" data-unit="${unitAt(i)}"><span class="resultdigit">${d}</span></td>`).join('');
+ const dCells=dividend.map((d,i)=>`<td class="base method-input inbracket${i===0?' bracketstart':''}">${d}</td>`).join('');
+ const rows=working.map(w=>{
+   const cells=padCells(w.cells,n);
+   let last=-1; cells.forEach((d,i)=>{if(d!=='')last=i});
+   const step=last<0?1:qStep(last), unit=last<0?unitAt(0):unitAt(last);
+   const tds=cells.map((d,i)=>d===''?`<td class="blank"></td>`
+     :`<td class="base method-work${w.rule?' ruled':''}" data-mstep="${step}" data-unit="${unit}">${d}</td>`).join('');
+   return `<tr class="workrow"><td class="op" data-mstep="${step}" data-unit="${unit}">${w.op||''}</td>${tds}${w.why?`<td class="rowwhy" data-mstep="${step}" data-unit="${unit}">${w.why}</td>`:''}</tr>`;
+ }).join('');
+ return `<div class="colwrap written-method"><table class="coltable"><tr><td class="blank"></td>${qCells}</tr><tr class="divrow"><td class="divisor">${divisor}</td>${dCells}</tr>${rows}</table></div>`;
 }
 
 function methodPair(label1,html1,label2,html2){

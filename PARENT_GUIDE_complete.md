@@ -1,6 +1,6 @@
 # How we teach maths — a guide for parents
 
-*Draft. All agreed updates incorporated. Open questions are collected at the end so the guide itself reads clean.*
+*Draft. All agreed updates incorporated.*
 
 ---
 
@@ -34,19 +34,7 @@ Working mentally is not the same as working silently, though. We still ask child
 
 There's a difference here worth naming. "I just knew it" is exactly the answer we want for 6 × 7 — that's a fact, and instant recall is the goal. For anything with steps in it, we want her to be able to say what the steps were.
 
----
-
-## About the equipment
-
-You'll see two kinds of apparatus in your daughter's books, and both stay available throughout the school.
-
-**Base 10 blocks** are *proportional* — a hundred square really is a hundred times the size of a ones cube. That's what makes them right for building the idea of place value in the first place: the size of the thing matches the size of the number.
-
-**Place-value counters** are not proportional. A counter marked 100 is the same size as one marked 1; only the label tells you its value. That sounds like a step backwards and is actually a step forwards — it means a child is holding the value in her head rather than reading it off the object. It also means she can model 2,476 on a desk, which she cannot do with a thousand cube for every thousand.
-
-That's why counters come to the fore around Year 4. By then the mathematics is about lining up columns and exchanging between them rather than about how big a hundred is — and a child who still needs the blocks to see that is welcome to reach for them.
-
-One thing worth saying plainly: **equipment is not a beginner's version of maths that children grow out of.** It is how a new idea is made visible. A Year 5 child meeting decimals for the first time may well go back to place-value counters, and that isn't a step backwards — it's the same move a mathematician makes when she draws a diagram.
+You'll see a lot of equipment in your daughter's books — cubes, blocks, counters, strips. It's worth saying plainly that this is not a beginner's version of maths that children grow out of. Apparatus is how a new idea is made visible, and it stays available all the way up the school. A Year 5 child meeting decimals for the first time may well reach for place-value counters, and that isn't a step backwards. It's the same move a mathematician makes when she draws a diagram.
 
 ---
 
@@ -111,6 +99,8 @@ Every written method rests on one idea: ten of anything can be exchanged for one
 **Why we use it**
 
 Nearly every mistake in written calculation is an exchange going wrong, not an addition or subtraction going wrong. A child who can confidently exchange 4,003 into 3 thousands, 9 hundreds, 9 tens and 13 ones can do any column subtraction you give her. A child who can't will get stuck on the zeros however many times she practises the steps.
+
+You'll see two kinds of equipment here and both stay available throughout the school. **Base 10 blocks** are proportional — a hundred square really is a hundred times the size of a ones cube — which is what makes them right for building the idea in the first place. **Place-value counters** aren't: a counter marked 100 is the same size as one marked 1, and only the label tells you its value. That sounds like a step backwards and is actually a step forwards, because she's now holding the value in her head rather than reading it off the object. It also means she can model 2,476 on a desk, which she can't do with a thousand cube for every thousand. You'll see counters used more from around Year 4, when the mathematics is about lining up columns and exchanging between them rather than about how big a hundred is.
 
 So we spend longer on exchange than parents often expect, and we keep coming back to it.
 
@@ -400,26 +390,8 @@ Throughout, with real weight from Year 4 onwards.
 
 The most useful thing you can do is talk. Not drill — talk.
 
-Ask her how she worked it out, and mean it. Ask whether there was another way. When she gets one wrong, ask what she was thinking rather than showing her the right answer; the thinking is where the fix is. Estimate things out loud in the car. Notice when maths is doing something useful — halving a recipe, working out change, reading a timetable.
+Ask her how she worked it out, and mean it. Ask whether there was another way. When she gets one wrong, ask what she was thinking rather than showing her the right answer; the thinking is where the fix is. Estimate out loud in the car. Notice when maths is doing something useful — halving a recipe, working out change, reading a timetable.
 
-What helps less than parents expect is pushing on to the next method before the current one is secure. A child who can perform column multiplication but can't say why the second row starts with a zero has learned something fragile. She will be faster this term and stuck next year. Speed and fluency look similar from the outside and are not the same thing.
+What helps less than parents expect is pushing on to the next method before the current one is secure. A child who can perform column multiplication but can't say why the second row starts with a zero has learned something fragile. She'll be faster this term and stuck next year. Speed and fluency look similar from the outside and are not the same thing.
 
-If your daughter is finding something hard, the most productive question to bring to us is "what is she thinking that isn't right yet" — not "what should she practise". We can usually tell you, and it's nearly always more specific, and more fixable, than more practice.
-
----
-
-# Open questions for you
-
-Collected here so the guide above reads clean.
-
-1. **Entry 9, chunking.** I've written it as "you may have seen more chunking in an older child's books than you'll see in your daughter's — we now move on from it more quickly." That covers you whether or not you phase it out fully. Change if you'd rather be more definite either way.
-
-2. **Entry 14's tone.** This is the entry most likely to be read as a rebuke by a parent already paying for tutoring, and the least likely to work if it reads that way. You'll know how directly it can be put at Bute House.
-
-3. **Entries 8 and 10** (long multiplication, long division) are kept separate and are the two shortest. They could fold into 7 and 9 if fourteen entries is too many for one page.
-
-4. **Compensating and adjusting** now appear in both entry 5 and entry 6. If that reads as repetition, the fix is to trim the addition version to a single line and cross-refer.
-
-5. **Entry 12** suggests parents open the Bar Model Builder themselves. That commits you to exposing at least one tool in the parent build — worth confirming before this goes out.
-
-6. **"Your daughter"** is used throughout. Fine for Bute House, but flag if you want it neutral for any shared or external use.
+And if she's finding something hard, the most useful question to bring to us is "what is she thinking that isn't right yet" rather than "what should she practise". We can usually tell you, and the answer is nearly always more specific — and more fixable — than more practice.
