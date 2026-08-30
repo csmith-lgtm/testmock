@@ -107,11 +107,20 @@ buried.length?bad(buried.length+' strips are inside the collapsed body and invis
   :ok('every strip sits outside the collapsed body, so the page opens showing pictures');
 const dashed=d.querySelectorAll('.pg-figure-unillustrated').length;
 dashed?bad(dashed+' placeholders still have no figure'):ok('no "awaiting art" placeholders left');
-const caps=[...d.querySelectorAll('.pg-figure figcaption')].map(x=>norm(x.textContent));
-const mdPlace=[...md.matchAll(/^\*(\[[^\]]*\])\*$/gm)].map(m=>norm(m[1]));
-const missCap=mdPlace.filter(p=>!caps.includes(p));
-missCap.length?bad('placeholders not kept as captions: '+missCap.join(' / '))
-              :ok('all '+mdPlace.length+' bracketed placeholders kept verbatim as captions');
+// The bracketed lines were art direction for images that no longer need
+// commissioning: the strips draw what they described.
+const mdPlace=[...md.matchAll(/^\*(\[[^\]]*\])\*$/gm)].length;
+mdPlace?bad(mdPlace+' image placeholders are still in the source'):ok('no image placeholders left in the source');
+const bracketed=(pageText.match(/\[[^\]]{10,}\]/g)||[]);
+bracketed.length?bad('bracketed art direction still on the page: '+bracketed.slice(0,3).join(' / '))
+                :ok('no bracketed art direction on the page');
+d.querySelectorAll('.pg-figure figcaption').length
+  ?bad(d.querySelectorAll('.pg-figure figcaption').length+' figure captions remain')
+  :ok('no figure captions remain');
+const unlabelled=[...d.querySelectorAll('.pg-figure[data-fig]')]
+  .filter(f=>!norm((f.querySelector('.pg-example-label')||{textContent:''}).textContent));
+unlabelled.length?bad(unlabelled.length+' strips do not say which calculation they show')
+  :ok('every strip names the calculation it shows, in place of the old caption');
 
 /* ------------------------------------------------------ 4. the four asks -- */
 section('4. The four questions, and the year chip');
@@ -334,18 +343,14 @@ exBad.length?bad('example bank: '+exBad.join('; '))
   :ok(exTotal+' worked examples across six entries, one shown at a time, each with its own step controls');
 {
   const f=withSwitcher.find(x=>x.dataset.fig==='strip-5');
-  const cap=f.querySelector('figcaption'), btn=f.querySelector('.pg-another');
+  const btn=f.querySelector('.pg-another');
   const first=norm(f.querySelector('.pg-example-label').textContent);
-  const capBefore=cap.hidden;
   btn.dispatchEvent(new w.MouseEvent('click',{bubbles:true}));
   const second=norm(f.querySelector('.pg-example-label').textContent);
   const vis=[...f.querySelectorAll('.pg-example')].filter(x=>!x.hidden).length;
   (second!==first&&vis===1)
     ?ok('"Show me another" moves '+first+' to '+second+', still one at a time')
     :bad('"Show me another" did not switch: '+first+' -> '+second);
-  (!capBefore&&cap.hidden)
-    ?ok('the caption is shown with the example it describes and hidden for the others')
-    :bad('caption visibility: first='+!capBefore+', after switching hidden='+cap.hidden);
   // back round to the start
   const n2=f.querySelectorAll('.pg-example').length;
   for(let i=1;i<n2;i++) btn.dispatchEvent(new w.MouseEvent('click',{bubbles:true}));
@@ -406,8 +411,72 @@ const written=verdicts.filter(v=>/written method|short division|column/i.test(v)
 written>=4?ok(written+' of 16 verdicts favour or accept the written method, so the set is not rigged')
   :bad('only '+written+' verdicts favour the written method');
 
-/* --------------------------------------------------------- 12. self-contained */
-section('12. Self-contained');
+/* ------------------------------------------------ 11. your own numbers ----- */
+section('11. Straight to the tool with your own numbers');
+const labLinks=[...d.querySelectorAll('.pg-ownnumbers')];
+const labEntries=labLinks.map(a=>a.closest('.pg-entry').id);
+labEntries.join(',')==='addition,subtraction,multiplication,long-multiplication,division,long-division'
+  ?ok('a "put your own numbers in" link on every entry with a written calculation: '+labEntries.join(', '))
+  :bad('lab links on '+labEntries.join(', '));
+const LAB=path.join(root,'Interactive_Maths_Tools_v40_1','Written_Calculation_Lab_v3.html');
+fs.existsSync(LAB)?ok('the Written Calculation Lab is where the links point')
+                 :bad('the tool the links point at does not exist');
+let paramsOk=true;
+for(const a of labLinks){
+  const href=a.getAttribute('href')||'';
+  const [file,q]=href.split('?');
+  if(file!=='Interactive_Maths_Tools_v40_1/Written_Calculation_Lab_v3.html'){paramsOk=false;bad('bad link target: '+file);continue}
+  const qs=new URLSearchParams(q||'');
+  // the label is written with thousands separators; the link is not
+  const shown=norm(a.closest('.pg-visual').querySelector('.pg-example-label').textContent)
+    .replace(/,/g,'').replace(/[^0-9.]+/g,' ').trim().split(/\s+/);
+  if(!['add','sub','mult','div'].includes(qs.get('operation'))){paramsOk=false;bad('no operation on '+href)}
+  if(qs.get('a')!==shown[0]||qs.get('b')!==shown[1]){
+    paramsOk=false;bad('link numbers '+qs.get('a')+'/'+qs.get('b')+' do not match the example shown: '+shown.join(' '));
+  }
+}
+paramsOk?ok('every link carries the operation and the two numbers of the example on screen'):null;
+// and the tool honours them
+{
+  const lab=fs.readFileSync(LAB,'utf8');
+  const ldom=new JSDOM(lab,{runScripts:'dangerously',pretendToBeVisual:true,
+    url:'https://x.invalid/Written_Calculation_Lab_v3.html?operation=div&a=4368&b=24&method=long'});
+  const ld=ldom.window.document;
+  const got=[ld.getElementById('op').value,ld.getElementById('a').value,ld.getElementById('b').value].join('/');
+  got==='div/4368/24'
+    ?ok('opening the tool with those parameters lands on that calculation: '+got)
+    :bad('the tool ignored the link parameters: '+got);
+  const stage=norm(ld.getElementById('calcStage').textContent);
+  /4,368/.test(stage)?ok('and the tool is showing it: "'+stage.slice(0,60)+'"')
+                     :bad('the tool did not render the linked calculation: '+stage.slice(0,80));
+  ldom.window.close();
+}
+// the link follows the example switcher
+{
+  const f=d.querySelector('.pg-figure[data-fig="strip-5"]');
+  const a=f.querySelector('.pg-ownnumbers'), btn=f.querySelector('.pg-another');
+  const before=a.getAttribute('href');
+  btn.dispatchEvent(new w.MouseEvent('click',{bubbles:true}));
+  const after=a.getAttribute('href');
+  after!==before?ok('the link follows "show me another": '+before.split('?')[1]+' -> '+after.split('?')[1])
+                :bad('the link did not change with the example');
+  btn.dispatchEvent(new w.MouseEvent('click',{bubbles:true}));   // the decimal one
+  a.hidden?ok('and hides itself for the decimal example, which the tool cannot take')
+          :bad('the link is offered for an example the tool cannot open');
+}
+
+/* ------------------------------------------------ 12. the old parent tab -- */
+section('12. The hub points at the guide and nowhere else');
+/data-view="parents"/.test(hub)?bad('the old parent tab is still in the hub navigation')
+  :ok('the old in-hub parent tab is gone from the navigation');
+/onclick="showView\('parents'\)"/.test(hub)?bad('a dashboard card still opens the old parent view')
+  :ok('no dashboard card opens the old parent view');
+(hub.match(/href="Parent_Maths_Guide_v40_1\.html"/g)||[]).length>=2
+  ?ok('the hub reaches the guide from both the navigation and the staff home')
+  :bad('the hub links to the guide '+(hub.match(/href="Parent_Maths_Guide_v40_1\.html"/g)||[]).length+' time(s)');
+
+/* --------------------------------------------------------- 13. self-contained */
+section('13. Self-contained');
 // The hub's stylesheet is inlined into a <style> of our own. Leaving its own
 // tags in swallows the :root block, and every var() on the page falls back to
 // nothing - which is silent, so it is checked rather than eyeballed.

@@ -131,8 +131,6 @@ You'll see a lot of equipment in your daughter's books — cubes, blocks, counte
 
 **What it is**
 
-*[Part–whole model: 6 at the top, 4 and 2 below.]*
-
 A number shown as being made of other numbers. Six is four and two. Six is five and one. Six is three and three.
 
 **Why we use it**
@@ -155,8 +153,6 @@ From Reception, and it never really stops. Bonds within 10 in Year 1, within 20 
 
 **What it is**
 
-*[Number line showing 8 + 5 as two hops: 8 to 10, then 10 to 13.]*
-
 **Why we use it**
 
 Ten is the number our whole system is built on, so getting to ten is nearly always the easiest route. To work out 8 + 5, a child splits the 5 into 2 and 3: 8 and 2 makes 10, then 3 more makes 13. That's bridging.
@@ -178,8 +174,6 @@ Bridging through 10 is a Year 2 focus, but the number line as a way of thinking 
 ## 3. Place value and exchange
 
 **What it is**
-
-*[Place-value chart with counters: 2 thousands, 4 hundreds, 7 tens, 6 ones.]*
 
 Every written method rests on one idea: ten of anything can be exchanged for one of the next thing up. Ten ones make a ten. Ten tens make a hundred. And in reverse: one hundred can be exchanged back into ten tens whenever you need them.
 
@@ -204,8 +198,6 @@ From Year 1 with tens and ones, extending a place each year, and reappearing in 
 ## 4. From mental to written
 
 **What it is**
-
-*[One calculation, 23 × 4, shown in four panels.]*
 
 | Stage | What it looks like |
 |---|---|
@@ -236,8 +228,6 @@ The chain repeats for every operation at different ages. Broadly: the mental sta
 
 **What it is**
 
-*[2,476 + 1,589 in the expanded layout, then the same calculation compact.]*
-
 **Why we use it**
 
 Children meet the expanded layout first because it shows what is actually happening: the ones are added, the tens are added, and where a column makes ten or more, that ten is regrouped into the next column. The compact method records the same thinking more quickly.
@@ -263,8 +253,6 @@ Expanded column addition in Year 3 with three-digit numbers. Compact column addi
 ## 6. Subtraction
 
 **What it is**
-
-*[4,003 − 1,786 with place-value counters alongside the written method.]*
 
 **Why we use it**
 
@@ -302,8 +290,6 @@ Counting on to find a difference from Year 1. Bridging through 10 in Year 2. Exc
 
 **What it is**
 
-*[Area model grid for 23 × 4 on the left; the expanded written method on the right; 80 and 12 highlighted in both.]*
-
 **Why we use it**
 
 The grid and the written method are the same calculation. The rectangle is split into a part worth 20 × 4 and a part worth 3 × 4; the written method lists those two parts and adds them.
@@ -328,8 +314,6 @@ Arrays and equal groups from Year 1. Tables facts and the idea that 3 × 4 and 4
 
 **What it is**
 
-*[3,247 × 26 in the column layout.]*
-
 **Why we use it**
 
 Exactly the same idea as the last entry, with more places. 3,247 × 26 is 3,247 × 20 plus 3,247 × 6. The two rows of the written method are those two products, and the final answer adds them.
@@ -349,8 +333,6 @@ Year 5 and 6, once short multiplication is secure.
 ## 9. Division
 
 **What it is**
-
-*[Twelve shared between three; twelve grouped into threes; then 96 ÷ 6 through the chain.]*
 
 | Stage | 96 ÷ 6 |
 |---|---|
@@ -383,8 +365,6 @@ Sharing and grouping from Reception. Partitioning to divide in Year 3. Short div
 
 **What it is**
 
-*[4,368 ÷ 24.]*
-
 **Why we use it**
 
 The same reasoning again, with a two-digit divisor. How many 24s in 43? One, with 19 left over. Exchange that 19 into the next column and carry on.
@@ -404,8 +384,6 @@ Year 6.
 ## 11. Fractions as numbers
 
 **What it is**
-
-*[A fraction wall alongside a number line with ¾ marked between 0 and 1.]*
 
 **Why we use it**
 
@@ -428,8 +406,6 @@ Halves and quarters of shapes and quantities from Year 1. Fractions on a number 
 ## 12. The bar model
 
 **What it is**
-
-*[A bar model for a two-step word problem.]*
 
 **Why we use it**
 

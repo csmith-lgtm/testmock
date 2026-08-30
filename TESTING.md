@@ -88,7 +88,8 @@ failure. Twelve sections:
 3. **Every method carries the same three-part strip.** Entries 1–12 each show
    three drawn panels labelled *With objects / As a picture / Written down*,
    every strip sits outside the collapsed body so the page opens showing
-   pictures, and all twelve bracketed lines survive verbatim as captions.
+   pictures, every strip names the calculation it shows, and no bracketed art
+   direction survives in the source or on the page.
 4. **The four questions, and the year chip.** All four headings on entries
    1–13, a chip of 60 characters or fewer on each, and the full "when you'll
    see it" paragraph still present in the prose.
@@ -113,21 +114,30 @@ failure. Twelve sections:
    aloud; and printing unhiding the prose, the hidden examples and the hidden
    strategy panels *in CSS*, so it does not depend on a `beforeprint` handler.
 9. **Worked examples.** Entries 5–10 each offer more than one, one shown at a
-   time so the entry does not grow, each with its own step controls; the
-   caption appears only with the example it describes; the control cycles.
+   time so the entry does not grow, each with its own step controls, and the
+   control cycles back round.
 10. **Strategy comparison.** Sixteen questions, four per operation, tabbed;
     the framing line present; and every rendered route stepped to its last step
     and read back, so the answer the copy states and the answer the calculation
     reaches cannot drift apart. Also that at least four verdicts favour the
     written method, so the set is not rigged towards mental arithmetic.
-11. *(numbering continues into 12)*
-12. **Self-contained.** No external requests, the font embedded, and the hub's
+11. **Straight to the tool with your own numbers.** A link on each of the six
+    entries with a written calculation, pointing at the Written Calculation Lab
+    with the operation and the two numbers of the example currently on screen;
+    the link follows the "show me another" control and hides itself for the
+    decimal examples the tool cannot take. The tool is then loaded from that
+    query string and asserted to open on that calculation — so the link and the
+    tool cannot drift apart.
+12. **The hub points at the guide and nowhere else.** The old in-hub parent tab
+    and the dashboard card that opened it are gone, and the hub reaches the
+    standalone guide from both the navigation and the staff home.
+13. **Self-contained.** No external requests, the font embedded, and the hub's
     `:root` custom properties inlined intact — that last one is here because
     leaving the hub's own `<style>` tags in the inlined CSS silently swallowed
     the whole `:root` block and every `var()` on the page fell back to nothing.
 
-Sections 2, 3, 6, 7, 8, 10 and 12 have each been run against a copy with the
-defect reintroduced, and fail there.
+Sections 2, 3, 6, 7, 8, 10, 11, 12 and 13 have each been run against a copy
+with the defect reintroduced, and fail there.
 
 **What it does not check:** the route descriptions' step and regroup counts.
 Section 10 verifies the *answer* a route reaches, not prose like "four steps,
