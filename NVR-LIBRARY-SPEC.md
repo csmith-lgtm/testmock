@@ -339,14 +339,22 @@ key. Load after the engine (browser → `window.NVRHard`).
   markers cancel). Two demonstrator rows establish the rule. Distractors are the
   competing combination rules: OR (union), AND (intersection), copy-left,
   copy-middle. Verified across 800 builds: answer always equals A⊕B, options
-  always distinct. Band ≈ Greater Depth.
+  always distinct, and the two demonstrator rows differ in every column (drawn
+  independently they used to collide about one time in fourteen, leaving two grid
+  cells identical and the second row demonstrating nothing new).
+  Band ≈ Greater Depth.
 - **`buildCompoundOddOneOut`** — the rule is a multi-step count relation (dots
   inside = number of *sides* of the container). Shading is a deliberate decoy,
-  but split **two-and-two** so it can *never* itself single out a figure — this
+  but split **three-and-two** so it can *never* itself single out a figure — this
   is the principled way to bait the eye without making the item ambiguous (a
   decoy feature that uniquely identified one figure would give two defensible
   answers, which GL never does). Verified: exactly one count-breaker, always at
-  the answer; decoy colour is 50/50 on the breaker so it carries no signal.
+  the answer; the decoy colour group always holds at least two figures, so it
+  carries no signal. Five containers (triangle, square, diamond, pentagon,
+  hexagon) — `diamond` shares its side-count with `square`, so the set does not
+  imply "every figure shows a different number of dots", a shortcut that let the
+  breaker be found by scanning counts instead of checking each figure against its
+  own sides.
 - **`buildCompositeAnalogy`** — A→B applies *three* changes at once (90°
   rotation, grey shading, dashed outline) and C is a different shape, so visual
   pattern-matching fails and the rule must be abstracted. Each distractor omits
@@ -408,8 +416,8 @@ generator then rejects any set where a single-feature reading (total, #black,
 #white, #triangles, #circles, black−white, triangles−circles) gives any panel a
 unique value. So counting colour alone, or shape alone, tells you nothing —
 nothing "pops out", and the eye must scan serially and count a pair of features
-together. Verified over 596 builds: zero single-feature giveaways, answer always
-the sole rule-breaker.
+together. Five panels (four obeyers, one breaker). Verified over 800 builds: zero
+single-feature giveaways on any marginal, answer always the sole rule-breaker.
 
 **B. Embedded figure — `buildEmbeddedFigure`.** A target polygon is drawn, but
 each edge is *extended past its corners* and free-standing lines are laid across
@@ -537,10 +545,16 @@ resolves them. Each carries a `threads` count as an honest structural descriptor
   counts*: #black-triangles = #white-circles. Constructed so the answer is never
   unique on any single count (colour, shape, or either rule-count), so you must
   count two different sub-groups and compare — on a dense 12-element field.
-  Verified: answer never single-count-identifiable, over 800 builds.
+  Verified: answer never single-count-identifiable, over 800 builds. Five options
+  — one obeyer per level plus the breaker, so the breaker's black-triangle and
+  white-circle counts each coincide with some obeyer and neither count singles it
+  out on its own.
 - `buildDependencySeries` — two rules keyed off the same property: turn =
   (number of sides) × 30°, and grey iff the number of sides is odd. Compute the
-  property, then apply both. Verified answer correctness over 800 builds.
+  property, then apply both. Verified answer correctness over 800 builds. The
+  distractor pool carries fallbacks because on a **square** the 30°-multiple
+  rotations collapse modulo its 4-fold symmetry (120° ≡ 30° ≡ 300°), which used to
+  silently drop two distractors and ship a four-option item.
 - `buildInterwovenSeries` — **v9 `interwoven`** (Series, Greater Depth, 77). Two
   sequences plaited together by position parity: the odd panels carry an
   orientation-unmistakable shape (arrow / heart / raindrop / semicircle) turning a

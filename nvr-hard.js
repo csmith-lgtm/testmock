@@ -80,8 +80,18 @@
 
     // two demonstrator rows (also XOR), chosen to clearly show cancellation
     const demo = () => { let a, b; do { a = rnd(); b = rnd(); } while ((a & b) === 0 || (a ^ b) === 0); return [a, b, a ^ b]; };
-    const [a1, b1, c1] = demo();
-    const [a2, b2, c2] = demo();
+    // The two demonstrator rows are drawn independently, so they can collide in a
+    // column (a1 === a2 about one time in fourteen) — which renders two grid cells
+    // identical and makes the second row stop demonstrating anything new. Require
+    // the rows to differ in EVERY column, and to differ from the question row, so
+    // all three rows are visibly distinct.
+    let r1 = demo(), r2 = demo(), guard = 0;
+    while (guard++ < 400 && !(r1[0] !== r2[0] && r1[1] !== r2[1] && r1[2] !== r2[2] &&
+                              r1[0] !== A3 && r2[0] !== A3 && r1[1] !== B3 && r2[1] !== B3)) {
+      r2 = demo(); if (guard % 8 === 0) r1 = demo();
+    }
+    const [a1, b1, c1] = r1;
+    const [a2, b2, c2] = r2;
 
     const grid = [
       [maskFigure(a1), maskFigure(b1), maskFigure(c1)],
@@ -144,12 +154,18 @@
     // breaks it. SHADING is balanced 2-vs-2 so it can never be the rule — it
     // only draws the eye (the genuine GL way to bait without making the item
     // ambiguous: a decoy feature must be shared, so it can't single anyone out).
-    const fourShapes = ['triangle', 'square', 'pentagon', 'hexagon'];
-    const order = fourShapes.slice();
+    // Five containers. `diamond` also has four sides, so the set no longer implies
+    // "every figure shows a different number of dots" — a shortcut that let the
+    // breaker be found by scanning counts alone rather than by checking each
+    // figure's dots against its OWN sides. Max break count is 6+1 = 7, inside the
+    // anchor layouts.
+    const fiveShapes = ['triangle', 'square', 'diamond', 'pentagon', 'hexagon'];
+    const order = fiveShapes.slice();
     for (let i = order.length - 1; i > 0; i--) { const j = Math.floor(rng() * (i + 1));[order[i], order[j]] = [order[j], order[i]]; }
-    const breakerPos = Math.floor(rng() * 4);
-    // balanced shading: two black, two grey, assigned at random positions
-    const shading = ['black', 'black', 'grey', 'grey'];
+    const breakerPos = Math.floor(rng() * 5);
+    // balanced shading: three black, two grey, assigned at random positions. Every
+    // shading group holds at least two figures, so colour can never single one out.
+    const shading = ['black', 'black', 'black', 'grey', 'grey'];
     for (let i = shading.length - 1; i > 0; i--) { const j = Math.floor(rng() * (i + 1));[shading[i], shading[j]] = [shading[j], shading[i]]; }
 
     const options = order.map((shp, i) => {
@@ -160,12 +176,12 @@
 
     const traps = options.map((_, i) =>
       i === breakerPos ? null
-      : 'Obeys the rule (dots inside = number of sides). Shading is balanced two-and-two, so colour cannot be the odd-one-out.');
+      : 'Obeys the rule (dots inside = number of sides). Shading is balanced three-and-two, so colour cannot be the odd-one-out.');
 
     const item = {
       type: 'oddOneOut', hard: true, options, answerIndex: breakerPos, traps,
       rationale: 'Every figure has as many dots inside as the container has sides — except the odd one, ' +
-                 'which has one dot too many. Shading is split two-and-two on purpose, so the bold figures ' +
+                 'which has one dot too many. Shading is split three-and-two on purpose, so the bold figures ' +
                  'are a distraction: colour is not the rule.',
       countRule: true
     };

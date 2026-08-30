@@ -91,13 +91,17 @@
       // Obeyers sit at three DISTINCT levels (Li,Li). The breaker is (Lj,Lk),
       // j != k, so BT=Lj matches obeyer j and WC=Lk matches obeyer k — the
       // breaker is never unique on BT or WC (other panels may be, as decoys).
-      const levels = shuffle([1, 2, 3, 4], rng).slice(0, 3).sort((x, y) => x - y);
-      const [j, k] = shuffle([0, 1, 2], rng);
+      // Four obeyers (one per level) + the breaker = the five options the item
+      // contract requires. Using ALL four levels keeps the guarantee that the
+      // breaker's BT and WC each coincide with some obeyer, so it is never
+      // unique on either count on its own.
+      const levels = shuffle([1, 2, 3, 4], rng).sort((x, y) => x - y);
+      const [j, k] = shuffle([0, 1, 2, 3], rng);
       const breaker = { BT: levels[j], WC: levels[k] };
       if (breaker.BT === breaker.WC) continue;
       const obeyers = levels.map(L => ({ BT: L, WC: L }));
       const base = [breaker, ...obeyers];
-      const perm = shuffle([0, 1, 2, 3], rng);
+      const perm = shuffle([0, 1, 2, 3, 4], rng);
       const breakerPos = perm.indexOf(0);
       const chosen = perm.map(i => base[i]);
 
@@ -170,8 +174,20 @@
       { f: figure([prim(POLY[query], { x: C, y: C, size: 1, rotation: (query * 45) % 360, shading: query % 2 ? 'grey' : 'white' })]), trap: 'Multiplied the sides by 45° instead of 30°.' },
       { f: depFig(query, 180), trap: 'Turned it half a turn too far.' }
     ];
+    // On a SQUARE the 30°-multiple rotations collapse modulo its 4-fold symmetry
+    // (120° ≡ 30° ≡ 300°), so 'half a turn too far' becomes the answer and
+    // '×45°' becomes 'a fixed 90°' — two of the five above vanish as invisible
+    // duplicates and the option set falls to four. These fallbacks are the same
+    // class of misconception at angles that stay visible on every shape used here.
+    if (POLY[query - 1]) pool.push({ f: depFig(query - 1), trap: 'Used one fewer side in the turn.' });
+    const qShade = query % 2 ? 'grey' : 'white';
+    pool.push({ f: figure([prim(POLY[query], { x: C, y: C, size: 1, rotation: (query * 60) % 360, shading: qShade })]),
+                trap: 'Multiplied the sides by 60° instead of 30°.' });
+    pool.push({ f: figure([prim(POLY[query], { x: C, y: C, size: 1, rotation: (query * 30 + 45) % 360, shading: qShade })]),
+                trap: 'Turned an extra eighth-turn past the right answer.' });
     const seen = new Set([figLookKey(answer)]); const kept = [];
     for (const p of pool) { const k = figLookKey(p.f); if (!seen.has(k)) { seen.add(k); kept.push(p); } if (kept.length === 4) break; }
+    if (kept.length < 4) return null;                   // never ship a short option set
     const opts = shuffle([answer, ...kept.map(p => p.f)], rng);
     const answerIndex = opts.indexOf(answer);
     const traps = opts.map(f => f === answer ? null : kept.find(p => p.f === f).trap);

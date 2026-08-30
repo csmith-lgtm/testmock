@@ -97,6 +97,7 @@
   function buildConjunctionOddOneOut({ rng = Math.random, total = 12 } = {}) {
     for (let attempt = 0; attempt < 4000; attempt++) {
       // four obeyers: BT == WT ; one breaker: BT != WT. Keep total fixed.
+      // (five panels in all — the item contract is a five-option set.)
       const mk = (obey) => {
         const nTri = 2 * (2 + Math.floor(rng() * 3));            // 4, 6 or 8 (even either way)
         let BT, WT;
@@ -107,10 +108,10 @@
         const BC = Math.floor(rng() * (nCirc + 1));
         return { BT, WT, BC, WC: nCirc - BC };
       };
-      const breakerPos = Math.floor(rng() * 4);
+      const breakerPos = Math.floor(rng() * 5);
       const counts = [];
       let ok = true;
-      for (let i = 0; i < 4; i++) { const c = mk(i !== breakerPos); if (!c) { ok = false; break; } counts.push(c); }
+      for (let i = 0; i < 5; i++) { const c = mk(i !== breakerPos); if (!c) { ok = false; break; } counts.push(c); }
       if (!ok) continue;
       // breaker must genuinely break, obeyers must genuinely obey
       if (!counts.every((c, i) => (i === breakerPos) ? c.BT !== c.WT : c.BT === c.WT)) continue;

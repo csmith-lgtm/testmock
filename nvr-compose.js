@@ -76,7 +76,12 @@
   }
 
   // a central shape with a black dot to one side and an arrow that points at it
-  const DIRS = { E: [34, 0, 0], S: [0, 34, 90], W: [-34, 0, 180], N: [0, -34, 270] };
+  // dx, dy, arrow-angle. Diagonals sit at the same radius (34/root 2 ~ 24), so the
+  // dot is equidistant from the centre whichever direction is used.
+  const DIRS = {
+    E: [34, 0, 0],    SE: [24, 24, 45],    S: [0, 34, 90],    SW: [-24, 24, 135],
+    W: [-34, 0, 180], NW: [-24, -24, 225], N: [0, -34, 270],  NE: [24, -24, 315]
+  };
   function scenePointer(opts) {
     const o = Object.assign({ base: 'circle', dir: 'E', pointsToward: true, baseShading: 'white' }, opts);
     const [dx, dy, ang] = DIRS[o.dir];
@@ -102,6 +107,8 @@
   //    figure for a given parameter, and how to BREAK itself minimally. The set
   //    builder holds the palette fixed so all options share one motif.
   // --------------------------------------------------------------------------
+  const shuffle = (a, rng) => { a = a.slice(); for (let i = a.length - 1; i > 0; i--) { const j = Math.floor(rng() * (i + 1));[a[i], a[j]] = [a[j], a[i]]; } return a; };
+
   const RULES = {
     // "as many dots as shapes inside the container"
     dotsMatchInner: {
@@ -123,14 +130,14 @@
       describe: 'the arrow points towards the black dot',
       obey:  (dir, pal) => scenePointer({ ...pal, dir, pointsToward: true }),
       break: (dir, pal) => scenePointer({ ...pal, dir, pointsToward: false }),
-      params: ['E', 'S', 'W', 'N']
+      params: ['E', 'SE', 'S', 'SW', 'W', 'NW', 'N', 'NE']
     },
     // "the number of shapes inside equals the number of sides of the container"
     innerEqualsSides: {
       describe: 'the number of shapes inside equals the number of sides of the container',
       obey:  (sh, pal) => sceneContainer({ ...pal, outer: sh, count: NVR.SIDES[sh], inner: pal.inner }),
       break: (sh, pal) => sceneContainer({ ...pal, outer: sh, count: NVR.SIDES[sh] + 1, inner: pal.inner }),
-      params: ['triangle', 'square', 'pentagon', 'hexagon']
+      params: ['triangle', 'square', 'diamond', 'pentagon', 'hexagon']
     }
   };
 
@@ -162,7 +169,11 @@
       const id = ruleId && RULES[ruleId] ? ruleId : ids[Math.floor(rng() * ids.length)];
       const rule = RULES[id];
       const pal = paletteFor(id, rng);
-      const params = rule.params;
+      // Exactly five options, whatever the rule. Rules carry >= 5 parameters; take
+      // five at random so a rule with more (arrowToDot has eight directions) also
+      // varies between items instead of always showing the same set.
+      const params = shuffle(rule.params, rng).slice(0, 5);
+      if (params.length !== 5) continue;
       const oddPos = Math.floor(rng() * params.length);
       const options = params.map((p, i) =>
         i === oddPos ? rule.break(p, pal) : rule.obey(p, pal));
