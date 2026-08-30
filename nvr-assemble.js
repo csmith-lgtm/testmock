@@ -49,9 +49,40 @@
     // base engine, self-randomised — with degeneracy guards so the stem always
     // shows a VISIBLE change (no invisible rotations on symmetric shapes, etc.)
     series: (rng) => {
+      // A length-4 series needs FOUR visibly different panels (three stem + the
+      // answer), so the transform must have period >= 4 on the shape it is given.
+      // Two of the transforms this preset used to draw from could never manage
+      // that, and were silently rejected every time:
+      //   * a reflection has period 2 — it alternates, so panels 1 and 3 match;
+      //   * a three-colour cycle repeats on the fourth panel, and did nothing at
+      //     all when the starting shading ('hatch') lay outside the cycle.
+      // So the preset only ever emitted rotations, and burned every retry on the
+      // dead branches for ~4% of seeds. Rotations are now paired only with shapes
+      // whose own symmetry does not fold the four angles together (90° on a
+      // square is the classic invisible-rotation bug), and the shading series is
+      // a genuine four-colour cycle.
+      const SH4 = ['white', 'grey', 'black', 'hatch'];
+      const turnable = [];
+      for (const shape of ['triangle', 'pentagon', 'hexagon', 'star', 'arrow', 'heart', 'semicircle', 'raindrop', 'crescent', 'lightning']) {
+        const k = NVR.ROT_ORDER[shape];
+        if (!k || k === Infinity) continue;
+        const period = 360 / k;
+        for (const deg of [45, 90]) {
+          const seen = new Set([0, 1, 2, 3].map(i => (((deg * i) % period) + period) % period));
+          if (seen.size === 4) turnable.push([shape, deg]);
+        }
+      }
       for (let k = 0; k < 8; k++) {
-        const it = NVR.buildSeries({ start: randFig(rng),
-          transform: pick([NVR.T.rotate(45), NVR.T.rotate(90), NVR.T.reflect('h'), NVR.T.recolour(['white', 'grey', 'black'])], rng), length: 4, rng });
+        let start, transform;
+        if (turnable.length && rng() < 0.72) {
+          const [shape, deg] = pick(turnable, rng);
+          start = NVR.figure([NVR.prim(shape, { shading: pick(['white', 'grey', 'black'], rng) })]);
+          transform = NVR.T.rotate(deg);
+        } else {
+          start = NVR.figure([NVR.prim(pick(shapes, rng), { shading: SH4[0] })]);
+          transform = NVR.T.recolour(SH4);
+        }
+        const it = NVR.buildSeries({ start, transform, length: 4, rng });
         const keys = it.stem.map(NVR.figLookKey);
         if (new Set(keys).size === keys.length && !keys.includes(NVR.figLookKey(it.options[it.answerIndex]))) return it;
       }

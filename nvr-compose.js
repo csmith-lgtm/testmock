@@ -57,20 +57,62 @@
   // 2. SCENE TEMPLATES — each returns a standard figure (container drawn first).
   // --------------------------------------------------------------------------
   // container + interior shapes + optional dot tally inside the base
+  // --- keeping the interior tidy -------------------------------------------
+  // The anchor layouts pack at different densities: the 2x2 family separates
+  // neighbours by 2*spread, but the 3-column family (6, 7 and 8) by only
+  // *spread*. With one fixed inner size that made six or more interior shapes
+  // overlap, and near a triangle's sloping walls they could poke out entirely.
+  // Both hurt a counting rule most, which is exactly what these scenes carry.
+  // So: search the spread for the one that allows the largest inner shape which
+  // still clears its neighbours AND stays inside the container, then never
+  // enlarge past what the caller asked for — figures that already fitted are
+  // left exactly as they were.
+  const GAP = 2.5;                                   // clear space we insist on
+  function fitInterior(outer, innerShape, count, wantSize, baseSpread, cy) {
+    const unit = innerShape === 'dot' ? NVR.R * 0.28 : NVR.R;   // radius per unit of size
+    let best = { size: -1, anchors: interiorAnchors(count, baseSpread, cy) };
+    for (let sp = 8; sp <= baseSpread + 12; sp += 1) {
+      const A = interiorAnchors(count, sp, cy);
+      let minSep = Infinity;
+      for (let i = 0; i < A.length; i++)
+        for (let j = i + 1; j < A.length; j++)
+          minSep = Math.min(minSep, Math.hypot(A[i][0] - A[j][0], A[i][1] - A[j][1]));
+      const bySep = A.length > 1 ? (minSep - GAP) / 2 : Infinity;
+      const byFit = Math.min.apply(null, A.map(([x, y]) => NVR.outlineMargin(outer, x, y))) - GAP;
+      const size = Math.min(bySep, byFit) / unit;
+      if (size > best.size) best = { size, anchors: A };
+    }
+    return { anchors: best.anchors, size: Math.max(0.12, Math.min(wantSize, best.size)) };
+  }
+  // The dot tally sits low in the panel, where a hexagon or triangle has already
+  // narrowed; tighten its spacing (and lift it if need be) until it is inside.
+  function fitRow(outer, n, wantY, wantSpacing, dotSize) {
+    const r = NVR.R * 0.28 * dotSize;
+    for (let dy = 0; dy <= 14; dy += 2) {
+      for (let sp = wantSpacing; sp >= 6; sp -= 0.5) {
+        const A = rowAnchors(n, wantY - dy, sp);
+        if (A.every(([x, y]) => NVR.outlineMargin(outer, x, y) >= r + 1.5)) return A;
+      }
+    }
+    return rowAnchors(n, wantY - 14, 6);
+  }
+
   function sceneContainer(opts) {
     const o = Object.assign({
       outer: 'hexagon', inner: 'triangle', count: 3, dots: 0,
       outerShading: 'white', innerShading: 'grey', innerSize: 0.3,
       outerSize: 1.55, frontBlack: false
     }, opts);
-    const items = [prim(o.outer, { x: C, y: C, size: o.outerSize, shading: o.outerShading, z: 0 })];
+    const outerPrim = prim(o.outer, { x: C, y: C, size: o.outerSize, shading: o.outerShading, z: 0 });
+    const items = [outerPrim];
     // interior shapes sit in the UPPER part so the bottom tally has clear space
     const interiorCY = o.dots > 0 ? C - 10 : C;
-    interiorAnchors(o.count, 16, interiorCY).forEach(([x, y], i) => {
+    const fit = fitInterior(outerPrim, o.inner, o.count, o.innerSize, 16, interiorCY);
+    fit.anchors.forEach(([x, y], i) => {
       const black = o.frontBlack && i === 0;
-      items.push(prim(o.inner, { x, y, size: o.innerSize, shading: black ? 'black' : o.innerShading, z: black ? 3 : 2 }));
+      items.push(prim(o.inner, { x, y, size: fit.size, shading: black ? 'black' : o.innerShading, z: black ? 3 : 2 }));
     });
-    if (o.dots > 0) rowAnchors(o.dots, C + 36, 12).forEach(([x, y]) =>
+    if (o.dots > 0) fitRow(outerPrim, o.dots, C + 36, 12, 0.26).forEach(([x, y]) =>
       items.push(prim('dot', { x, y, size: 0.26, shading: 'black', z: 2 })));
     return figure(items);
   }

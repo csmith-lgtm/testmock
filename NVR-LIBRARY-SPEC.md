@@ -99,6 +99,11 @@ Every primitive instance carries:
 
 Figure-level: `frame` (`none`/`box`/`circle`) and `bg`.
 
+Two layout helpers sit alongside these: `primRadius(item)` (how much room a
+primitive needs) and `outlineMargin(item, x, y)` (inward distance from a point to
+a primitive's outline, negative outside). Composition code uses them to keep
+interior shapes clear of each other and inside their container.
+
 Derived attributes are read **only** through the `attr` (`A`) accessors —
 `count`, `countShape`, `countShading`, `countLineType`, `sidesTotal`,
 `hasBlackFront`, `anyOverlap`, `allSymmetric`, `distinctShadings`,
@@ -286,6 +291,18 @@ What changes, concretely:
 1. **Anchors, not scatter.** `interiorAnchors(k)` and `rowAnchors(k, y)` place
    interior elements on a tidy, grid-snapped sub-layout (singles centred, pairs
    level, threes as a triangle, fours as a 2×2). The ring-scatter is gone.
+   The anchor families pack at different densities — the 2×2 family separates
+   neighbours by *2 × spread*, the 3-column family (6, 7, 8) by only *spread* —
+   so `sceneContainer` **fits** its interior rather than trusting one constant:
+   it searches the spread for the one allowing the largest inner shape that both
+   clears its neighbours and stays inside the container wall (via
+   `NVR.outlineMargin`), and never enlarges past the requested size, so figures
+   that already fitted are untouched. Before this, six or more interior shapes
+   overlapped into a single blob and the dot tally ran through a hexagon's lower
+   wall — on rules whose whole content is *counting the interior*, which made
+   some figures genuinely uncountable rather than merely untidy. `nvr-hard.js`'s
+   `container()` fits its dots the same way (a triangle's sloping sides leave far
+   less usable interior than a hexagon's).
 2. **Scene templates** produce a standard `figure` (so `renderFigure` is
    unchanged) with the container drawn first (`z=0`) and the interior layered
    above:
@@ -458,6 +475,20 @@ deterministic PRNG so each item is stamped `builder@seed` and regenerated
 exactly with `regenerate(id)`. This is the prerequisite for everything else: a
 response row in a Sheet can be mapped back to the precise figure a pupil saw.
 Verified byte-identical over 560 regenerations across all 15 presets.
+
+**Caveat when builders are corrected.** `builder@seed` reproduces an item only
+against the *same version of the builder*. Nine builders were corrected after the
+first release (five that emitted four-option sets, `xorMatrix`'s duplicated
+demonstrator cell, the interior-layout fit, and the `series` preset's dead
+transform branches), and those seeds no longer regenerate their original figures:
+`series`, `cohesiveOddOneOut`, `oddOneOutClear`, `cohesiveSeries`,
+`compoundOddOneOut`, `crossConjunction`, `conjunction` (all seeds), `xorMatrix`
+(~46%) and `dependencySeries` (~38%). Response data collected against a paper
+printed before those fixes stays valid for the *paper*, but re-rendering it from
+the manifest will not reproduce what the pupils saw. Papers built from
+`analogy`, `matrix`, `compositeAnalogy`, `chirality`, `interaction`,
+`secondOrder`, `cubeNet`, `tripleMatrix`, `interwoven`, `embedded` and
+`embeddedHard` are unaffected.
 
 **Paper assembly.** `assemblePaper(spec, opts)` selects items to a spec
 (`[{ builder, count, band? }]`), and `renderPaper` lays them out as a single,

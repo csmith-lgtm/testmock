@@ -542,6 +542,37 @@
     if (geo.tag === 'line') return [[geo.attrs.x1, geo.attrs.y1], [geo.attrs.x2, geo.attrs.y2]];
     return null;   // circle / path
   }
+  // How much room a primitive needs (circumradius at its drawn size).
+  function primRadius(it) {
+    const s = it.size == null ? 1 : it.size;
+    return it.shape === 'dot' ? R * 0.28 * s : R * s;
+  }
+  // Inward distance from a point to a primitive's outline; negative means the
+  // point is outside. Layout code uses this to keep interior shapes inside their
+  // container — a shape poking through the wall reads as a drawing error, and on
+  // a counting rule it makes the elements harder to count.
+  function outlineMargin(it, x, y) {
+    const pts = basePoints(it.shape);
+    const s = it.size == null ? 1 : it.size;
+    if (!pts) return R * s - Math.hypot(x - it.x, y - it.y);   // circle / path: treat as a disc
+    const a = (it.rotation || 0) * Math.PI / 180, cos = Math.cos(a), sin = Math.sin(a);
+    const V = pts.map(([px, py]) => {
+      const qx = px * s, qy = py * s;
+      return [it.x + qx * cos - qy * sin, it.y + qx * sin + qy * cos];
+    });
+    const cx = V.reduce((m, p) => m + p[0], 0) / V.length;
+    const cy = V.reduce((m, p) => m + p[1], 0) / V.length;
+    let min = Infinity;
+    for (let i = 0; i < V.length; i++) {
+      const p = V[i], q = V[(i + 1) % V.length];
+      let nx = -(q[1] - p[1]), ny = q[0] - p[0];
+      const L = Math.hypot(nx, ny) || 1; nx /= L; ny /= L;
+      if ((cx - p[0]) * nx + (cy - p[1]) * ny < 0) { nx = -nx; ny = -ny; }
+      min = Math.min(min, (x - p[0]) * nx + (y - p[1]) * ny);
+    }
+    return min;
+  }
+
   // A signature that is identical for two items iff they LOOK identical.
   function lookKey(it) {
     const base = `${it.shape}|${it.shading}|${it.lineType}|${r2(it.size)}|${Math.round(it.x)},${Math.round(it.y)}`;
@@ -774,6 +805,8 @@
     // items
     makeDistractors, buildSeries, buildAnalogy, buildOddOneOut, buildCode, buildMatrix,
     renderMatrix, lookKey, figLookKey, ROT_ORDER,
+    // layout geometry (keeping interior shapes tidy inside a container)
+    basePoints, primRadius, outlineMargin,
     setCohort, BAND_PRESETS,
     // meta
     version: '1.1.0'

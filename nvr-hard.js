@@ -135,8 +135,18 @@
   //    boldly-shaded one, to bait solvers who latch onto the obvious feature.
   // ===========================================================================
   function container(outer, count, innerShading, outerShading) {
-    const A = require_interiorAnchors(count);
-    const items = [prim(outer, { x: C, y: C, size: 1.32, shading: outerShading || 'white', z: 0 })];
+    const outerPrim = prim(outer, { x: C, y: C, size: 1.32, shading: outerShading || 'white', z: 0 });
+    // Pick the widest anchor spread whose dots all clear the container wall. A
+    // triangle's sloping sides leave far less usable interior than a hexagon's,
+    // so a single fixed spread pushed dots through the outline — which matters
+    // here more than anywhere, because the rule is "count the dots".
+    const r = NVR.R * 0.28 * 0.42;
+    let A = require_interiorAnchors(count, 16);
+    for (let sp = 16; sp >= 7; sp -= 0.5) {
+      const cand = require_interiorAnchors(count, sp);
+      if (cand.every(([x, y]) => NVR.outlineMargin(outerPrim, x, y) >= r + 2)) { A = cand; break; }
+    }
+    const items = [outerPrim];
     A.forEach(([x, y]) => items.push(prim('dot', { x, y, size: 0.42, shading: innerShading, z: 2 })));
     return figure(items);
   }
