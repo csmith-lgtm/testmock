@@ -67,6 +67,34 @@ and exits 1, rather than passing silently.
 
 It also does not check mathematical correctness in general. Where maths has been verified — angles drawn matching angles stated, polygon interior angles against drawn vertices, rounding across place values and negatives — that was done with one-off probes. If you want any of those as permanent checks, they can be added as a section 7.
 
+## parent_guide.test.js
+
+Checks `Parent_Maths_Guide_v40_1.html`, the standalone parent guide, against
+`PARENT_GUIDE_complete.md`, which is its source of copy:
+
+```
+node parent_guide.test.js              # or: npm run test:guide
+```
+
+It needs jsdom only, finds both files relative to itself, and exits 1 on
+failure. It asserts that
+
+1. every word of the markdown appears on the page, in order, so the copy has
+   not been edited, trimmed or reordered;
+2. all twelve bracketed image placeholders survive verbatim as figure
+   captions;
+3. every wired figure actually renders something;
+4. each renderer on the page is byte-identical to the one in the hub — the
+   page draws nothing of its own, so a hub fix reaches the guide;
+5. `pvc` and `numberLine` carry `data-mstep`, numbered from the smallest
+   place and from the first hop respectively;
+6. the area model and the expanded written method share step indices, checked
+   by stepping the block and reading which elements are actually highlighted
+   in each panel, not by reading the markup.
+
+Check 6 was tested against a copy with the shared indices removed, and fails
+there with three errors.
+
 ## Maintaining it
 
 **When a tool gains a new preset parameter**, add a line to `PRESET_TARGET` near the top of section 5, mapping the tool's registry `id` to `[url-parameter, target-select-id]`. Section 5 asserts that this table covers every registered tool, so it will fail loudly if you add a tool and forget.

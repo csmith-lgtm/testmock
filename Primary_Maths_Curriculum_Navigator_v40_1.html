@@ -1195,7 +1195,15 @@ function pvc(cols){
  if(keys.some(k=>['o','1'].includes(k))) legendItems.push('<span class="item"><span class="circ one"></span>ones</span>');
  if(keys.some(k=>['0.1','tenth','tenths'].includes(k))) legendItems.push('<span class="item"><span class="circ tenth"></span>tenths</span>');
  if(keys.some(k=>['0.01','hundredth','hundredths'].includes(k))) legendItems.push('<span class="item"><span class="circ hundredth"></span>hundredths</span>');
- return `<div><table class="pvchart"><tr>${Object.keys(cols).map(k=>`<th>${k}</th>`).join('')}</tr><tr>${Object.entries(cols).map(([k,v])=>`<td>${Array.from({length:v}).map(()=>`<span class="counter ${pvcClass(k)}"></span>`).join('')}</td>`).join('')}</tr></table><div class="legend">${legendItems.join('')}</div></div>`;
+ // Staged-reveal markers, numbered from the smallest place, so a place-value
+ // chart and a written method shown side by side reveal the same place at the
+ // same step.
+ const pvcUnits={'th':'thousands','thou':'thousands','1000':'thousands','1,000':'thousands','h':'hundreds','100':'hundreds','t':'tens','10':'tens','o':'ones','1':'ones','0.1':'tenths','tenth':'tenths','tenths':'tenths','0.01':'hundredths','hundredth':'hundredths','hundredths':'hundredths'};
+ const pvcKeys=Object.keys(cols);
+ const nPvc=pvcKeys.length;
+ const stepFor=i=>nPvc-i;
+ const unitFor=i=>pvcUnits[String(pvcKeys[i]).toLowerCase()]||String(pvcKeys[i]);
+ return `<div><table class="pvchart"><tr>${pvcKeys.map((k,i)=>`<th data-mstep="${stepFor(i)}" data-unit="${unitFor(i)}">${k}</th>`).join('')}</tr><tr>${Object.entries(cols).map(([k,v],i)=>`<td data-mstep="${stepFor(i)}" data-unit="${unitFor(i)}">${Array.from({length:v}).map(()=>`<span class="counter ${pvcClass(k)}"></span>`).join('')}</td>`).join('')}</tr></table><div class="legend">${legendItems.join('')}</div></div>`;
 }
 function array(rows,cols){return dots(rows*cols,cols)}
 function groups(groups,size){
@@ -1204,12 +1212,23 @@ function groups(groups,size){
  return s+'</div>';
 }
 function area(parts, multiplier){
- return `<div class="area" style="grid-template-columns:${parts.map(p=>p).join('fr ')}fr">${parts.map(p=>`<div>${p} × ${multiplier}</div>`).join('')}</div>`;
+ // Same step indices as gridMethod: smallest part first.
+ const nParts=parts.length;
+ return `<div class="area" style="grid-template-columns:${parts.map(p=>p).join('fr ')}fr">${parts.map((p,i)=>`<div data-mstep="${nParts-i}" data-unit="${p} column">${p} × ${multiplier}</div>`).join('')}</div>`;
 }
 function gridMethod(colHeaders,rowHeaders,cells,total=''){
- let head=`<tr><th>×</th>${colHeaders.map(h=>`<th>${h}</th>`).join('')}</tr>`;
- let body=rowHeaders.map((r,i)=>`<tr><th>${r}</th>${cells[i].map(c=>`<td>${c}</td>`).join('')}</tr>`).join('');
- return `<div><table class="gridmeth">${head}${body}</table>${total?`<div class="gridtotal">Total = ${total}</div>`:''}</div>`;
+ // Step indices follow the partial products of the paired written method, so
+ // the area model and the expanded record reveal the same part together:
+ // one step per column when the multiplier is a single part, one step per row
+ // when the multiplier is itself partitioned. Smallest part first, as in the
+ // column methods.
+ const nc=colHeaders.length, nr=rowHeaders.length, byRow=nr>1;
+ const stepAt=(i,j)=>byRow?nr-i:nc-j;
+ const unitAt=(i,j)=>byRow?`${rowHeaders[i]} row`:`${colHeaders[j]} column`;
+ const maxStep=(byRow?nr:nc)+1;
+ let head=`<tr><th>×</th>${colHeaders.map((h,j)=>byRow?`<th>${h}</th>`:`<th data-mstep="${stepAt(0,j)}" data-unit="${unitAt(0,j)}">${h}</th>`).join('')}</tr>`;
+ let body=rowHeaders.map((r,i)=>`<tr>${byRow?`<th data-mstep="${stepAt(i,0)}" data-unit="${unitAt(i,0)}">${r}</th>`:`<th>${r}</th>`}${cells[i].map((c,j)=>`<td data-mstep="${stepAt(i,j)}" data-unit="${unitAt(i,j)}">${c}</td>`).join('')}</tr>`).join('');
+ return `<div><table class="gridmeth">${head}${body}</table>${total?`<div class="gridtotal" data-mstep="${maxStep}" data-unit="total">Total = ${total}</div>`:''}</div>`;
 }
 
 function expandedAddTable(labels,top,bottom,expanded,result){
@@ -18723,7 +18742,7 @@ roles:{structure:'The array/bar relationship shows equal groups and multiplicati
 chain:['equal groups','array','Base 10','area model','grid method','expanded multiplication'],
 c:rep('Base 10',`<div>${base10(0,2,3)}</div><div style="font-size:11px;margin-left:10px">× 4</div>`,'<b>23 × 4.</b> Build four equal groups of 23, then reorganise the tens and ones so the distributive structure 4 × (20 + 3) is visible.'+animationCue('The geometry of Base 10 is preparing pupils for the area model.')),
 p:rep('Area / grid model',`<div class="area" style="grid-template-columns:2fr 1fr"><div>20 × 4 = 80</div><div>3 × 4 = 12</div></div>`,'The area/grid model is the critical bridge from the manipulative to distributive calculation.'),
-a:rep('Area/grid method → abstract',methodPair('Grid method',gridMethod(['20','3'],['4'],[['80','12']],'92'),'Abstract','<div class="small-eq">23 × 4<br>= (20 × 4) + (3 × 4)<br>= 80 + 12<br><b>= 92</b></div>'),'The area model and the grid method are two views of the same distributive structure. Each cell is a partial product, and the abstract calculation simply names and recombines those partial products.'+teachingSequence(['Partition 23 into 20 and 3.','Multiply each part by 4.','Record the partial products 80 and 12.','Recombine the partial products to make 92.'])),
+a:rep('Area/grid method → abstract',methodPair('Grid method',gridMethod(['20','3'],['4'],[['80','12']],'92'),'Abstract','<div class="small-eq">23 × 4<br>= (<span data-mstep="2" data-unit="20 column">20 × 4</span>) + (<span data-mstep="1" data-unit="3 column">3 × 4</span>)<br>= <span data-mstep="2" data-unit="20 column">80</span> + <span data-mstep="1" data-unit="3 column">12</span><br><b data-mstep="3" data-unit="total">= 92</b></div>'),'The area model and the grid method are two views of the same distributive structure. Each cell is a partial product, and the abstract calculation simply names and recombines those partial products.'+teachingSequence(['Partition 23 into 20 and 3.','Multiply each part by 4.','Record the partial products 80 and 12.','Recombine the partial products to make 92.'])),
 why:'Base 10 is ideal here because its geometry naturally becomes the area/grid model. Place-value counters would show place value but lose that powerful spatial bridge.',
 teach:'Use distributive language explicitly: partition one factor, multiply each part, recombine.',watch:'Avoid teaching “grid method boxes” as a layout divorced from distributivity.',
 plan:'Y3: after 3,4,8 table development and secure partitioning of 2-digit numbers.'
@@ -18734,7 +18753,7 @@ roles:{structure:'The multiplicative relationship remains visible through array/
 chain:['array','area model','grid method','short multiplication'],
 c:rep('Base 10 / selective counters',`<div>${base10(0,3,6)}</div><div style="font-size:11px;margin-left:8px">× 7</div>`,'<b>36 × 7.</b> Keep 30 × 7 and 6 × 7 visible as separate partial products. Use place-value counters only if the exchange from 42 ones into 4 tens and 2 ones needs additional support.'+animationCue('Do not let the compact method hide the distributive structure.')),
 p:rep('Area model',`<div class="area" style="grid-template-columns:3fr 1fr"><div>30 × 7 = 210</div><div>6 × 7 = 42</div></div>`,'The grid keeps the distributive structure visible as recording becomes more compact.'),
-a:rep('Area/grid → short multiplication',methodPair('Grid method',gridMethod(['30','6'],['7'],[['210','42']],'252'),'Short multiplication','<div class="small-eq">36 × 7<br>= (30 × 7) + (6 × 7)<br>= 210 + 42<br><b>= 252</b></div>'),'The grid method keeps every partial product visible first, which makes it easier to understand how the standard short-multiplication layout is compressing the same calculation.'),
+a:rep('Area/grid → short multiplication',methodPair('Grid method',gridMethod(['30','6'],['7'],[['210','42']],'252'),'Short multiplication','<div class="small-eq">36 × 7<br>= (<span data-mstep="2" data-unit="30 column">30 × 7</span>) + (<span data-mstep="1" data-unit="6 column">6 × 7</span>)<br>= <span data-mstep="2" data-unit="30 column">210</span> + <span data-mstep="1" data-unit="6 column">42</span><br><b data-mstep="3" data-unit="total">= 252</b></div>'),'The grid method keeps every partial product visible first, which makes it easier to understand how the standard short-multiplication layout is compressing the same calculation.'),
 why:'Use Base 10 when connecting to area; use PV counters if pupils specifically need to see exchanged ones/tens in the compact method.',
 teach:'Do not abandon the grid too abruptly; explicitly map each partial product onto the short method.',watch:'A memorised exchange routine can hide weak understanding of partial products and place value.',
 plan:'Y4 after all multiplication facts are developing securely; before repeated algorithm practice.'
@@ -18745,7 +18764,7 @@ roles:{structure:'The area model shows two factors partitioned multiplicatively.
 chain:['area model','grid method','partial products','long multiplication'],
 c:rep('Area tiles / place-value reasoning','<div class="small-eq">23 × 14<br>=(20+3)(10+4)</div>','Concrete tiles are optional; the key is retaining multiplicative place-value structure.'),
 p:rep('Area model',`<div class="area" style="grid-template-columns:2fr 1fr"><div>20×10=200</div><div>3×10=30</div><div>20×4=80</div><div>3×4=12</div></div>`,'The area model generalises cleanly to two-digit × two-digit and algebra later.'),
-a:rep('Area/grid → long multiplication',methodPair('Grid method',gridMethod(['20','3'],['10','4'],[['200','30'],['80','12']],'322'),'Long multiplication','<div class="small-eq">23 × 14<br>= 23 × 10 + 23 × 4<br>= 230 + 92<br><b>= 322</b></div>'),'The grid method makes every partial product visible and therefore prepares pupils for long multiplication, which records the same structure more compactly.'),
+a:rep('Area/grid → long multiplication',methodPair('Grid method',gridMethod(['20','3'],['10','4'],[['200','30'],['80','12']],'322'),'Long multiplication','<div class="small-eq">23 × 14<br>= <span data-mstep="2" data-unit="10 row">23 × 10</span> + <span data-mstep="1" data-unit="4 row">23 × 4</span><br>= <span data-mstep="2" data-unit="10 row">230</span> + <span data-mstep="1" data-unit="4 row">92</span><br><b data-mstep="3" data-unit="total">= 322</b></div>'),'The grid method makes every partial product visible and therefore prepares pupils for long multiplication, which records the same structure more compactly.'),
 why:'The area model is more important than counters at this point because distributivity and place-value scaling are the ideas to preserve.',
 teach:'Connect multiplication by 10/100, distributivity and partial products explicitly.',watch:'The “zero placeholder” in long multiplication should be explained as multiplying by tens, not inserted as a rule.',
 plan:'Y5 long multiplication; Y6 consolidation, decimals and multi-step applications.'
@@ -19461,7 +19480,13 @@ function numberLine(marks,start,end){
 function miniNumberLine(start,end,step,marks=[]){
  const vals=[]; for(let v=start;v<=end;v+=step) vals.push(v);
  const markSet=new Set((marks||[]).map(Number));
- return `<div style="width:100%;min-width:220px;padding:20px 6px 5px"><div style="position:relative;border-top:2px solid #39445c;height:40px">${vals.map(v=>{const pct=((v-start)/(end-start))*100;return `<span style="position:absolute;left:${pct}%;top:-6px;width:1px;height:12px;background:#39445c"></span><span style="position:absolute;left:${pct}%;top:10px;transform:translateX(-50%);font-size:8px;${markSet.has(v)?'font-weight:700;color:#3157d5':''}">${v}</span>`}).join('')}</div></div>`;
+ // Staged-reveal markers on the highlighted values, so a number line can be
+ // stepped through hop by hop the way the written methods are.
+ const markOrder=Array.from(markSet).sort((a,b)=>a-b);
+ const stepOf=v=>markOrder.indexOf(Number(v))+1;
+ const unitOf=v=>stepOf(v)===1?`starting point ${v}`:`hop to ${v}`;
+ const marker=v=>markSet.has(v)?` data-mstep="${stepOf(v)}" data-unit="${unitOf(v)}"`:'';
+ return `<div style="width:100%;min-width:220px;padding:20px 6px 5px"><div style="position:relative;border-top:2px solid #39445c;height:40px">${vals.map(v=>{const pct=((v-start)/(end-start))*100;return `<span${marker(v)} style="position:absolute;left:${pct}%;top:-6px;width:1px;height:12px;background:#39445c"></span><span${marker(v)} style="position:absolute;left:${pct}%;top:10px;transform:translateX(-50%);font-size:8px;${markSet.has(v)?'font-weight:700;color:#3157d5':''}">${v}</span>`}).join('')}</div></div>`;
 }
 function objectiveVisual(spec){
  if(!spec) return '';
