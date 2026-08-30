@@ -61,6 +61,7 @@
     secondOrder: 'second-order-eighth-turn', hardSecondOrder: 'second-order-eighth-turn',
     tripleMatrix: 'triple-attribute', eliteTriple: 'triple-attribute',
     dependencySeries: 'count-controls-two', eliteDep: 'count-controls-two',
+    interwoven: 'interwoven', eliteInterwoven: 'interwoven',
     // library-only mechanisms with no v9 anchor (perceptual / relational-conjunction)
     oddOneOutClear: 'inside-outside',
     conjunction: null, camoConjunction: null,

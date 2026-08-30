@@ -541,6 +541,29 @@ resolves them. Each carries a `threads` count as an honest structural descriptor
 - `buildDependencySeries` — two rules keyed off the same property: turn =
   (number of sides) × 30°, and grey iff the number of sides is odd. Compute the
   property, then apply both. Verified answer correctness over 800 builds.
+- `buildInterwovenSeries` — **v9 `interwoven`** (Series, Greater Depth, 77). Two
+  sequences plaited together by position parity: the odd panels carry an
+  orientation-unmistakable shape (arrow / heart / raindrop / semicircle) turning a
+  constant quarter-turn each time it appears; the even panels carry a *different*
+  shape running a *different* progression — a white→grey→black shading cycle, or
+  steady growth. No reading of the strip as a whole works, so the pupil must split
+  it into two threads, see whose turn is next, and continue only that one. The
+  variant is chosen per seed: 6 stem panels (the turning thread is asked for) or 7
+  (the growing thread is). Distractors are the four partial readings — repeat the
+  last term of the right thread, turn it back the way it came, continue the *other*
+  thread (the parity error), and right term / wrong shading.
+
+  Fairness constraints baked into the generator, all verified over 600 seeds: the
+  two threads always use visibly different shapes, so the parity of the missing
+  panel is never in doubt; the turning thread is restricted to `ROT_ORDER`-1 shapes
+  and the other thread is never rotated, so no near-symmetric polygon is ever
+  turned; the turn is constant (never accelerating) and the growth monotone, so
+  nothing is second-order; and neither thread is a count, so there is no
+  off-by-one judgement. Start angles are restricted to **right angles** — on a
+  diagonal start the answer and the "turned it back" distractor sit 180° apart on
+  the same diagonal, which a cold-read showed is not reliably separable (a grey
+  raindrop at 45° vs 225°); at right angles that pair is up-vs-down or
+  left-vs-right. Registered as preset `interwoven`.
 
 **Caveat, stated plainly:** the structural difficulty estimator *underrates these
 badly* — it bands the 3-thread matrix as "Developing" and the cross-conjunction
@@ -565,13 +588,14 @@ generator adds (conjunction search, embedded figure, cross-category conjunction)
 — are flagged `library-only` and floored at Secure with an explicit
 "trial before trusting" note, because the bank cannot calibrate them.
 
-The generator currently produces **10 of the bank's 24 mechanisms** (calibrated
-directly); the remaining 14 are listed as build targets in `v9-gap-analysis.md`,
-ranked by score. Ten of those are Greater-Depth mechanisms (interwoven,
-interacting-movement, reflect-turn-alternation, the second-order and
+The generator currently produces **11 of the bank's 24 mechanisms** (calibrated
+directly); the remaining 13 are listed as build targets in `v9-gap-analysis.md`,
+ranked by score. Nine of those are Greater-Depth mechanisms
+(interacting-movement, reflect-turn-alternation, the second-order and
 count-controls variants, diagonal-shading, count-addition, cube-corner); building
 them would bring the generator to parity with the bank's difficulty range while
-adding fresh-instance generation the static bank can't provide.
+adding fresh-instance generation the static bank can't provide. `interwoven` was
+the first of these to land (see `buildInterwovenSeries` above).
 
 ## 13. Extension roadmap
 

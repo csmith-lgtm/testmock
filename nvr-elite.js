@@ -187,5 +187,108 @@
     return item;
   }
 
-  return { buildTripleMatrix, buildCrossConjunction, buildDependencySeries, cellFig, depFig, version: '1.0.0-elite' };
+
+  // ===========================================================================
+  // 4. INTERWOVEN SERIES   (v9 mechanism "interwoven" — Series, Greater Depth)
+  //    Two sequences are interleaved by position parity. The odd panels carry an
+  //    orientation-unmistakable shape turning a constant quarter-turn each time
+  //    it appears; the even panels carry a DIFFERENT shape running a progression
+  //    on a DIFFERENT attribute (a shading cycle, or steady growth). No single
+  //    reading of the strip as a whole works: the pupil must split it into two
+  //    threads, see whose turn is next, and continue only that one.
+  //
+  //    Fairness construction (BRIEF §5):
+  //      * the two threads use visibly different SHAPES, so the alternation is
+  //        self-evident and the parity of the missing panel is never in doubt;
+  //      * the turning thread only uses ROT_ORDER-1 shapes (arrow, heart,
+  //        raindrop, semicircle) so every quarter-turn is unmistakable; the
+  //        other thread is never rotated, so polygons stay safe;
+  //      * the turn is CONSTANT and the growth is monotone — nothing is
+  //        second-order, so no accelerating increment has to be read as a rule;
+  //      * neither thread is a count, so there is no off-by-one judgement;
+  //      * a shading cycle would have to WRAP to give a 4th term, which is not
+  //        inferable, so the shading thread is never the one asked for.
+  // ===========================================================================
+  const INTER_TURN  = ['arrow', 'heart', 'raindrop', 'semicircle'];   // every turn visible
+  const INTER_PLAIN = ['triangle', 'square', 'pentagon', 'hexagon', 'circle', 'diamond', 'star'];
+  const INTER_SHADES = ['white', 'grey', 'black'];
+  const INTER_SIZES  = [0.6, 0.9, 1.2, 1.5];
+  const pickOne = (a, rng) => a[Math.floor(rng() * a.length)];
+
+  const turnFig = (shape, rot, shading) =>
+    figure([prim(shape, { x: C, y: C, size: 1, rotation: ((rot % 360) + 360) % 360, shading })]);
+  const plainFig = (shape, shading, size) =>
+    figure([prim(shape, { x: C, y: C, size, shading, rotation: 0 })]);
+
+  function buildInterwovenSeries({ rng = Math.random } = {}) {
+    const tShape = pickOne(INTER_TURN, rng);
+    const pShape = pickOne(INTER_PLAIN, rng);
+    const step   = pickOne([90, 270], rng);                       // a quarter-turn either way
+    // Right angles ONLY. The 'turned it back' distractor always sits 180° from
+    // the answer, and on a DIAGONAL start that pair reads as one shape on one
+    // diagonal (a grey raindrop at 45° vs 225° is barely separable) — a
+    // perceptual off-by-one. At right angles the pair is up-vs-down or
+    // left-vs-right, which is unmistakable on all four shapes.
+    const start  = pickOne([0, 90, 180, 270], rng);
+    const tShade = pickOne(INTER_SHADES, rng);
+    const pShade = pickOne(INTER_SHADES, rng);
+    const askTurn = rng() < 0.5;                                  // which thread is asked for
+    const mode = askTurn ? pickOne(['shading', 'size'], rng) : 'size';
+
+    const T_ = i => turnFig(tShape, start + i * step, tShade);
+    const P_ = i => mode === 'shading' ? plainFig(pShape, INTER_SHADES[i % 3], 1)
+                                       : plainFig(pShape, pShade, INTER_SIZES[i]);
+    const turnWord = step === 90 ? 'a quarter-turn clockwise' : 'a quarter-turn anticlockwise';
+    const growWord = mode === 'shading' ? 'change shading white → grey → black' : 'grow a step bigger';
+
+    let stem, answer, pool;
+    if (askTurn) {
+      // ... A B A B A B ?  — the last panel shown is the plain shape, so the
+      // missing panel is the next term of the TURNING thread.
+      stem = [T_(0), P_(0), T_(1), P_(1), T_(2), P_(2)];
+      answer = T_(3);
+      const otherShade = pickOne(INTER_SHADES.filter(s => s !== tShade), rng);
+      pool = [
+        { f: T_(2), trap: `Repeated the last ${tShape} instead of turning it one more step.` },
+        { f: T_(1), trap: `Turned the ${tShape} back the way it came instead of carrying on.` },
+        { f: P_(3), trap: `Carried on the ${pShape} sequence — but the last panel was already a ${pShape}, so it is the ${tShape}'s turn.` },
+        { f: turnFig(tShape, start + 3 * step, otherShade), trap: `Turned correctly, but changed the shading — the ${tShape}'s shading never changes.` },
+        { f: turnFig(tShape, start + 3 * step + 180, tShade), trap: 'Turned half a turn too far.' }
+      ];
+    } else {
+      // ... A B A B A B A ?  — the last panel shown is the turning shape, so the
+      // missing panel is the next term of the GROWING thread.
+      stem = [T_(0), P_(0), T_(1), P_(1), T_(2), P_(2), T_(3)];
+      answer = P_(3);
+      const otherShade = pickOne(INTER_SHADES.filter(s => s !== pShade), rng);
+      pool = [
+        { f: P_(2), trap: `Repeated the last ${pShape} instead of growing it one more step.` },
+        { f: P_(0), trap: `Went back to the first ${pShape} instead of continuing the growth.` },
+        { f: T_(4), trap: `Carried on the ${tShape} sequence — but the last panel was already a ${tShape}, so it is the ${pShape}'s turn.` },
+        { f: plainFig(pShape, otherShade, INTER_SIZES[3]), trap: `Grown correctly, but the shading changed — the ${pShape}'s shading never changes.` },
+        { f: P_(1), trap: 'Went back to an earlier size in the growth.' }
+      ];
+    }
+
+    const seen = new Set([figLookKey(answer)]); const kept = [];
+    for (const p of pool) { const k = figLookKey(p.f); if (!seen.has(k)) { seen.add(k); kept.push(p); } if (kept.length === 4) break; }
+    if (kept.length < 4) return null;                     // never ship a short option set
+    const opts = shuffle([answer, ...kept.map(p => p.f)], rng);
+    const answerIndex = opts.indexOf(answer);
+    const traps = opts.map(f => f === answer ? null : kept.find(p => p.f === f).trap);
+
+    const item = {
+      type: 'series', elite: true, threads: 2, stem, options: opts, answerIndex, traps,
+      rationale: `Two sequences are interleaved. The ${tShape}s (1st, 3rd, 5th …) turn ${turnWord} ` +
+                 `each time one appears; the ${pShape}s (2nd, 4th, 6th …) ${growWord}. The last panel ` +
+                 `shown is a ${askTurn ? pShape : tShape}, so the missing panel continues the ` +
+                 `${askTurn ? tShape : pShape} sequence.`,
+      difficulty: NVR.estimateDifficulty({ type: 'series', stem, options: opts, answerIndex })
+    };
+    item.band = NVR.band(item.difficulty);
+    return item;
+  }
+
+  return { buildTripleMatrix, buildCrossConjunction, buildDependencySeries,
+           buildInterwovenSeries, cellFig, depFig, turnFig, plainFig, version: '1.1.0-elite' };
 });
