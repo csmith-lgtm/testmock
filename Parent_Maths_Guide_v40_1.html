@@ -1113,6 +1113,9 @@ html.text-large .main,html.text-large .side,html.text-xlarge .main,html.text-xla
 .navbtn.navlink{text-decoration:none;color:#273142}
 .navbtn.navlink:hover{background:#f2f5fb}
 .navbtn.navlink::after{content:"\2197";float:right;color:#8a94a6;font-size:11px;line-height:1.35}
+
+.coltable td.pt{width:13px;min-width:13px;border-color:transparent;background:transparent;vertical-align:bottom;padding-bottom:5px;font-weight:700}
+.coltable .carry td.pt,.coltable .line td.pt{border-color:transparent}
 </style>
 <style>
 /* Standalone parent guide: page furniture only. Every visual below is drawn by
@@ -1164,6 +1167,7 @@ body{background:var(--bg);color:var(--ink);margin:0;padding:0}
 .pg-toggle{display:grid;grid-template-columns:26px 1fr 18px;gap:8px;align-items:center;width:100%;
   background:none;border:0;padding:4px 0;margin:0;text-align:left;cursor:pointer;
   font:inherit;color:var(--nav)}
+.pg-toggle-plain{grid-template-columns:1fr 18px}
 .pg-num{font-size:.8rem;font-weight:700;color:var(--muted);font-variant-numeric:tabular-nums}
 .pg-entry-title{font-size:1.08rem;font-weight:700;line-height:1.3}
 .pg-caret{justify-self:end;width:8px;height:8px;border-right:2px solid var(--muted);
@@ -1222,13 +1226,86 @@ body{background:var(--bg);color:var(--ink);margin:0;padding:0}
   .pg-contents{position:static}
   .pg-toc{max-height:none}
 }
+/* Printing must not depend on the beforeprint event: everything a collapsed
+   entry hides is unhidden here, in CSS, so a print from any browser - or with
+   scripting off - carries the prose, the glossary and every example. */
 @media print{
-  .pg-contents,.pg-back,.pg-caret,.method-controls{display:none!important}
+  .pg-contents,.pg-back,.pg-caret,.method-controls,.pg-band,.pg-toc-actions,
+  .pg-another,.pg-example-count,.pg-home{display:none!important}
   .pg-shell{display:block}
-  .pg-entry-body[hidden]{display:block!important}
-  .pg-entry{break-inside:avoid;border-color:#ccc}
+  .pg-entry-body[hidden],.pg-example[hidden],.pg-strategy-panel[hidden]{display:block!important}
+  .pg-entry,.pg-gloss{break-inside:avoid;border-color:#ccc}
+  .pg-question,.pg-term,.pg-example{break-inside:avoid}
   .pg-toggle{cursor:auto}
+  .pg-tabs{display:none!important}
+  .pg-strategy-op{position:static!important;width:auto!important;height:auto!important;
+    clip:auto!important;overflow:visible!important;font-size:1rem;margin:16px 0 8px}
 }
+
+/* The homework band: quiet, one line, above everything. */
+.pg-band{max-width:1120px;margin:14px 0 0;padding:10px 14px;border:1px solid var(--line);
+  border-left:3px solid var(--blue);border-radius:10px;background:var(--card)}
+.pg-band p{margin:0;line-height:1.6;font-size:.9rem}
+.pg-band p:first-child{font-weight:700}
+.pg-band a{color:var(--blue)}
+.pg-band a:hover{text-decoration:underline}
+
+/* Contents actions */
+.pg-toc-actions{display:flex;gap:6px;margin-top:12px;padding-top:10px;border-top:1px solid var(--line)}
+.pg-allbtn{flex:1;border:1px solid var(--line);background:var(--card);color:var(--muted);
+  border-radius:8px;padding:6px 8px;font:inherit;font-size:.72rem;cursor:pointer}
+.pg-allbtn:hover{background:var(--soft);color:var(--blue)}
+.pg-toc-gloss a{font-style:italic}
+
+/* Glossary */
+.pg-gloss{background:var(--card);border:1px solid var(--line);border-radius:14px;
+  padding:14px 16px 4px;margin:0 0 22px;scroll-margin-top:16px}
+.pg-gloss-intro{margin:2px 0 10px;color:var(--muted);line-height:1.55}
+.pg-terms{margin:0;display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:10px 22px}
+@media(max-width:760px){.pg-terms{grid-template-columns:1fr}}
+.pg-term{break-inside:avoid}
+.pg-term dt{font-weight:700;line-height:1.4}
+.pg-term dd{margin:2px 0 0;line-height:1.55;color:var(--ink)}
+.pg-term em{color:var(--muted)}
+.pg-termlink{display:inline-block;margin-top:3px;font-size:.76rem;color:var(--blue);white-space:nowrap}
+.pg-termlink::before{content:"\2192 ";}
+.pg-termlink:hover{text-decoration:underline}
+
+/* Worked examples */
+.pg-example-bar{display:flex;align-items:center;gap:10px;flex-wrap:wrap;width:100%;margin-bottom:2px}
+.pg-example-label{font-weight:700;font-size:.9rem;color:var(--nav)}
+.pg-example-count{font-size:.72rem;color:var(--muted)}
+.pg-another{margin-left:auto}
+.pg-example{width:100%}
+
+/* Strategy comparison */
+.pg-strategy{margin:4px 0 8px}
+.pg-tabs{display:flex;gap:6px;flex-wrap:wrap;margin:0 0 12px}
+.pg-tab{border:1px solid var(--line);background:var(--card);color:var(--muted);border-radius:999px;
+  padding:6px 13px;font:inherit;font-size:.78rem;cursor:pointer}
+.pg-tab:hover{background:var(--soft)}
+.pg-tab.is-on{background:var(--soft);color:#2944aa;font-weight:700;border-color:#d8def6}
+.pg-question{border:1px solid var(--line);border-radius:12px;padding:12px 14px;margin:0 0 12px;background:#fbfcff}
+.pg-question-head{margin:0 0 10px;font-size:1rem;color:var(--nav)}
+.pg-routes{display:grid;gap:10px;grid-template-columns:repeat(auto-fit,minmax(230px,1fr))}
+@media(max-width:700px){.pg-routes{grid-template-columns:1fr}}
+/* Each route is one card, controls included, so it is obvious which set of
+   step buttons belongs to which route. The copy's own italic label leads it,
+   so the panel needs no label of its own. */
+.pg-route{min-width:0;border:1px solid var(--line);border-radius:10px;padding:11px 13px;background:var(--card)}
+.pg-route .miniMethod{border:0;background:none;padding:0}
+.pg-route .miniLabel{display:none}
+.pg-route .method-controls{margin-top:9px}
+.pg-route-note{margin:0;font-size:.82rem;line-height:1.55;color:var(--ink)}
+.pg-route-note em{color:var(--muted);font-style:normal;font-weight:700}
+.pg-verdict{margin:12px 0 0;padding-top:10px;border-top:1px solid var(--line);
+  font-size:.85rem;line-height:1.6}
+/* On screen the tab names the panel, so its heading is for print and for
+   anything reading the page as text. */
+.pg-strategy-op{position:absolute;width:1px;height:1px;overflow:hidden;clip:rect(0 0 0 0);
+  white-space:nowrap;margin:0;padding:0;border:0}
+.pg-mental{text-align:left}
+.pg-mental>div{padding:3px 0}
 </style>
 </head>
 <body>
@@ -1237,12 +1314,14 @@ body{background:var(--bg);color:var(--ink);margin:0;padding:0}
 <a class="pg-home" href="Primary_Maths_Curriculum_Navigator_v40_1.html">&larr; Primary Maths Curriculum Navigator</a>
 <h1>How we teach maths — a guide for parents</h1>
 <p class="pg-subtitle"><em>Draft. All agreed updates incorporated.</em></p>
+<aside class="pg-band"><p><strong>Helping with homework tonight?</strong></p><p>Jump straight to <a href="#addition">addition</a>, <a href="#subtraction">subtraction</a>, <a href="#multiplication">multiplication</a> or <a href="#division">division</a> — or look up a word in <a href="#glossary">the words she'll bring home</a>. The rest of this guide will keep.</p></aside>
 </header>
 <div class="pg-shell">
 <nav class="pg-contents" id="contents" aria-label="Contents">
 <details class="pg-toc" id="tocBox" open>
 <summary class="pg-toc-summary">Jump to a method</summary>
 <ol class="pg-toc-list">
+<li class="pg-toc-gloss"><a href="#glossary"><span class="pg-toc-num">&#8258;</span>The words she'll bring home</a></li>
 <li><a href="#part-whole"><span class="pg-toc-num">1</span>Part–whole and number bonds</a></li>
 <li><a href="#number-line"><span class="pg-toc-num">2</span>The number line, and bridging through 10</a></li>
 <li><a href="#place-value"><span class="pg-toc-num">3</span>Place value and exchange</a></li>
@@ -1258,9 +1337,14 @@ body{background:var(--bg);color:var(--ink);margin:0;padding:0}
 <li><a href="#estimation"><span class="pg-toc-num">13</span>Estimation and choosing a method</a></li>
 <li><a href="#at-home"><span class="pg-toc-num">14</span>What actually helps at home</a></li>
 </ol>
+<div class="pg-toc-actions">
+<button class="pg-allbtn" type="button" id="expandAll">Expand all</button>
+<button class="pg-allbtn" type="button" id="collapseAll">Collapse all</button>
+</div>
 </details>
 </nav>
 <main class="pg-main">
+<section class="pg-collapsible pg-gloss" id="glossary"><h2 class="pg-entry-head"><button class="pg-toggle pg-toggle-plain" type="button" aria-expanded="false" aria-controls="body-glossary"><span class="pg-entry-title">The words she'll bring home</span><span class="pg-caret" aria-hidden="true"></span></button></h2><p class="pg-gloss-intro">Some of these are new names for things you already know. Some are new ideas. This tells you which is which.</p><div class="pg-entry-body" id="body-glossary" hidden><dl class="pg-terms"><div class="pg-term"><dt>Regroup</dt><dd>Ten ones swapped for one ten, or ten tens for one hundred, when a column adds up to ten or more. <em>You may have called it:</em> carrying. <a class="pg-termlink" href="#addition">Addition</a></dd></div><div class="pg-term"><dt>Exchange</dt><dd>The swap in the other direction — breaking one hundred into ten tens so there's enough to subtract from. <em>You may have called it:</em> borrowing. <a class="pg-termlink" href="#subtraction">Subtraction</a></dd></div><div class="pg-term"><dt>Ones, not units</dt><dd>The digit in the ones column. We say <em>ones</em> because it names the value and sits in a sequence — ones, tens, hundreds — in a way <em>units</em> doesn't. <a class="pg-termlink" href="#place-value">Place value and exchange</a></dd></div><div class="pg-term"><dt>Partition</dt><dd>Splitting a number into parts, usually by place value: 23 becomes 20 and 3. Almost every mental method starts here. <a class="pg-termlink" href="#mental-to-written">From mental to written</a></dd></div><div class="pg-term"><dt>Number bond</dt><dd>A pair of numbers that make a particular total — usually 10, 20 or 100. Known instantly, and known as a relationship rather than a recited fact. <a class="pg-termlink" href="#part-whole">Part–whole and number bonds</a></dd></div><div class="pg-term"><dt>Part–whole</dt><dd>A diagram showing a number and the parts it's made of. Six at the top, four and two underneath. <a class="pg-termlink" href="#part-whole">Part–whole and number bonds</a></dd></div><div class="pg-term"><dt>Bridging through ten</dt><dd>Getting to ten first, then carrying on: 8 + 5 becomes 8 + 2 + 3. Ten is the number our whole system is built on, so it's nearly always the easiest route. <a class="pg-termlink" href="#number-line">The number line</a></dd></div><div class="pg-term"><dt>Difference</dt><dd>How far apart two numbers are. One of the three meanings of subtraction, and often found by counting on rather than taking away — which is why 402 − 398 is a small hop, not a hard calculation. <a class="pg-termlink" href="#subtraction">Subtraction</a></dd></div><div class="pg-term"><dt>Compensating</dt><dd>Changing a calculation into an easier one and correcting afterwards. 543 − 199 becomes 543 − 200, then give one back. <a class="pg-termlink" href="#subtraction">Subtraction</a></dd></div><div class="pg-term"><dt>Adjusting</dt><dd>Shifting both numbers by the same amount, which leaves the difference between them unchanged. 402 − 398 becomes 404 − 400. <a class="pg-termlink" href="#subtraction">Subtraction</a></dd></div><div class="pg-term"><dt>Inverse</dt><dd>Addition and subtraction undo each other, and so do multiplication and division. Used for checking: if 47 + 36 = 83, then 83 − 36 should give 47 back. <a class="pg-termlink" href="#estimation">Estimation and choosing a method</a></dd></div><div class="pg-term"><dt>Array</dt><dd>Objects arranged in rows and columns. Four rows of three shows at a glance why 3 × 4 and 4 × 3 give the same answer. <a class="pg-termlink" href="#multiplication">Multiplication</a></dd></div><div class="pg-term"><dt>Grouping and sharing</dt><dd>The two meanings of division. Sharing is twelve sweets between three children. Grouping is how many threes there are in twelve. Formal written division depends on grouping, which is why we teach both. <a class="pg-termlink" href="#division">Division</a></dd></div><div class="pg-term"><dt>Chunking</dt><dd>Dividing by repeatedly taking away groups you already know: 96 take away sixty (that's ten sixes), then take away thirty-six (that's six more). The stage between grouping and short division. <a class="pg-termlink" href="#division">Division</a></dd></div><div class="pg-term"><dt>Bar model</dt><dd>A drawing that shows the structure of a problem — what's the whole, what are the parts, what's missing — before any calculating starts. <a class="pg-termlink" href="#bar-model">The bar model</a></dd></div><div class="pg-term"><dt>Base 10 blocks and place-value counters</dt><dd>The two kinds of equipment you'll see. Blocks show how big a number is; counters show what place it's in. <a class="pg-termlink" href="#place-value">Place value and exchange</a></dd></div><div class="pg-term"><dt>Estimate</dt><dd>A rough answer worked out <em>before</em> the real one, so she can tell whether her answer is sensible. We ask for it first rather than as a check at the end. <a class="pg-termlink" href="#estimation">Estimation and choosing a method</a></dd></div><div class="pg-term"><dt>Efficient</dt><dd>Choosing the quickest sensible method rather than always reaching for the written one. Deciding that 402 − 398 doesn't need column subtraction is being efficient. <a class="pg-termlink" href="#estimation">Estimation and choosing a method</a></dd></div><div class="pg-term"><dt>Fluency</dt><dd>Knowing facts and methods well enough to use them without thinking hard, so that attention is free for the difficult part. Not the same as being fast. <a class="pg-termlink" href="#at-home">What actually helps at home</a></dd></div></dl><p class="pg-back"><a href="#contents">Back to contents</a></p></div></section>
 <section class="pg-section" id="before-you-start">
 <h2>Before you start</h2>
 <p>This guide is about <strong>methods</strong> — the ways of working your daughter will meet, why we teach them the way we do, and how they differ from the way you were probably taught.</p>
@@ -1281,8 +1365,8 @@ body{background:var(--bg);color:var(--ink);margin:0;padding:0}
 <p>You'll see a lot of equipment in your daughter's books — cubes, blocks, counters, strips. It's worth saying plainly that this is not a beginner's version of maths that children grow out of. Apparatus is how a new idea is made visible, and it stays available all the way up the school. A Year 5 child meeting decimals for the first time may well reach for place-value counters, and that isn't a step backwards. It's the same move a mathematician makes when she draws a diagram.</p>
 </section>
 <h1 class="pg-methods-title" id="the-methods">The methods</h1>
-<section class="pg-entry" id="part-whole" data-entry="1">
-<h2 class="pg-entry-head"><button class="pg-toggle" type="button" aria-expanded="false" aria-controls="body-part-whole"><span class="pg-num">1</span><span class="pg-entry-title">Part–whole and number bonds</span><span class="pg-caret" aria-hidden="true"></span></button></h2>
+<section class="pg-collapsible pg-entry" id="part-whole" data-entry="1">
+<h2 class="pg-entry-head"><button class="pg-toggle" type="button" aria-expanded="false" aria-controls="body-part-whole"><span class="pg-num">1</span> <span class="pg-entry-title">Part–whole and number bonds</span><span class="pg-caret" aria-hidden="true"></span></button></h2>
 <p class="pg-chip">From Reception · bonds to 100 by Year 2</p>
 <h3 class="pg-q pg-q-strip">What it is</h3>
 <figure class="pg-figure" data-fig="strip-1"><div class="pg-visual"></div><figcaption><em>[Part–whole model: 6 at the top, 4 and 2 below.]</em></figcaption></figure>
@@ -1296,8 +1380,8 @@ body{background:var(--bg);color:var(--ink);margin:0;padding:0}
 <p>From Reception, and it never really stops. Bonds within 10 in Year 1, within 20 and to 100 in Year 2, and the same relationships reappearing with decimals in Years 4 and 5.</p>
 <p class="pg-back"><a href="#contents">Back to contents</a></p></div>
 </section>
-<section class="pg-entry" id="number-line" data-entry="2">
-<h2 class="pg-entry-head"><button class="pg-toggle" type="button" aria-expanded="false" aria-controls="body-number-line"><span class="pg-num">2</span><span class="pg-entry-title">The number line, and bridging through 10</span><span class="pg-caret" aria-hidden="true"></span></button></h2>
+<section class="pg-collapsible pg-entry" id="number-line" data-entry="2">
+<h2 class="pg-entry-head"><button class="pg-toggle" type="button" aria-expanded="false" aria-controls="body-number-line"><span class="pg-num">2</span> <span class="pg-entry-title">The number line, and bridging through 10</span><span class="pg-caret" aria-hidden="true"></span></button></h2>
 <p class="pg-chip">Bridging through 10 in Year 2 · then throughout</p>
 <h3 class="pg-q pg-q-strip">What it is</h3>
 <figure class="pg-figure" data-fig="strip-2"><div class="pg-visual"></div><figcaption><em>[Number line showing 8 + 5 as two hops: 8 to 10, then 10 to 13.]</em></figcaption></figure>
@@ -1311,8 +1395,8 @@ body{background:var(--bg);color:var(--ink);margin:0;padding:0}
 <p>Bridging through 10 is a Year 2 focus, but the number line as a way of thinking runs all the way through — you'll see it again for negative numbers, decimals, rounding and fractions.</p>
 <p class="pg-back"><a href="#contents">Back to contents</a></p></div>
 </section>
-<section class="pg-entry" id="place-value" data-entry="3">
-<h2 class="pg-entry-head"><button class="pg-toggle" type="button" aria-expanded="false" aria-controls="body-place-value"><span class="pg-num">3</span><span class="pg-entry-title">Place value and exchange</span><span class="pg-caret" aria-hidden="true"></span></button></h2>
+<section class="pg-collapsible pg-entry" id="place-value" data-entry="3">
+<h2 class="pg-entry-head"><button class="pg-toggle" type="button" aria-expanded="false" aria-controls="body-place-value"><span class="pg-num">3</span> <span class="pg-entry-title">Place value and exchange</span><span class="pg-caret" aria-hidden="true"></span></button></h2>
 <p class="pg-chip">From Year 1 · decimals from Year 4</p>
 <h3 class="pg-q pg-q-strip">What it is</h3>
 <figure class="pg-figure" data-fig="strip-3"><div class="pg-visual"></div><figcaption><em>[Place-value chart with counters: 2 thousands, 4 hundreds, 7 tens, 6 ones.]</em></figcaption></figure>
@@ -1327,8 +1411,8 @@ body{background:var(--bg);color:var(--ink);margin:0;padding:0}
 <p>From Year 1 with tens and ones, extending a place each year, and reappearing in Year 4 and 5 as the decimal places open up to the right.</p>
 <p class="pg-back"><a href="#contents">Back to contents</a></p></div>
 </section>
-<section class="pg-entry" id="mental-to-written" data-entry="4">
-<h2 class="pg-entry-head"><button class="pg-toggle" type="button" aria-expanded="false" aria-controls="body-mental-to-written"><span class="pg-num">4</span><span class="pg-entry-title">From mental to written</span><span class="pg-caret" aria-hidden="true"></span></button></h2>
+<section class="pg-collapsible pg-entry" id="mental-to-written" data-entry="4">
+<h2 class="pg-entry-head"><button class="pg-toggle" type="button" aria-expanded="false" aria-controls="body-mental-to-written"><span class="pg-num">4</span> <span class="pg-entry-title">From mental to written</span><span class="pg-caret" aria-hidden="true"></span></button></h2>
 <p class="pg-chip">Mental from Year 1 · efficient written by Year 5</p>
 <h3 class="pg-q pg-q-strip">What it is</h3>
 <figure class="pg-figure" data-fig="strip-4"><div class="pg-visual"></div><figcaption><em>[One calculation, 23 × 4, shown in four panels.]</em></figcaption></figure>
@@ -1343,8 +1427,8 @@ body{background:var(--bg);color:var(--ink);margin:0;padding:0}
 <p>The chain repeats for every operation at different ages. Broadly: the mental stage from Year 1 or 2, jottings from Year 2 or 3, the full written method a year later, the efficient version a year after that.</p>
 <p class="pg-back"><a href="#contents">Back to contents</a></p></div>
 </section>
-<section class="pg-entry" id="addition" data-entry="5">
-<h2 class="pg-entry-head"><button class="pg-toggle" type="button" aria-expanded="false" aria-controls="body-addition"><span class="pg-num">5</span><span class="pg-entry-title">Addition</span><span class="pg-caret" aria-hidden="true"></span></button></h2>
+<section class="pg-collapsible pg-entry" id="addition" data-entry="5">
+<h2 class="pg-entry-head"><button class="pg-toggle" type="button" aria-expanded="false" aria-controls="body-addition"><span class="pg-num">5</span> <span class="pg-entry-title">Addition</span><span class="pg-caret" aria-hidden="true"></span></button></h2>
 <p class="pg-chip">Expanded Year 3 · compact Year 4 · fluent Year 5</p>
 <h3 class="pg-q pg-q-strip">What it is</h3>
 <figure class="pg-figure" data-fig="strip-5"><div class="pg-visual"></div><figcaption><em>[2,476 + 1,589 in the expanded layout, then the same calculation compact.]</em></figcaption></figure>
@@ -1360,8 +1444,8 @@ body{background:var(--bg);color:var(--ink);margin:0;padding:0}
 <p>Expanded column addition in Year 3 with three-digit numbers. Compact column addition with four digits in Year 4. By Year 5 we'd expect it to be quick and reliable, and extending to decimals.</p>
 <p class="pg-back"><a href="#contents">Back to contents</a></p></div>
 </section>
-<section class="pg-entry" id="subtraction" data-entry="6">
-<h2 class="pg-entry-head"><button class="pg-toggle" type="button" aria-expanded="false" aria-controls="body-subtraction"><span class="pg-num">6</span><span class="pg-entry-title">Subtraction</span><span class="pg-caret" aria-hidden="true"></span></button></h2>
+<section class="pg-collapsible pg-entry" id="subtraction" data-entry="6">
+<h2 class="pg-entry-head"><button class="pg-toggle" type="button" aria-expanded="false" aria-controls="body-subtraction"><span class="pg-num">6</span> <span class="pg-entry-title">Subtraction</span><span class="pg-caret" aria-hidden="true"></span></button></h2>
 <p class="pg-chip">Exchange Years 3–4 · choosing from Year 5</p>
 <h3 class="pg-q pg-q-strip">What it is</h3>
 <figure class="pg-figure" data-fig="strip-6"><div class="pg-visual"></div><figcaption><em>[4,003 − 1,786 with place-value counters alongside the written method.]</em></figcaption></figure>
@@ -1382,8 +1466,8 @@ body{background:var(--bg);color:var(--ink);margin:0;padding:0}
 <p>Counting on to find a difference from Year 1. Bridging through 10 in Year 2. Exchange in three-digit subtraction in Year 3, four digits including zeros in Year 4. From Year 5 the emphasis shifts to choosing — and choosing a mental strategy where one will do is a mark of confidence, not a shortcut.</p>
 <p class="pg-back"><a href="#contents">Back to contents</a></p></div>
 </section>
-<section class="pg-entry" id="multiplication" data-entry="7">
-<h2 class="pg-entry-head"><button class="pg-toggle" type="button" aria-expanded="false" aria-controls="body-multiplication"><span class="pg-num">7</span><span class="pg-entry-title">Multiplication</span><span class="pg-caret" aria-hidden="true"></span></button></h2>
+<section class="pg-collapsible pg-entry" id="multiplication" data-entry="7">
+<h2 class="pg-entry-head"><button class="pg-toggle" type="button" aria-expanded="false" aria-controls="body-multiplication"><span class="pg-num">7</span> <span class="pg-entry-title">Multiplication</span><span class="pg-caret" aria-hidden="true"></span></button></h2>
 <p class="pg-chip">Arrays from Year 1 · short multiplication Year 4</p>
 <h3 class="pg-q pg-q-strip">What it is</h3>
 <figure class="pg-figure" data-fig="strip-7"><div class="pg-visual"></div><figcaption><em>[Area model grid for 23 × 4 on the left; the expanded written method on the right; 80 and 12 highlighted in both.]</em></figcaption></figure>
@@ -1398,8 +1482,8 @@ body{background:var(--bg);color:var(--ink);margin:0;padding:0}
 <p>Arrays and equal groups from Year 1. Tables facts and the idea that 3 × 4 and 4 × 3 give the same answer in Year 2. Partitioning to multiply two-digit numbers in Year 3. Short multiplication in Year 4.</p>
 <p class="pg-back"><a href="#contents">Back to contents</a></p></div>
 </section>
-<section class="pg-entry" id="long-multiplication" data-entry="8">
-<h2 class="pg-entry-head"><button class="pg-toggle" type="button" aria-expanded="false" aria-controls="body-long-multiplication"><span class="pg-num">8</span><span class="pg-entry-title">Long multiplication</span><span class="pg-caret" aria-hidden="true"></span></button></h2>
+<section class="pg-collapsible pg-entry" id="long-multiplication" data-entry="8">
+<h2 class="pg-entry-head"><button class="pg-toggle" type="button" aria-expanded="false" aria-controls="body-long-multiplication"><span class="pg-num">8</span> <span class="pg-entry-title">Long multiplication</span><span class="pg-caret" aria-hidden="true"></span></button></h2>
 <p class="pg-chip">Years 5 and 6</p>
 <h3 class="pg-q pg-q-strip">What it is</h3>
 <figure class="pg-figure" data-fig="strip-8"><div class="pg-visual"></div><figcaption><em>[3,247 × 26 in the column layout.]</em></figcaption></figure>
@@ -1412,8 +1496,8 @@ body{background:var(--bg);color:var(--ink);margin:0;padding:0}
 <p>Year 5 and 6, once short multiplication is secure.</p>
 <p class="pg-back"><a href="#contents">Back to contents</a></p></div>
 </section>
-<section class="pg-entry" id="division" data-entry="9">
-<h2 class="pg-entry-head"><button class="pg-toggle" type="button" aria-expanded="false" aria-controls="body-division"><span class="pg-num">9</span><span class="pg-entry-title">Division</span><span class="pg-caret" aria-hidden="true"></span></button></h2>
+<section class="pg-collapsible pg-entry" id="division" data-entry="9">
+<h2 class="pg-entry-head"><button class="pg-toggle" type="button" aria-expanded="false" aria-controls="body-division"><span class="pg-num">9</span> <span class="pg-entry-title">Division</span><span class="pg-caret" aria-hidden="true"></span></button></h2>
 <p class="pg-chip">Sharing from Reception · short division Year 4</p>
 <h3 class="pg-q pg-q-strip">What it is</h3>
 <figure class="pg-figure" data-fig="strip-9"><div class="pg-visual"></div><figcaption><em>[Twelve shared between three; twelve grouped into threes; then 96 ÷ 6 through the chain.]</em></figcaption></figure>
@@ -1429,8 +1513,8 @@ body{background:var(--bg);color:var(--ink);margin:0;padding:0}
 <p>Sharing and grouping from Reception. Partitioning to divide in Year 3. Short division with exchange in Year 4. Remainders in Year 5 — and deciding what a remainder <em>means</em> in a real problem is genuinely harder than calculating it.</p>
 <p class="pg-back"><a href="#contents">Back to contents</a></p></div>
 </section>
-<section class="pg-entry" id="long-division" data-entry="10">
-<h2 class="pg-entry-head"><button class="pg-toggle" type="button" aria-expanded="false" aria-controls="body-long-division"><span class="pg-num">10</span><span class="pg-entry-title">Long division</span><span class="pg-caret" aria-hidden="true"></span></button></h2>
+<section class="pg-collapsible pg-entry" id="long-division" data-entry="10">
+<h2 class="pg-entry-head"><button class="pg-toggle" type="button" aria-expanded="false" aria-controls="body-long-division"><span class="pg-num">10</span> <span class="pg-entry-title">Long division</span><span class="pg-caret" aria-hidden="true"></span></button></h2>
 <p class="pg-chip">Year 6</p>
 <h3 class="pg-q pg-q-strip">What it is</h3>
 <figure class="pg-figure" data-fig="strip-10"><div class="pg-visual"></div><figcaption><em>[4,368 ÷ 24.]</em></figcaption></figure>
@@ -1443,8 +1527,8 @@ body{background:var(--bg);color:var(--ink);margin:0;padding:0}
 <p>Year 6.</p>
 <p class="pg-back"><a href="#contents">Back to contents</a></p></div>
 </section>
-<section class="pg-entry" id="fractions" data-entry="11">
-<h2 class="pg-entry-head"><button class="pg-toggle" type="button" aria-expanded="false" aria-controls="body-fractions"><span class="pg-num">11</span><span class="pg-entry-title">Fractions as numbers</span><span class="pg-caret" aria-hidden="true"></span></button></h2>
+<section class="pg-collapsible pg-entry" id="fractions" data-entry="11">
+<h2 class="pg-entry-head"><button class="pg-toggle" type="button" aria-expanded="false" aria-controls="body-fractions"><span class="pg-num">11</span> <span class="pg-entry-title">Fractions as numbers</span><span class="pg-caret" aria-hidden="true"></span></button></h2>
 <p class="pg-chip">From Year 1 · on the number line from Year 3</p>
 <h3 class="pg-q pg-q-strip">What it is</h3>
 <figure class="pg-figure" data-fig="strip-11"><div class="pg-visual"></div><figcaption><em>[A fraction wall alongside a number line with ¾ marked between 0 and 1.]</em></figcaption></figure>
@@ -1458,26 +1542,28 @@ body{background:var(--bg);color:var(--ink);margin:0;padding:0}
 <p>Halves and quarters of shapes and quantities from Year 1. Fractions on a number line from Year 3. Equivalence, comparing and ordering through Years 4 and 5. Calculating with fractions in Years 5 and 6.</p>
 <p class="pg-back"><a href="#contents">Back to contents</a></p></div>
 </section>
-<section class="pg-entry" id="bar-model" data-entry="12">
-<h2 class="pg-entry-head"><button class="pg-toggle" type="button" aria-expanded="false" aria-controls="body-bar-model"><span class="pg-num">12</span><span class="pg-entry-title">The bar model</span><span class="pg-caret" aria-hidden="true"></span></button></h2>
+<section class="pg-collapsible pg-entry" id="bar-model" data-entry="12">
+<h2 class="pg-entry-head"><button class="pg-toggle" type="button" aria-expanded="false" aria-controls="body-bar-model"><span class="pg-num">12</span> <span class="pg-entry-title">The bar model</span><span class="pg-caret" aria-hidden="true"></span></button></h2>
 <p class="pg-chip">From Year 1 · ratio and percentage by Year 6</p>
 <h3 class="pg-q pg-q-strip">What it is</h3>
 <figure class="pg-figure" data-fig="strip-12"><div class="pg-visual"></div><figcaption><em>[A bar model for a two-step word problem.]</em></figcaption></figure>
 <div class="pg-entry-body" id="body-bar-model" hidden><h3 class="pg-q">Why we use it</h3>
 <p>The bar model is not a way of calculating. It's a way of seeing what a problem is asking before any calculating starts.</p>
 <p>Most word-problem mistakes aren't arithmetic mistakes. A child adds when she should have subtracted, or divides the wrong way round. The bar model shows the structure — what's the whole, what are the parts, what's known, what's missing — and once that's visible the operation is usually obvious.</p>
-<p>It is probably the single most useful thing in this guide to look at yourself. If you have five minutes, open the Bar Model Builder and put a problem into it. It explains itself faster than any paragraph will.</p>
+<p>It is probably the single most useful thing in this guide to try yourself. If you have five minutes, <a href="Interactive_Maths_Tools_v40_1/Bar_Model_Builder_v3.html">open the Bar Model Builder</a> and put a problem into it. It explains itself faster than any paragraph will.</p>
 <h3 class="pg-q">How you may have been taught it</h3>
 <p>You almost certainly weren't. This is genuinely new to most parents. It came into English schools from Singapore and it has done more to improve children's problem-solving than any other single change in recent years.</p>
 <h3 class="pg-q">When you'll see it</h3>
 <p>From Year 1, in a simple form, and increasingly through the school. By Year 6 it's handling ratio, percentage and multi-step problems.</p>
 <p class="pg-back"><a href="#contents">Back to contents</a></p></div>
 </section>
-<section class="pg-entry" id="estimation" data-entry="13">
-<h2 class="pg-entry-head"><button class="pg-toggle" type="button" aria-expanded="false" aria-controls="body-estimation"><span class="pg-num">13</span><span class="pg-entry-title">Estimation and choosing a method</span><span class="pg-caret" aria-hidden="true"></span></button></h2>
+<section class="pg-collapsible pg-entry" id="estimation" data-entry="13">
+<h2 class="pg-entry-head"><button class="pg-toggle" type="button" aria-expanded="false" aria-controls="body-estimation"><span class="pg-num">13</span> <span class="pg-entry-title">Estimation and choosing a method</span><span class="pg-caret" aria-hidden="true"></span></button></h2>
 <p class="pg-chip">Throughout · real weight from Year 4</p>
 <div class="pg-entry-body" id="body-estimation" hidden><h3 class="pg-q">What it is</h3>
 <p>Not a method — a habit. Before calculating: roughly what should this be? After calculating: is that sensible?</p>
+<p>There's no wrong method on this page — every route shown gets the right answer. The question is which one is least work for these particular numbers, and that changes from question to question.</p>
+<div class="pg-strategy"><div class="pg-tabs" role="tablist"><button class="pg-tab is-on" type="button" role="tab" aria-selected="true" data-op="Addition">Addition</button><button class="pg-tab" type="button" role="tab" aria-selected="false" data-op="Subtraction">Subtraction</button><button class="pg-tab" type="button" role="tab" aria-selected="false" data-op="Multiplication">Multiplication</button><button class="pg-tab" type="button" role="tab" aria-selected="false" data-op="Division">Division</button></div><div class="pg-strategy-panel" data-op="Addition"><h4 class="pg-strategy-op">Addition</h4><div class="pg-question" data-q="199 + 46" data-answer="245"><h4 class="pg-question-head">199 + 46</h4><div class="pg-routes"><div class="pg-route" data-label="Compensate"><p class="pg-route-note"><em>Compensate:</em> 200 + 46 = 246, then give one back → <strong>245</strong></p><div class="pg-route-render"></div></div><div class="pg-route" data-label="Column method"><p class="pg-route-note"><em>Column method:</em> works, four steps, one regroup</p><div class="pg-route-render"></div></div></div><p class="pg-verdict"><strong>Quickest here:</strong> compensating. The 199 is one away from a friendly number, and spotting that is the whole trick.</p></div><div class="pg-question" data-q="3,500 + 2,500" data-answer="6,000"><h4 class="pg-question-head">3,500 + 2,500</h4><div class="pg-routes"><div class="pg-route" data-label="Known bonds"><p class="pg-route-note"><em>Known bonds:</em> 35 + 25 = 60, so 3,500 + 2,500 = <strong>6,000</strong></p><div class="pg-route-render"></div></div><div class="pg-route" data-label="Column method"><p class="pg-route-note"><em>Column method:</em> works, three regroups</p><div class="pg-route-render"></div></div></div><p class="pg-verdict"><strong>Quickest here:</strong> the bond. Recognising 35 and 25 inside the bigger numbers is what makes it instant.</p></div><div class="pg-question" data-q="2,476 + 1,589" data-answer="4,065"><h4 class="pg-question-head">2,476 + 1,589</h4><div class="pg-routes"><div class="pg-route" data-label="Column method"><p class="pg-route-note"><em>Column method:</em> <strong>4,065</strong></p><div class="pg-route-render"></div></div><div class="pg-route" data-label="Mental route"><p class="pg-route-note"><em>Mental route:</em> there isn't a neat one — the numbers aren't near anything friendly</p><div class="pg-route-render"></div></div></div><p class="pg-verdict"><strong>Quickest here:</strong> the written method. Not every calculation has a shortcut, and this is what written methods are for.</p></div><div class="pg-question" data-q="18.5 + 6.75" data-answer="25.25"><h4 class="pg-question-head">18.5 + 6.75</h4><div class="pg-routes"><div class="pg-route" data-label="Column method, aligning the points"><p class="pg-route-note"><em>Column method, aligning the points:</em> <strong>25.25</strong></p><div class="pg-route-render"></div></div><div class="pg-route" data-label="Partition"><p class="pg-route-note"><em>Partition:</em> 18 + 6 = 24, 0.5 + 0.75 = 1.25, total 25.25</p><div class="pg-route-render"></div></div></div><p class="pg-verdict"><strong>Quickest here:</strong> either. Worth showing two legitimate routes to the same answer.</p></div></div><div class="pg-strategy-panel" data-op="Subtraction" hidden><h4 class="pg-strategy-op">Subtraction</h4><div class="pg-question" data-q="402 − 398" data-answer="4"><h4 class="pg-question-head">402 − 398</h4><div class="pg-routes"><div class="pg-route" data-label="Count on from 398"><p class="pg-route-note"><em>Count on from 398:</em> two to 400, two more to 402 → <strong>4</strong></p><div class="pg-route-render"></div></div><div class="pg-route" data-label="Adjust both"><p class="pg-route-note"><em>Adjust both:</em> 404 − 400 → <strong>4</strong></p><div class="pg-route-render"></div></div><div class="pg-route" data-label="Column method"><p class="pg-route-note"><em>Column method:</em> two exchanges across a zero, and easy to get wrong</p><div class="pg-route-render"></div></div></div><p class="pg-verdict"><strong>Quickest here:</strong> counting on. The numbers are close, so the difference is small — no need to take anything away.</p></div><div class="pg-question" data-q="543 − 199" data-answer="344"><h4 class="pg-question-head">543 − 199</h4><div class="pg-routes"><div class="pg-route" data-label="Compensate"><p class="pg-route-note"><em>Compensate:</em> 543 − 200 = 343, give one back → <strong>344</strong></p><div class="pg-route-render"></div></div><div class="pg-route" data-label="Column method"><p class="pg-route-note"><em>Column method:</em> works, two exchanges</p><div class="pg-route-render"></div></div></div><p class="pg-verdict"><strong>Quickest here:</strong> compensating.</p></div><div class="pg-question" data-q="4,003 − 1,786" data-answer="2,217"><h4 class="pg-question-head">4,003 − 1,786</h4><div class="pg-routes"><div class="pg-route" data-label="Column method"><p class="pg-route-note"><em>Column method:</em> <strong>2,217</strong></p><div class="pg-route-render"></div></div><div class="pg-route" data-label="Mental route"><p class="pg-route-note"><em>Mental route:</em> not realistically</p><div class="pg-route-render"></div></div></div><p class="pg-verdict"><strong>Quickest here:</strong> the written method — and this is exactly the calculation the exchange work in Year 4 is preparing for.</p></div><div class="pg-question" data-q="8,000 − 2,750" data-answer="5,250"><h4 class="pg-question-head">8,000 − 2,750</h4><div class="pg-routes"><div class="pg-route" data-label="Count on"><p class="pg-route-note"><em>Count on:</em> 2,750 to 3,000 is 250; 3,000 to 8,000 is 5,000 → <strong>5,250</strong></p><div class="pg-route-render"></div></div><div class="pg-route" data-label="Column method"><p class="pg-route-note"><em>Column method:</em> works, three exchanges across zeros</p><div class="pg-route-render"></div></div></div><p class="pg-verdict"><strong>Quickest here:</strong> counting on, if she's confident. The written method is a perfectly reasonable choice too.</p></div></div><div class="pg-strategy-panel" data-op="Multiplication" hidden><h4 class="pg-strategy-op">Multiplication</h4><div class="pg-question" data-q="23 × 4" data-answer="92"><h4 class="pg-question-head">23 × 4</h4><div class="pg-routes"><div class="pg-route" data-label="Partition"><p class="pg-route-note"><em>Partition:</em> 20 × 4 = 80, 3 × 4 = 12 → <strong>92</strong></p><div class="pg-route-render"></div></div><div class="pg-route" data-label="Short multiplication"><p class="pg-route-note"><em>Short multiplication:</em> same answer, written down</p><div class="pg-route-render"></div></div></div><p class="pg-verdict"><strong>Quickest here:</strong> in her head. The written method is there for when the numbers get bigger.</p></div><div class="pg-question" data-q="6 × 99" data-answer="594"><h4 class="pg-question-head">6 × 99</h4><div class="pg-routes"><div class="pg-route" data-label="Compensate"><p class="pg-route-note"><em>Compensate:</em> 6 × 100 = 600, take off 6 → <strong>594</strong></p><div class="pg-route-render"></div></div><div class="pg-route" data-label="Long multiplication"><p class="pg-route-note"><em>Long multiplication:</em> works, more steps</p><div class="pg-route-render"></div></div></div><p class="pg-verdict"><strong>Quickest here:</strong> compensating. Same move as 199 + 46, one operation along.</p></div><div class="pg-question" data-q="35 × 20" data-answer="700"><h4 class="pg-question-head">35 × 20</h4><div class="pg-routes"><div class="pg-route" data-label="Factorise"><p class="pg-route-note"><em>Factorise:</em> 35 × 2 = 70, then × 10 → <strong>700</strong></p><div class="pg-route-render"></div></div><div class="pg-route" data-label="Long multiplication"><p class="pg-route-note"><em>Long multiplication:</em> works</p><div class="pg-route-render"></div></div></div><p class="pg-verdict"><strong>Quickest here:</strong> the double-then-times-ten route.</p></div><div class="pg-question" data-q="3,247 × 26" data-answer="84,422"><h4 class="pg-question-head">3,247 × 26</h4><div class="pg-routes"><div class="pg-route" data-label="Long multiplication"><p class="pg-route-note"><em>Long multiplication:</em> <strong>84,422</strong></p><div class="pg-route-render"></div></div><div class="pg-route" data-label="Mental route"><p class="pg-route-note"><em>Mental route:</em> no</p><div class="pg-route-render"></div></div></div><p class="pg-verdict"><strong>Quickest here:</strong> the written method.</p></div></div><div class="pg-strategy-panel" data-op="Division" hidden><h4 class="pg-strategy-op">Division</h4><div class="pg-question" data-q="96 ÷ 6" data-answer="16"><h4 class="pg-question-head">96 ÷ 6</h4><div class="pg-routes"><div class="pg-route" data-label="Partition"><p class="pg-route-note"><em>Partition:</em> 60 ÷ 6 = 10, 36 ÷ 6 = 6 → <strong>16</strong></p><div class="pg-route-render"></div></div><div class="pg-route" data-label="Chunking"><p class="pg-route-note"><em>Chunking:</em> take away ten sixes, then six sixes → 16</p><div class="pg-route-render"></div></div><div class="pg-route" data-label="Short division"><p class="pg-route-note"><em>Short division:</em> same answer</p><div class="pg-route-render"></div></div></div><p class="pg-verdict"><strong>Quickest here:</strong> partitioning — but all three are the same reasoning at different levels of detail, which is the point of this one.</p></div><div class="pg-question" data-q="150 ÷ 25" data-answer="6"><h4 class="pg-question-head">150 ÷ 25</h4><div class="pg-routes"><div class="pg-route" data-label="Count in 25s"><p class="pg-route-note"><em>Count in 25s:</em> four 25s make 100, two more make 150 → <strong>6</strong></p><div class="pg-route-render"></div></div><div class="pg-route" data-label="Short division"><p class="pg-route-note"><em>Short division:</em> works</p><div class="pg-route-render"></div></div></div><p class="pg-verdict"><strong>Quickest here:</strong> counting in 25s. Knowing the 25s pays off here and with money and time.</p></div><div class="pg-question" data-q="936 ÷ 6" data-answer="156"><h4 class="pg-question-head">936 ÷ 6</h4><div class="pg-routes"><div class="pg-route" data-label="Partition"><p class="pg-route-note"><em>Partition:</em> 900 ÷ 6 = 150, 36 ÷ 6 = 6 → <strong>156</strong></p><div class="pg-route-render"></div></div><div class="pg-route" data-label="Short division"><p class="pg-route-note"><em>Short division:</em> <strong>156</strong></p><div class="pg-route-render"></div></div></div><p class="pg-verdict"><strong>Quickest here:</strong> genuinely either. Worth including precisely because the answer isn't obvious.</p></div><div class="pg-question" data-q="4,368 ÷ 24" data-answer="182"><h4 class="pg-question-head">4,368 ÷ 24</h4><div class="pg-routes"><div class="pg-route" data-label="Long division"><p class="pg-route-note"><em>Long division:</em> <strong>182</strong></p><div class="pg-route-render"></div></div><div class="pg-route" data-label="Mental route"><p class="pg-route-note"><em>Mental route:</em> no</p><div class="pg-route-render"></div></div></div><p class="pg-verdict"><strong>Quickest here:</strong> the written method.</p></div></div></div>
 <h3 class="pg-q">Why we use it</h3>
 <p>By Years 5 and 6, choosing the method <em>is</em> the skill. The child who reaches for column subtraction every time is not the strongest mathematician in the room; the one who looks at the numbers first and decides is.</p>
 <p>Estimating is what makes that possible. A child who has said "about 4,000" before she starts will notice when her answer comes out as 406. A child who hasn't will write down whatever the procedure gave her.</p>
@@ -1488,12 +1574,12 @@ body{background:var(--bg);color:var(--ink);margin:0;padding:0}
 <p>Throughout, with real weight from Year 4 onwards.</p>
 <p class="pg-back"><a href="#contents">Back to contents</a></p></div>
 </section>
-<section class="pg-entry" id="at-home" data-entry="14">
-<h2 class="pg-entry-head"><button class="pg-toggle" type="button" aria-expanded="false" aria-controls="body-at-home"><span class="pg-num">14</span><span class="pg-entry-title">What actually helps at home</span><span class="pg-caret" aria-hidden="true"></span></button></h2>
+<section class="pg-collapsible pg-entry" id="at-home" data-entry="14">
+<h2 class="pg-entry-head"><button class="pg-toggle" type="button" aria-expanded="false" aria-controls="body-at-home"><span class="pg-num">14</span> <span class="pg-entry-title">What actually helps at home</span><span class="pg-caret" aria-hidden="true"></span></button></h2>
 <div class="pg-entry-body" id="body-at-home" hidden><p>The most useful thing you can do is talk. Not drill — talk.</p>
 <p>Ask her how she worked it out, and mean it. Ask whether there was another way. When she gets one wrong, ask what she was thinking rather than showing her the right answer; the thinking is where the fix is. Estimate out loud in the car. Notice when maths is doing something useful — halving a recipe, working out change, reading a timetable.</p>
 <p>What helps less than parents expect is pushing on to the next method before the current one is secure. A child who can perform column multiplication but can't say why the second row starts with a zero has learned something fragile. She'll be faster this term and stuck next year. Speed and fluency look similar from the outside and are not the same thing.</p>
-<p>And if she's finding something hard, the most useful question to bring to us is "what is she thinking that isn't right yet" rather than "what should she practise". We can usually tell you, and the answer is nearly always more specific — and more fixable — than more practice.</p>
+<p>And if she's finding something hard, the most useful question to bring to us is "what is she thinking that isn't right yet" rather than "what should she practise". We can usually tell you, and the answer is nearly always more specific — and more fixable — than more practice. If there's something this guide hasn't answered, <a href="mailto:REPLACE-WITH-ADDRESS">do ask</a> — the questions parents send us are how this guide gets better.</p>
 <p class="pg-back"><a href="#contents">Back to contents</a></p></div>
 </section>
 </main>
@@ -1533,31 +1619,57 @@ function base10(h,t,o){
  return s;
 }
 
+/* Column layouts may carry a decimal point as its own column: a cell whose
+   value is "." is drawn narrow and unstaged, and the places either side of it
+   are named from the point rather than from the right-hand edge. Callers that
+   pass digits only are unaffected. */
+const COL_UNITS=['ones','tens','hundreds','thousands','ten-thousands','hundred-thousands'];
+const COL_DECIMALS=['tenths','hundredths','thousandths','ten-thousandths'];
+function columnPlaces(cells){
+ const n=cells.length, pt=cells.indexOf('.');
+ const step=new Array(n); let k=0;
+ for(let i=n-1;i>=0;i--) step[i]=(cells[i]==='.')?null:++k;
+ const unit=new Array(n);
+ for(let i=0;i<n;i++){
+   if(cells[i]==='.'){unit[i]='decimal point';continue}
+   if(pt<0) unit[i]=COL_UNITS[n-1-i]||`place ${n-i}`;
+   else if(i<pt) unit[i]=COL_UNITS[pt-1-i]||`place ${pt-i}`;
+   else unit[i]=COL_DECIMALS[i-pt-1]||`decimal place ${i-pt}`;
+ }
+ return {step,unit,point:pt};
+}
+function colCell(d,cls,st,un,inner){
+ if(d==='.') return `<td class="pt">.</td>`;
+ return `<td class="${cls}" data-mstep="${st}" data-unit="${un}">${inner!==undefined?inner:d}</td>`;
+}
+
 function columnAdd(top,bottom,result,carries=[]){
  const n=top.length;
- const unitNames=['ones','tens','hundreds','thousands','ten-thousands','hundred-thousands'];
- const stepFor=i=>n-i;
- const unitFor=i=>unitNames[n-1-i]||`place ${n-i}`;
- let topCells=top.map((d,i)=>`<td class="base method-input" data-mstep="${stepFor(i)}" data-unit="${unitFor(i)}">${d}</td>`).join('');
- let bottomCells=bottom.map((d,i)=>`<td class="base method-input" data-mstep="${stepFor(i)}" data-unit="${unitFor(i)}">${d}</td>`).join('');
- let resultCells=result.map((d,i)=>`<td class="base method-output" data-mstep="${stepFor(i)}" data-unit="${unitFor(i)}"><span class="resultdigit">${d}</span></td>`).join('');
- let carryCells=top.map((_,i)=>`<td class="method-exchange" data-mstep="${stepFor(i)}" data-unit="${unitFor(i)}">${carries[i]?`<span class="carrydigit">${carries[i]}</span>`:''}</td>`).join('');
+ const {step,unit}=columnPlaces(top);
+ const stepFor=i=>step[i];
+ const unitFor=i=>unit[i];
+ let topCells=top.map((d,i)=>colCell(d,'base method-input',stepFor(i),unitFor(i))).join('');
+ let bottomCells=bottom.map((d,i)=>colCell(top[i]==='.'?'.':d,'base method-input',stepFor(i),unitFor(i))).join('');
+ let resultCells=result.map((d,i)=>colCell(top[i]==='.'?'.':d,'base method-output',stepFor(i),unitFor(i),`<span class="resultdigit">${d}</span>`)).join('');
+ // the point is not repeated in the carry row, only in the calculation itself
+ let carryCells=top.map((d,i)=>d==='.'?'<td class="pt"></td>'
+   :colCell(d,'method-exchange',stepFor(i),unitFor(i),carries[i]?`<span class="carrydigit">${carries[i]}</span>`:'')).join('');
  return `<div class="colwrap written-method"><table class="coltable"><tr><td class="op"></td>${topCells}</tr><tr><td class="op">+</td>${bottomCells}</tr><tr class="line"><td></td><td colspan="${top.length}"></td></tr><tr><td class="op"></td>${resultCells}</tr><tr class="line"><td></td><td colspan="${top.length}"></td></tr><tr class="carry"><td class="op"></td>${carryCells}</tr></table></div>`;
 }
 
 function columnSub(orig,regrouped,subtrahend,result){
  const n=orig.length;
- const unitNames=['ones','tens','hundreds','thousands','ten-thousands','hundred-thousands'];
- const stepFor=i=>n-i;
- const unitFor=i=>unitNames[n-1-i]||`place ${n-i}`;
+ const {step,unit}=columnPlaces(orig);
+ const stepFor=i=>step[i];
+ const unitFor=i=>unit[i];
  let regroupCells=orig.map((d,i)=>{
-   if(regrouped[i]!==d){
+   if(d!=='.'&&regrouped[i]!==d){
       return `<td class="method-input method-regroup" data-mstep="${stepFor(i)}" data-unit="${unitFor(i)}"><span class="cross">${d}</span><span class="newdigit regroupdigit">${regrouped[i]}</span></td>`;
    }
-   return `<td class="base method-input" data-mstep="${stepFor(i)}" data-unit="${unitFor(i)}">${d}</td>`;
+   return colCell(d,'base method-input',stepFor(i),unitFor(i));
  }).join('');
- let subCells=subtrahend.map((d,i)=>`<td class="base method-input" data-mstep="${stepFor(i)}" data-unit="${unitFor(i)}">${d}</td>`).join('');
- let resultCells=result.map((d,i)=>`<td class="base method-output" data-mstep="${stepFor(i)}" data-unit="${unitFor(i)}"><span class="resultdigit">${d}</span></td>`).join('');
+ let subCells=subtrahend.map((d,i)=>colCell(orig[i]==='.'?'.':d,'base method-input',stepFor(i),unitFor(i))).join('');
+ let resultCells=result.map((d,i)=>colCell(orig[i]==='.'?'.':d,'base method-output',stepFor(i),unitFor(i),`<span class="resultdigit">${d}</span>`)).join('');
  return `<div class="colwrap written-method"><table class="coltable"><tr><td class="op"></td>${regroupCells}</tr><tr><td class="op">−</td>${subCells}</tr><tr class="line"><td></td><td colspan="${orig.length}"></td></tr><tr><td class="op"></td>${resultCells}</tr></table></div>`;
 }
 function pvc(cols){
@@ -1887,89 +1999,248 @@ function eq(html){return `<div class="small-eq">${html}</div>`;}
 function sub(...bits){return `<div class="pg-substack">${bits.join('')}</div>`;}
 function pair(...bits){return `<div class="pg-inlinepair">${bits.join('')}</div>`;}
 
+/* A mental route steps like a written one: each line is a step, and its unit
+   is the phrase the status line reads out. */
+function mental(steps){
+  return `<div class="small-eq pg-mental">${steps.map((st,i)=>
+    `<div class="method-work" data-mstep="${i+1}" data-unit="${st[1]}">${st[0]}</div>`).join('')}</div>`;
+}
+const ans=v=>`<b class="pg-answer">${v}</b>`;
+
 /* 23 x 4 recorded in full. The step indices match gridMethod's columns, so 80
    and 12 reveal together with their cells in the area model. */
 const expandedMult23x4=eq('23 &times; 4<br>= (<span data-mstep="2" data-unit="20 column">20 &times; 4</span>) + (<span data-mstep="1" data-unit="3 column">3 &times; 4</span>)<br>= <span data-mstep="2" data-unit="20 column">80</span> + <span data-mstep="1" data-unit="3 column">12</span><br><b data-mstep="3" data-unit="total">= 92</b>');
+const expandedMult47x6=eq('47 &times; 6<br>= (<span data-mstep="2" data-unit="40 column">40 &times; 6</span>) + (<span data-mstep="1" data-unit="7 column">7 &times; 6</span>)<br>= <span data-mstep="2" data-unit="40 column">240</span> + <span data-mstep="1" data-unit="7 column">42</span><br><b data-mstep="3" data-unit="total">= 282</b>');
+const expandedMult128x3=eq('128 &times; 3<br>= (<span data-mstep="3" data-unit="100 column">100 &times; 3</span>) + (<span data-mstep="2" data-unit="20 column">20 &times; 3</span>) + (<span data-mstep="1" data-unit="8 column">8 &times; 3</span>)<br>= <span data-mstep="3" data-unit="100 column">300</span> + <span data-mstep="2" data-unit="20 column">60</span> + <span data-mstep="1" data-unit="8 column">24</span><br><b data-mstep="4" data-unit="total">= 384</b>');
 
-const FIGS={
- // 1 Part-whole and number bonds: 6 = 4 + 2
- 'strip-1':()=>strip(tenframe(6), partWhole('6','4','2'), eq('6 = 4 + 2<br>6 = 5 + 1<br>6 = 3 + 3')),
+const longMult3247x26=()=>longMult(['3','2','4','7'],['2','6'],
+  [{digits:['1','9','4','8','2'],why:'3,247 &times; 6'},
+   {digits:['6','4','9','4','0'],why:'3,247 &times; 20'}],['8','4','4','2','2']);
+const longDiv4368x24=()=>longDiv('24',['4','3','6','8'],['','1','8','2'],[
+  {op:'&minus;',cells:['2','4','',''],rule:true,why:'24 &times; 1'},
+  {cells:['1','9','6','']},
+  {op:'&minus;',cells:['1','9','2',''],rule:true,why:'24 &times; 8'},
+  {cells:['','','4','8']},
+  {op:'&minus;',cells:['','','4','8'],rule:true,why:'24 &times; 2'},
+  {cells:['','','','0']}]);
 
- // 2 The number line, and bridging through 10: 8 + 5
- 'strip-2':()=>strip(sub(tenframe(8),tenframe(5)),
-                     numberLine([8,10,13],0,15),
-                     eq('8 + 5<br>= 8 + <b>2</b> + 3<br>= 10 + 3<br><b>= 13</b>')),
+/* Worked examples. Each entry's first example is the one its caption
+   describes; the rest use the same renderers with different numbers, chosen so
+   each exercises something the one before it does not - an exchange across a
+   zero, a remainder, a decimal point. */
+const EXAMPLES={
+ 1:[{label:'6 = 4 + 2', p:[tenframe(6), partWhole('6','4','2'),
+      eq('6 = 4 + 2<br>6 = 5 + 1<br>6 = 3 + 3')]}],
 
- // 3 Place value and exchange. Blocks beside counters is the copy's own
- // argument: 476 can be built from either, 2,476 only from counters.
- 'strip-3':()=>strip(pair(base10(4,7,6),pvc({'H':4,'T':7,'O':6})),
-                     pvc({'Th':2,'H':4,'T':7,'O':6}),
-                     eq('<b>2,476</b><br>2 thousands, 4 hundreds,<br>7 tens, 6 ones')),
+ 2:[{label:'8 + 5', p:[sub(tenframe(8),tenframe(5)), numberLine([8,10,13],0,15),
+      eq('8 + 5<br>= 8 + <b>2</b> + 3<br>= 10 + 3<br><b>= 13</b>')]}],
 
- // 4 From mental to written: 23 x 4 through the chain
- 'strip-4':()=>strip(sub(base10(0,2,3),eq('&times; 4')),
-                     area([20,3],4),
-                     sub(eq('20 &times; 4 = 80<br>3 &times; 4 = 12<br>80 + 12 = 92'),
-                         shortMult(['2','3'],['4'],['9','2'],['1','']))),
+ 3:[{label:'2,476', p:[pair(base10(4,7,6),pvc({'H':4,'T':7,'O':6})),
+      pvc({'Th':2,'H':4,'T':7,'O':6}),
+      eq('<b>2,476</b><br>2 thousands, 4 hundreds,<br>7 tens, 6 ones')]}],
 
- // 5 Addition: 2,476 + 1,589
- 'strip-5':()=>strip(sub(pvc({'Th':2,'H':4,'T':7,'O':6}),pvc({'Th':1,'H':5,'T':8,'O':9})),
-                     bar([{t:'2,476',w:5},{t:'1,589',w:3}],'total unknown'),
-                     sub(expandedAddTable(['Th','H','T','O'],['2','4','7','6'],['1','5','8','9'],['3','9','15','15'],['4','0','6','5']),
-                         columnAdd(['2','4','7','6'],['1','5','8','9'],['4','0','6','5'],['1','1','1','']))),
+ 4:[{label:'23 &times; 4', p:[sub(base10(0,2,3),eq('&times; 4')), area([20,3],4),
+      sub(eq('20 &times; 4 = 80<br>3 &times; 4 = 12<br>80 + 12 = 92'),
+          shortMult(['2','3'],['4'],['9','2'],['1','']))]}],
 
- // 6 Subtraction: 4,003 - 1,786
- 'strip-6':()=>strip(pvc({'Th':4,'H':0,'T':0,'O':3}),
-                     bar([{t:'1,786',w:4},{t:'?',w:5}],'4,003'),
-                     sub(expandedSubTable(['Th','H','T','O'],['4','0','0','3'],['3','9','9','13'],['1','7','8','6'],['2','2','1','7']),
-                         columnSub(['4','0','0','3'],['3','9','9','13'],['1','7','8','6'],['2','2','1','7']))),
+ 5:[{label:'2,476 + 1,589', p:[
+      sub(pvc({'Th':2,'H':4,'T':7,'O':6}),pvc({'Th':1,'H':5,'T':8,'O':9})),
+      bar([{t:'2,476',w:5},{t:'1,589',w:3}],'total unknown'),
+      sub(expandedAddTable(['Th','H','T','O'],['2','4','7','6'],['1','5','8','9'],['3','9','15','15'],['4','0','6','5']),
+          columnAdd(['2','4','7','6'],['1','5','8','9'],['4','0','6','5'],['1','1','1','']))]},
+    {label:'3,456 + 2,789', p:[
+      sub(pvc({'Th':3,'H':4,'T':5,'O':6}),pvc({'Th':2,'H':7,'T':8,'O':9})),
+      bar([{t:'3,456',w:5},{t:'2,789',w:4}],'total unknown'),
+      sub(expandedAddTable(['Th','H','T','O'],['3','4','5','6'],['2','7','8','9'],['5','11','13','15'],['6','2','4','5']),
+          columnAdd(['3','4','5','6'],['2','7','8','9'],['6','2','4','5'],['1','1','1','']))]},
+    {label:'18.5 + 6.75', p:[
+      sub(pvc({'T':1,'O':8,'0.1':5}),pvc({'O':6,'0.1':7,'0.01':5})),
+      bar([{t:'18.5',w:5},{t:'6.75',w:2}],'total unknown'),
+      sub(expandedAddTable(['T','O','tenths','hundredths'],['1','8','5','0'],['0','6','7','5'],['1','14','12','5'],['2','5','2','5']),
+          columnAdd(['1','8','.','5','0'],['','6','.','7','5'],['2','5','.','2','5'],['1','1','','','']))]}],
 
- // 7 Multiplication: 23 x 4 as an array, an area model and the expanded record
- 'strip-7':()=>strip(array(4,23), gridMethod(['20','3'],['4'],[['80','12']],'92'), expandedMult23x4),
+ 6:[{label:'4,003 &minus; 1,786', p:[
+      pvc({'Th':4,'H':0,'T':0,'O':3}),
+      bar([{t:'1,786',w:4},{t:'?',w:5}],'4,003'),
+      sub(expandedSubTable(['Th','H','T','O'],['4','0','0','3'],['3','9','9','13'],['1','7','8','6'],['2','2','1','7']),
+          columnSub(['4','0','0','3'],['3','9','9','13'],['1','7','8','6'],['2','2','1','7']))]},
+    {label:'6,502 &minus; 2,847', p:[
+      pvc({'Th':6,'H':5,'T':0,'O':2}),
+      bar([{t:'2,847',w:4},{t:'?',w:5}],'6,502'),
+      sub(expandedSubTable(['Th','H','T','O'],['6','5','0','2'],['5','14','9','12'],['2','8','4','7'],['3','6','5','5']),
+          columnSub(['6','5','0','2'],['5','14','9','12'],['2','8','4','7'],['3','6','5','5']))]},
+    {label:'12.4 &minus; 5.85', p:[
+      pvc({'T':1,'O':2,'0.1':4}),
+      bar([{t:'5.85',w:4},{t:'?',w:5}],'12.4'),
+      sub(expandedSubTable(['T','O','tenths','hundredths'],['1','2','4','0'],['0','11','3','10'],['','5','8','5'],['','6','5','5']),
+          columnSub(['1','2','.','4','0'],['0','11','.','3','10'],['','5','.','8','5'],['','6','.','5','5']))]}],
 
- // 8 Long multiplication: 3,247 x 26. An array of that is not a thing you can
- // draw, so the objects show the multiplier being partitioned, which is what
- // the two rows of the written method are.
- 'strip-8':()=>strip(sub(base10(0,2,6),eq('26 = 20 + 6')),
-                     gridMethod(['3,247'],['20','6'],[['64,940'],['19,482']],'84,422'),
-                     longMult(['3','2','4','7'],['2','6'],
-                       [{digits:['1','9','4','8','2'],why:'3,247 &times; 6'},
-                        {digits:['6','4','9','4','0'],why:'3,247 &times; 20'}],
-                       ['8','4','4','2','2'])),
+ 7:[{label:'23 &times; 4', p:[array(4,23), gridMethod(['20','3'],['4'],[['80','12']],'92'), expandedMult23x4]},
+    {label:'47 &times; 6', p:[sub(base10(0,4,7),eq('&times; 6')),
+      gridMethod(['40','7'],['6'],[['240','42']],'282'), expandedMult47x6]},
+    {label:'128 &times; 3', p:[sub(base10(1,2,8),eq('&times; 3')),
+      gridMethod(['100','20','8'],['3'],[['300','60','24']],'384'), expandedMult128x3]}],
 
- // 9 Division: twelve grouped into threes, then 96 divided by 6
- 'strip-9':()=>strip(sub(groups(4,3),eq('twelve grouped into threes')),
-                     bar([{t:'16',w:1},{t:'16',w:1},{t:'16',w:1},{t:'16',w:1},{t:'16',w:1},{t:'16',w:1}],'96'),
-                     sub(shortDiv('6',['9','6'],['1','6'],['','3']),
-                         eq('how many sixes in 9? 1, remainder 3<br>how many sixes in 36? 6'))),
+ 8:[{label:'3,247 &times; 26', p:[sub(base10(0,2,6),eq('26 = 20 + 6')),
+      gridMethod(['3,247'],['20','6'],[['64,940'],['19,482']],'84,422'), longMult3247x26()]},
+    {label:'486 &times; 35', p:[sub(base10(0,3,5),eq('35 = 30 + 5')),
+      gridMethod(['486'],['30','5'],[['14,580'],['2,430']],'17,010'),
+      longMult(['4','8','6'],['3','5'],
+        [{digits:['2','4','3','0'],why:'486 &times; 5'},
+         {digits:['1','4','5','8','0'],why:'486 &times; 30'}],['1','7','0','1','0'])]}],
 
- // 10 Long division: 4,368 divided by 24
- 'strip-10':()=>strip(sub(groups(4,6),eq('one group of 24')),
-                      bar([{t:'24',w:1},{t:'24',w:1},{t:'24',w:1},{t:'&hellip;',w:2},{t:'24',w:1}],'4,368'),
-                      longDiv('24',['4','3','6','8'],['','1','8','2'],[
-                        {op:'&minus;',cells:['2','4','',''],rule:true,why:'24 &times; 1'},
-                        {cells:['1','9','6','']},
-                        {op:'&minus;',cells:['1','9','2',''],rule:true,why:'24 &times; 8'},
-                        {cells:['','','4','8']},
-                        {op:'&minus;',cells:['','','4','8'],rule:true,why:'24 &times; 2'},
-                        {cells:['','','','0']}])),
+ 9:[{label:'96 &divide; 6', p:[sub(groups(4,3),eq('twelve grouped into threes')),
+      bar([1,2,3,4,5,6].map(()=>({t:'16',w:1})),'96'),
+      sub(shortDiv('6',['9','6'],['1','6'],['','3']),
+          eq('how many sixes in 9? 1, remainder 3<br>how many sixes in 36? 6'))]},
+    {label:'936 &divide; 6', p:[sub(base10(9,3,6),eq('&divide; 6')),
+      bar([1,2,3,4,5,6].map(()=>({t:'156',w:1})),'936'),
+      sub(shortDiv('6',['9','3','6'],['1','5','6'],['','3','3']),
+          eq('900 &divide; 6 = 150<br>36 &divide; 6 = 6'))]},
+    {label:'175 &divide; 5', p:[sub(base10(1,7,5),eq('&divide; 5')),
+      bar([1,2,3,4,5].map(()=>({t:'35',w:1})),'175'),
+      sub(shortDiv('5',['1','7','5'],['','3','5'],['','1','2']),
+          eq('how many fives in 17? 3, remainder 2<br>how many fives in 25? 5'))]}],
 
- // 11 Fractions as numbers
- 'strip-11':()=>strip(`<div class="pg-wall">${[[1,1],[1,2],[1,3],[1,4]].map(f=>objectiveVisual({type:'fraction',args:f})).join('')}</div>`,
-                      objectiveVisual({type:'fractionline',args:[4]}),
-                      eq('<b>&frac34;</b><br>three of four equal parts<br>between 0 and 1')),
+ 10:[{label:'4,368 &divide; 24', p:[sub(groups(4,6),eq('one group of 24')),
+       bar([{t:'24',w:1},{t:'24',w:1},{t:'24',w:1},{t:'&hellip;',w:2},{t:'24',w:1}],'4,368'),
+       longDiv4368x24()]},
+     {label:'5,824 &divide; 32', p:[sub(groups(4,8),eq('one group of 32')),
+       bar([{t:'32',w:1},{t:'32',w:1},{t:'32',w:1},{t:'&hellip;',w:2},{t:'32',w:1}],'5,824'),
+       longDiv('32',['5','8','2','4'],['','1','8','2'],[
+         {op:'&minus;',cells:['3','2','',''],rule:true,why:'32 &times; 1'},
+         {cells:['2','6','2','']},
+         {op:'&minus;',cells:['2','5','6',''],rule:true,why:'32 &times; 8'},
+         {cells:['','','6','4']},
+         {op:'&minus;',cells:['','','6','4'],rule:true,why:'32 &times; 2'},
+         {cells:['','','','0']}])]}],
 
- // 12 The bar model: what is the whole, what are the parts
- 'strip-12':()=>strip(groups(2,6),
-                      bar([{t:'8',w:8},{t:'?',w:4}],'12'),
-                      eq('8 + ? = 12<br>12 &minus; 8 = ?<br><b>? = 4</b>'))
+ 11:[{label:'&frac34;', p:[
+       `<div class="pg-wall">${[[1,1],[1,2],[1,3],[1,4]].map(f=>objectiveVisual({type:'fraction',args:f})).join('')}</div>`,
+       objectiveVisual({type:'fractionline',args:[4]}),
+       eq('<b>&frac34;</b><br>three of four equal parts<br>between 0 and 1')]}],
+
+ 12:[{label:'12 = 8 + ?', p:[groups(2,6), bar([{t:'8',w:8},{t:'?',w:4}],'12'),
+       eq('8 + ? = 12<br>12 &minus; 8 = ?<br><b>? = 4</b>')]}]
+};
+
+/* One question of the strategy comparison, keyed by question and route label.
+   A route with no entry here is one the copy says has no sensible route. */
+const ROUTES={
+ '199 + 46|Compensate':()=>mental([['200 + 46 = 246','easier calculation'],
+    [`246 &minus; 1 = ${ans('245')}`,'correction']]),
+ '199 + 46|Column method':()=>columnAdd(['1','9','9'],['','4','6'],['2','4','5'],['1','1','']),
+
+ '3,500 + 2,500|Known bonds':()=>mental([['35 + 25 = 60','known bond'],
+    [`3,500 + 2,500 = ${ans('6,000')}`,'same bond, scaled up']]),
+ '3,500 + 2,500|Column method':()=>columnAdd(['3','5','0','0'],['2','5','0','0'],['6','0','0','0'],['1','','','']),
+
+ '2,476 + 1,589|Column method':()=>columnAdd(['2','4','7','6'],['1','5','8','9'],['4','0','6','5'],['1','1','1','']),
+
+ '18.5 + 6.75|Column method, aligning the points':()=>columnAdd(['1','8','.','5','0'],['','6','.','7','5'],['2','5','.','2','5'],['1','1','','','']),
+ '18.5 + 6.75|Partition':()=>mental([['18 + 6 = 24','whole numbers'],
+    ['0.5 + 0.75 = 1.25','decimal parts'],[`24 + 1.25 = ${ans('25.25')}`,'total']]),
+
+ '402 − 398|Count on from 398':()=>mental([['398 + 2 = 400','hop to 400'],
+    ['400 + 2 = 402','hop to 402'],[`2 + 2 = ${ans('4')}`,'total of the hops']]),
+ '402 − 398|Adjust both':()=>mental([['402 + 2 = 404','both numbers up two'],
+    ['398 + 2 = 400','both numbers up two'],[`404 &minus; 400 = ${ans('4')}`,'easier subtraction']]),
+ '402 − 398|Column method':()=>columnSub(['4','0','2'],['3','9','12'],['3','9','8'],['','','4']),
+
+ '543 − 199|Compensate':()=>mental([['543 &minus; 200 = 343','easier calculation'],
+    [`343 + 1 = ${ans('344')}`,'correction']]),
+ '543 − 199|Column method':()=>columnSub(['5','4','3'],['4','13','13'],['1','9','9'],['3','4','4']),
+
+ '4,003 − 1,786|Column method':()=>columnSub(['4','0','0','3'],['3','9','9','13'],['1','7','8','6'],['2','2','1','7']),
+
+ '8,000 − 2,750|Count on':()=>mental([['2,750 + 250 = 3,000','hop to 3,000'],
+    ['3,000 + 5,000 = 8,000','hop to 8,000'],[`250 + 5,000 = ${ans('5,250')}`,'total of the hops']]),
+ '8,000 − 2,750|Column method':()=>columnSub(['8','0','0','0'],['7','9','10','0'],['2','7','5','0'],['5','2','5','0']),
+
+ '23 × 4|Partition':()=>mental([['20 &times; 4 = 80','the twenty'],['3 &times; 4 = 12','the three'],
+    [`80 + 12 = ${ans('92')}`,'total']]),
+ '23 × 4|Short multiplication':()=>shortMult(['2','3'],['4'],['9','2'],['1','']),
+
+ '6 × 99|Compensate':()=>mental([['6 &times; 100 = 600','easier calculation'],
+    [`600 &minus; 6 = ${ans('594')}`,'correction']]),
+ '6 × 99|Long multiplication':()=>shortMult(['9','9'],['6'],['5','9','4'],['','5','']),
+
+ '35 × 20|Factorise':()=>mental([['35 &times; 2 = 70','double'],[`70 &times; 10 = ${ans('700')}`,'times ten']]),
+ '35 × 20|Long multiplication':()=>longMult(['3','5'],['2','0'],
+    [{digits:['','','0'],why:'35 &times; 0'},{digits:['7','0','0'],why:'35 &times; 20'}],['7','0','0']),
+
+ '3,247 × 26|Long multiplication':longMult3247x26,
+
+ '96 ÷ 6|Partition':()=>mental([['60 &divide; 6 = 10','the sixty'],['36 &divide; 6 = 6','the thirty-six'],
+    [`10 + 6 = ${ans('16')}`,'total']]),
+ '96 ÷ 6|Chunking':()=>mental([['96 &minus; 60 is ten sixes','first chunk'],
+    ['36 &minus; 36 is six more sixes','second chunk'],[`10 + 6 = ${ans('16')}`,'total']]),
+ '96 ÷ 6|Short division':()=>shortDiv('6',['9','6'],['1','6'],['','3']),
+
+ '150 ÷ 25|Count in 25s':()=>mental([['four 25s make 100','first hundred'],
+    ['two more make 150','the last fifty'],[`4 + 2 = ${ans('6')}`,'total']]),
+ '150 ÷ 25|Short division':()=>shortDiv('25',['1','5','0'],['','','6'],['','1','15']),
+
+ '936 ÷ 6|Partition':()=>mental([['900 &divide; 6 = 150','the nine hundred'],
+    ['36 &divide; 6 = 6','the thirty-six'],[`150 + 6 = ${ans('156')}`,'total']]),
+ '936 ÷ 6|Short division':()=>shortDiv('6',['9','3','6'],['1','5','6'],['','3','3']),
+
+ '4,368 ÷ 24|Long division':longDiv4368x24
 };
 
 document.querySelectorAll('.pg-figure[data-fig]').forEach(fig=>{
-  const key=fig.dataset.fig, make=FIGS[key], host=fig.querySelector('.pg-visual');
-  if(!make||!host) return;
-  try{ host.innerHTML=make(); }
-  catch(err){ console.error('figure '+key+' failed',err); }
+  const n=Number(fig.dataset.fig.replace('strip-','')), exs=EXAMPLES[n];
+  const host=fig.querySelector('.pg-visual'), cap=fig.querySelector('figcaption');
+  if(!exs||!host) return;
+  try{
+    if(exs.length===1){ host.innerHTML=strip(...exs[0].p); return; }
+    host.innerHTML=
+      `<div class="pg-example-bar"><span class="pg-example-label"></span>`
+      + `<span class="pg-example-count"></span>`
+      + `<button class="methodbtn pg-another" type="button">Show me another</button></div>`
+      + exs.map((e,i)=>`<div class="pg-example"${i?' hidden':''}>${strip(...e.p)}</div>`).join('');
+    const label=host.querySelector('.pg-example-label'),
+          count=host.querySelector('.pg-example-count'),
+          panes=[...host.querySelectorAll('.pg-example')];
+    let at=0;
+    const show=i=>{
+      at=(i+exs.length)%exs.length;
+      panes.forEach((pn,k)=>{pn.hidden=k!==at});
+      label.innerHTML=exs[at].label;
+      count.textContent=`Example ${at+1} of ${exs.length}`;
+      // the caption describes the first example, so it goes with it
+      if(cap) cap.hidden=at!==0;
+      fitPanels();
+    };
+    host.querySelector('.pg-another').addEventListener('click',()=>show(at+1));
+    show(0);
+  }
+  catch(err){ console.error('figure '+fig.dataset.fig+' failed',err); }
+});
+
+/* Strategy comparison: fill each route, then wire the operation tabs. */
+document.querySelectorAll('.pg-question').forEach(q=>{
+  q.querySelectorAll('.pg-route').forEach(r=>{
+    const make=ROUTES[q.dataset.q+'|'+r.dataset.label];
+    const host=r.querySelector('.pg-route-render');
+    if(!make){ r.dataset.none='1'; host.remove(); return; }
+    try{
+      host.innerHTML=stripBlock([[r.dataset.label,make()]],'pg-single');
+    }catch(err){ console.error('route '+q.dataset.q+'|'+r.dataset.label+' failed',err); }
+  });
+});
+document.querySelectorAll('.pg-tabs').forEach(tabs=>{
+  const scope=tabs.closest('.pg-strategy');
+  tabs.addEventListener('click',ev=>{
+    const b=ev.target.closest('.pg-tab'); if(!b) return;
+    tabs.querySelectorAll('.pg-tab').forEach(t=>{
+      const on=t===b;
+      t.classList.toggle('is-on',on);
+      t.setAttribute('aria-selected',on?'true':'false');
+    });
+    scope.querySelectorAll('.pg-strategy-panel').forEach(pn=>{pn.hidden=pn.dataset.op!==b.dataset.op});
+    fitPanels();
+  });
 });
 
 /* Some apparatus is simply wider than a third of the column - 92 dots in rows
@@ -2002,12 +2273,16 @@ function setEntry(section,open){
   btn.setAttribute('aria-expanded',open?'true':'false');
   body.hidden=!open;
 }
-document.querySelectorAll('.pg-entry').forEach(sec=>{
+const collapsibles=[...document.querySelectorAll('.pg-collapsible')];
+collapsibles.forEach(sec=>{
   sec.querySelector('.pg-toggle').addEventListener('click',()=>{
     setEntry(sec,!sec.classList.contains('is-open'));
     fitPanels();
   });
 });
+const setAll=open=>{collapsibles.forEach(sec=>setEntry(sec,open));fitPanels();};
+document.getElementById('expandAll').addEventListener('click',()=>setAll(true));
+document.getElementById('collapseAll').addEventListener('click',()=>setAll(false));
 
 const tocBox=document.getElementById('tocBox');
 /* matchMedia is missing in some embedders; without a guard the whole script
@@ -2025,7 +2300,7 @@ function openFromHash(){
   const id=decodeURIComponent(location.hash.replace(/^#/,''));
   if(!id) return;
   const sec=document.getElementById(id);
-  if(!sec||!sec.classList.contains('pg-entry')) return;
+  if(!sec||!sec.classList.contains('pg-collapsible')) return;
   setEntry(sec,true);
   if(narrow.matches&&tocBox) tocBox.open=false;
   requestAnimationFrame(()=>requestAnimationFrame(()=>sec.scrollIntoView({block:'start'})));
@@ -2055,18 +2330,16 @@ if('IntersectionObserver' in window){
       }
     });
   },{rootMargin:'-10% 0px -70% 0px'});
-  document.querySelectorAll('.pg-entry').forEach(s=>io.observe(s));
+  document.querySelectorAll('.pg-collapsible').forEach(s=>io.observe(s));
 }
 
 /* Everything opens for printing and closes again afterwards. */
 const printState=new WeakMap();
 window.addEventListener('beforeprint',()=>{
-  document.querySelectorAll('.pg-entry').forEach(s=>{
-    printState.set(s,s.classList.contains('is-open')); setEntry(s,true);
-  });
+  collapsibles.forEach(s=>{ printState.set(s,s.classList.contains('is-open')); setEntry(s,true); });
 });
 window.addEventListener('afterprint',()=>{
-  document.querySelectorAll('.pg-entry').forEach(s=>setEntry(s,printState.get(s)===true));
+  collapsibles.forEach(s=>setEntry(s,printState.get(s)===true));
 });
 
 </script>

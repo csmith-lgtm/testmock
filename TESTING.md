@@ -77,7 +77,7 @@ node parent_guide.test.js              # or: npm run test:guide
 ```
 
 It needs jsdom only, finds its files relative to itself, and exits 1 on
-failure. Eight sections:
+failure. Twelve sections:
 
 1. **The copy is the source, unedited.** Every word of the markdown appears on
    the page, in order. Renderer output, the contents rail, the panel labels and
@@ -85,34 +85,54 @@ failure. Eight sections:
 2. **Nothing on the page that was not written for parents.** Entry 14 is the
    last thing in the page, nothing follows it, and no draft commentary survives
    anywhere — no "Open questions", no "Bute House", no notes to the author.
-   The equipment copy is checked to have survived its move into entry 3.
 3. **Every method carries the same three-part strip.** Entries 1–12 each show
-   three drawn panels labelled *With objects / As a picture / Written down*, no
-   placeholder is left undrawn, and all twelve bracketed lines survive verbatim
-   as captions.
+   three drawn panels labelled *With objects / As a picture / Written down*,
+   every strip sits outside the collapsed body so the page opens showing
+   pictures, and all twelve bracketed lines survive verbatim as captions.
 4. **The four questions, and the year chip.** All four headings on entries
    1–13, a chip of 60 characters or fewer on each, and the full "when you'll
    see it" paragraph still present in the prose.
-5. **Getting around.** Fourteen contents links that all resolve, readable and
-   unique anchor ids, a back-to-contents link in every entry, every entry
+5. **Getting around.** Fifteen contents links that all resolve, readable and
+   unique anchor ids, a back-to-contents link in every entry, every section
    collapsed at load, and `#division` opening the division entry. Also that the
    guide links back to the hub and the hub links forward to the guide.
-6. **Every visual is a hub renderer, unmodified.** Twenty-one renderers are
+6. **Every visual is a hub renderer, unmodified.** Twenty-three renderers are
    compared byte-for-byte with the hub's, so the page draws nothing of its own
    and a hub fix reaches the guide.
 7. **Staged reveal.** `pvc` numbers its columns from the ones and `numberLine`
    marks its hops; the area model and the expanded written method light up 80
    and 12 together; the counters and the column subtraction light the same
    place together; `longMult` stages ones-row first and `longDiv` left to
-   right, one step per quotient digit. All read from what is actually
-   highlighted after stepping the block, not from the markup.
-8. **Self-contained.** No external requests, the font embedded, and the hub's
-   `:root` custom properties inlined intact — that last one is here because
-   leaving the hub's own `<style>` tags in the inlined CSS silently swallowed
-   the whole `:root` block and every `var()` on the page fell back to nothing.
+   right. All read from what is actually highlighted after stepping the block.
+8. **The glossary, the band and the controls.** Nineteen terms, every arrow
+   reference resolving to a method anchor *and* naming the method it points at,
+   the glossary collapsing like an entry and listed in the contents; the
+   homework band above the contents with every link resolving; Expand all and
+   Collapse all moving every section and keeping `aria-expanded` in step; every
+   heading reading as "5 Addition" rather than "5Addition" when copied or read
+   aloud; and printing unhiding the prose, the hidden examples and the hidden
+   strategy panels *in CSS*, so it does not depend on a `beforeprint` handler.
+9. **Worked examples.** Entries 5–10 each offer more than one, one shown at a
+   time so the entry does not grow, each with its own step controls; the
+   caption appears only with the example it describes; the control cycles.
+10. **Strategy comparison.** Sixteen questions, four per operation, tabbed;
+    the framing line present; and every rendered route stepped to its last step
+    and read back, so the answer the copy states and the answer the calculation
+    reaches cannot drift apart. Also that at least four verdicts favour the
+    written method, so the set is not rigged towards mental arithmetic.
+11. *(numbering continues into 12)*
+12. **Self-contained.** No external requests, the font embedded, and the hub's
+    `:root` custom properties inlined intact — that last one is here because
+    leaving the hub's own `<style>` tags in the inlined CSS silently swallowed
+    the whole `:root` block and every `var()` on the page fell back to nothing.
 
-Sections 2, 3, 6, 7 and 8 have each been run against a copy with the defect
-reintroduced, and fail there.
+Sections 2, 3, 6, 7, 8, 10 and 12 have each been run against a copy with the
+defect reintroduced, and fail there.
+
+**What it does not check:** the route descriptions' step and regroup counts.
+Section 10 verifies the *answer* a route reaches, not prose like "four steps,
+one regroup" — three of those counts in the supplied copy do not match the
+calculation as rendered, and are flagged rather than corrected.
 
 ## Maintaining it
 

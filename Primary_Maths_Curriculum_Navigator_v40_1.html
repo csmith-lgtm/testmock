@@ -1113,6 +1113,9 @@ html.text-large .main,html.text-large .side,html.text-xlarge .main,html.text-xla
 .navbtn.navlink{text-decoration:none;color:#273142}
 .navbtn.navlink:hover{background:#f2f5fb}
 .navbtn.navlink::after{content:"\2197";float:right;color:#8a94a6;font-size:11px;line-height:1.35}
+
+.coltable td.pt{width:13px;min-width:13px;border-color:transparent;background:transparent;vertical-align:bottom;padding-bottom:5px;font-weight:700}
+.coltable .carry td.pt,.coltable .line td.pt{border-color:transparent}
 </style>
 </head>
 <body>
@@ -1168,31 +1171,57 @@ function base10(h,t,o){
  return s;
 }
 
+/* Column layouts may carry a decimal point as its own column: a cell whose
+   value is "." is drawn narrow and unstaged, and the places either side of it
+   are named from the point rather than from the right-hand edge. Callers that
+   pass digits only are unaffected. */
+const COL_UNITS=['ones','tens','hundreds','thousands','ten-thousands','hundred-thousands'];
+const COL_DECIMALS=['tenths','hundredths','thousandths','ten-thousandths'];
+function columnPlaces(cells){
+ const n=cells.length, pt=cells.indexOf('.');
+ const step=new Array(n); let k=0;
+ for(let i=n-1;i>=0;i--) step[i]=(cells[i]==='.')?null:++k;
+ const unit=new Array(n);
+ for(let i=0;i<n;i++){
+   if(cells[i]==='.'){unit[i]='decimal point';continue}
+   if(pt<0) unit[i]=COL_UNITS[n-1-i]||`place ${n-i}`;
+   else if(i<pt) unit[i]=COL_UNITS[pt-1-i]||`place ${pt-i}`;
+   else unit[i]=COL_DECIMALS[i-pt-1]||`decimal place ${i-pt}`;
+ }
+ return {step,unit,point:pt};
+}
+function colCell(d,cls,st,un,inner){
+ if(d==='.') return `<td class="pt">.</td>`;
+ return `<td class="${cls}" data-mstep="${st}" data-unit="${un}">${inner!==undefined?inner:d}</td>`;
+}
+
 function columnAdd(top,bottom,result,carries=[]){
  const n=top.length;
- const unitNames=['ones','tens','hundreds','thousands','ten-thousands','hundred-thousands'];
- const stepFor=i=>n-i;
- const unitFor=i=>unitNames[n-1-i]||`place ${n-i}`;
- let topCells=top.map((d,i)=>`<td class="base method-input" data-mstep="${stepFor(i)}" data-unit="${unitFor(i)}">${d}</td>`).join('');
- let bottomCells=bottom.map((d,i)=>`<td class="base method-input" data-mstep="${stepFor(i)}" data-unit="${unitFor(i)}">${d}</td>`).join('');
- let resultCells=result.map((d,i)=>`<td class="base method-output" data-mstep="${stepFor(i)}" data-unit="${unitFor(i)}"><span class="resultdigit">${d}</span></td>`).join('');
- let carryCells=top.map((_,i)=>`<td class="method-exchange" data-mstep="${stepFor(i)}" data-unit="${unitFor(i)}">${carries[i]?`<span class="carrydigit">${carries[i]}</span>`:''}</td>`).join('');
+ const {step,unit}=columnPlaces(top);
+ const stepFor=i=>step[i];
+ const unitFor=i=>unit[i];
+ let topCells=top.map((d,i)=>colCell(d,'base method-input',stepFor(i),unitFor(i))).join('');
+ let bottomCells=bottom.map((d,i)=>colCell(top[i]==='.'?'.':d,'base method-input',stepFor(i),unitFor(i))).join('');
+ let resultCells=result.map((d,i)=>colCell(top[i]==='.'?'.':d,'base method-output',stepFor(i),unitFor(i),`<span class="resultdigit">${d}</span>`)).join('');
+ // the point is not repeated in the carry row, only in the calculation itself
+ let carryCells=top.map((d,i)=>d==='.'?'<td class="pt"></td>'
+   :colCell(d,'method-exchange',stepFor(i),unitFor(i),carries[i]?`<span class="carrydigit">${carries[i]}</span>`:'')).join('');
  return `<div class="colwrap written-method"><table class="coltable"><tr><td class="op"></td>${topCells}</tr><tr><td class="op">+</td>${bottomCells}</tr><tr class="line"><td></td><td colspan="${top.length}"></td></tr><tr><td class="op"></td>${resultCells}</tr><tr class="line"><td></td><td colspan="${top.length}"></td></tr><tr class="carry"><td class="op"></td>${carryCells}</tr></table></div>`;
 }
 
 function columnSub(orig,regrouped,subtrahend,result){
  const n=orig.length;
- const unitNames=['ones','tens','hundreds','thousands','ten-thousands','hundred-thousands'];
- const stepFor=i=>n-i;
- const unitFor=i=>unitNames[n-1-i]||`place ${n-i}`;
+ const {step,unit}=columnPlaces(orig);
+ const stepFor=i=>step[i];
+ const unitFor=i=>unit[i];
  let regroupCells=orig.map((d,i)=>{
-   if(regrouped[i]!==d){
+   if(d!=='.'&&regrouped[i]!==d){
       return `<td class="method-input method-regroup" data-mstep="${stepFor(i)}" data-unit="${unitFor(i)}"><span class="cross">${d}</span><span class="newdigit regroupdigit">${regrouped[i]}</span></td>`;
    }
-   return `<td class="base method-input" data-mstep="${stepFor(i)}" data-unit="${unitFor(i)}">${d}</td>`;
+   return colCell(d,'base method-input',stepFor(i),unitFor(i));
  }).join('');
- let subCells=subtrahend.map((d,i)=>`<td class="base method-input" data-mstep="${stepFor(i)}" data-unit="${unitFor(i)}">${d}</td>`).join('');
- let resultCells=result.map((d,i)=>`<td class="base method-output" data-mstep="${stepFor(i)}" data-unit="${unitFor(i)}"><span class="resultdigit">${d}</span></td>`).join('');
+ let subCells=subtrahend.map((d,i)=>colCell(orig[i]==='.'?'.':d,'base method-input',stepFor(i),unitFor(i))).join('');
+ let resultCells=result.map((d,i)=>colCell(orig[i]==='.'?'.':d,'base method-output',stepFor(i),unitFor(i),`<span class="resultdigit">${d}</span>`)).join('');
  return `<div class="colwrap written-method"><table class="coltable"><tr><td class="op"></td>${regroupCells}</tr><tr><td class="op">−</td>${subCells}</tr><tr class="line"><td></td><td colspan="${orig.length}"></td></tr><tr><td class="op"></td>${resultCells}</tr></table></div>`;
 }
 function pvc(cols){

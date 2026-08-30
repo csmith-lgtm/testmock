@@ -2,6 +2,93 @@
 
 *Draft. All agreed updates incorporated.*
 
+> **Helping with homework tonight?**
+> Jump straight to [addition](#addition), [subtraction](#subtraction), [multiplication](#multiplication) or [division](#division) — or look up a word in [the words she'll bring home](#glossary). The rest of this guide will keep.
+
+---
+
+## The words she'll bring home
+
+Some of these are new names for things you already know. Some are new ideas. This tells you which is which.
+
+**Regroup**
+Ten ones swapped for one ten, or ten tens for one hundred, when a column adds up to ten or more.
+*You may have called it:* carrying.
+→ Addition
+
+**Exchange**
+The swap in the other direction — breaking one hundred into ten tens so there's enough to subtract from.
+*You may have called it:* borrowing.
+→ Subtraction
+
+**Ones, not units**
+The digit in the ones column. We say *ones* because it names the value and sits in a sequence — ones, tens, hundreds — in a way *units* doesn't.
+→ Place value and exchange
+
+**Partition**
+Splitting a number into parts, usually by place value: 23 becomes 20 and 3. Almost every mental method starts here.
+→ From mental to written
+
+**Number bond**
+A pair of numbers that make a particular total — usually 10, 20 or 100. Known instantly, and known as a relationship rather than a recited fact.
+→ Part–whole and number bonds
+
+**Part–whole**
+A diagram showing a number and the parts it's made of. Six at the top, four and two underneath.
+→ Part–whole and number bonds
+
+**Bridging through ten**
+Getting to ten first, then carrying on: 8 + 5 becomes 8 + 2 + 3. Ten is the number our whole system is built on, so it's nearly always the easiest route.
+→ The number line
+
+**Difference**
+How far apart two numbers are. One of the three meanings of subtraction, and often found by counting on rather than taking away — which is why 402 − 398 is a small hop, not a hard calculation.
+→ Subtraction
+
+**Compensating**
+Changing a calculation into an easier one and correcting afterwards. 543 − 199 becomes 543 − 200, then give one back.
+→ Subtraction
+
+**Adjusting**
+Shifting both numbers by the same amount, which leaves the difference between them unchanged. 402 − 398 becomes 404 − 400.
+→ Subtraction
+
+**Inverse**
+Addition and subtraction undo each other, and so do multiplication and division. Used for checking: if 47 + 36 = 83, then 83 − 36 should give 47 back.
+→ Estimation and choosing a method
+
+**Array**
+Objects arranged in rows and columns. Four rows of three shows at a glance why 3 × 4 and 4 × 3 give the same answer.
+→ Multiplication
+
+**Grouping and sharing**
+The two meanings of division. Sharing is twelve sweets between three children. Grouping is how many threes there are in twelve. Formal written division depends on grouping, which is why we teach both.
+→ Division
+
+**Chunking**
+Dividing by repeatedly taking away groups you already know: 96 take away sixty (that's ten sixes), then take away thirty-six (that's six more). The stage between grouping and short division.
+→ Division
+
+**Bar model**
+A drawing that shows the structure of a problem — what's the whole, what are the parts, what's missing — before any calculating starts.
+→ The bar model
+
+**Base 10 blocks and place-value counters**
+The two kinds of equipment you'll see. Blocks show how big a number is; counters show what place it's in.
+→ Place value and exchange
+
+**Estimate**
+A rough answer worked out *before* the real one, so she can tell whether her answer is sensible. We ask for it first rather than as a check at the end.
+→ Estimation and choosing a method
+
+**Efficient**
+Choosing the quickest sensible method rather than always reaching for the written one. Deciding that 402 − 398 doesn't need column subtraction is being efficient.
+→ Estimation and choosing a method
+
+**Fluency**
+Knowing facts and methods well enough to use them without thinking hard, so that attention is free for the difficult part. Not the same as being fast.
+→ What actually helps at home
+
 ---
 
 ## Before you start
@@ -350,7 +437,7 @@ The bar model is not a way of calculating. It's a way of seeing what a problem i
 
 Most word-problem mistakes aren't arithmetic mistakes. A child adds when she should have subtracted, or divides the wrong way round. The bar model shows the structure — what's the whole, what are the parts, what's known, what's missing — and once that's visible the operation is usually obvious.
 
-It is probably the single most useful thing in this guide to look at yourself. If you have five minutes, open the Bar Model Builder and put a problem into it. It explains itself faster than any paragraph will.
+It is probably the single most useful thing in this guide to try yourself. If you have five minutes, [open the Bar Model Builder](Interactive_Maths_Tools_v40_1/Bar_Model_Builder_v3.html) and put a problem into it. It explains itself faster than any paragraph will.
 
 **How you may have been taught it**
 
@@ -367,6 +454,99 @@ From Year 1, in a simple form, and increasingly through the school. By Year 6 it
 **What it is**
 
 Not a method — a habit. Before calculating: roughly what should this be? After calculating: is that sensible?
+
+There's no wrong method on this page — every route shown gets the right answer. The question is which one is least work for these particular numbers, and that changes from question to question.
+
+### Addition
+
+**199 + 46**
+- *Compensate:* 200 + 46 = 246, then give one back → **245**
+- *Column method:* works, four steps, one regroup
+- **Quickest here:** compensating. The 199 is one away from a friendly number, and spotting that is the whole trick.
+
+**3,500 + 2,500**
+- *Known bonds:* 35 + 25 = 60, so 3,500 + 2,500 = **6,000**
+- *Column method:* works, three regroups
+- **Quickest here:** the bond. Recognising 35 and 25 inside the bigger numbers is what makes it instant.
+
+**2,476 + 1,589**
+- *Column method:* **4,065**
+- *Mental route:* there isn't a neat one — the numbers aren't near anything friendly
+- **Quickest here:** the written method. Not every calculation has a shortcut, and this is what written methods are for.
+
+**18.5 + 6.75**
+- *Column method, aligning the points:* **25.25**
+- *Partition:* 18 + 6 = 24, 0.5 + 0.75 = 1.25, total 25.25
+- **Quickest here:** either. Worth showing two legitimate routes to the same answer.
+
+### Subtraction
+
+**402 − 398**
+- *Count on from 398:* two to 400, two more to 402 → **4**
+- *Adjust both:* 404 − 400 → **4**
+- *Column method:* two exchanges across a zero, and easy to get wrong
+- **Quickest here:** counting on. The numbers are close, so the difference is small — no need to take anything away.
+
+**543 − 199**
+- *Compensate:* 543 − 200 = 343, give one back → **344**
+- *Column method:* works, two exchanges
+- **Quickest here:** compensating.
+
+**4,003 − 1,786**
+- *Column method:* **2,217**
+- *Mental route:* not realistically
+- **Quickest here:** the written method — and this is exactly the calculation the exchange work in Year 4 is preparing for.
+
+**8,000 − 2,750**
+- *Count on:* 2,750 to 3,000 is 250; 3,000 to 8,000 is 5,000 → **5,250**
+- *Column method:* works, three exchanges across zeros
+- **Quickest here:** counting on, if she's confident. The written method is a perfectly reasonable choice too.
+
+### Multiplication
+
+**23 × 4**
+- *Partition:* 20 × 4 = 80, 3 × 4 = 12 → **92**
+- *Short multiplication:* same answer, written down
+- **Quickest here:** in her head. The written method is there for when the numbers get bigger.
+
+**6 × 99**
+- *Compensate:* 6 × 100 = 600, take off 6 → **594**
+- *Long multiplication:* works, more steps
+- **Quickest here:** compensating. Same move as 199 + 46, one operation along.
+
+**35 × 20**
+- *Factorise:* 35 × 2 = 70, then × 10 → **700**
+- *Long multiplication:* works
+- **Quickest here:** the double-then-times-ten route.
+
+**3,247 × 26**
+- *Long multiplication:* **84,422**
+- *Mental route:* no
+- **Quickest here:** the written method.
+
+### Division
+
+**96 ÷ 6**
+- *Partition:* 60 ÷ 6 = 10, 36 ÷ 6 = 6 → **16**
+- *Chunking:* take away ten sixes, then six sixes → 16
+- *Short division:* same answer
+- **Quickest here:** partitioning — but all three are the same reasoning at different levels of detail, which is the point of this one.
+
+**150 ÷ 25**
+- *Count in 25s:* four 25s make 100, two more make 150 → **6**
+- *Short division:* works
+- **Quickest here:** counting in 25s. Knowing the 25s pays off here and with money and time.
+
+**936 ÷ 6**
+- *Partition:* 900 ÷ 6 = 150, 36 ÷ 6 = 6 → **156**
+- *Short division:* **156**
+- **Quickest here:** genuinely either. Worth including precisely because the answer isn't obvious.
+
+**4,368 ÷ 24**
+- *Long division:* **182**
+- *Mental route:* no
+- **Quickest here:** the written method.
+
 
 **Why we use it**
 
@@ -394,4 +574,4 @@ Ask her how she worked it out, and mean it. Ask whether there was another way. W
 
 What helps less than parents expect is pushing on to the next method before the current one is secure. A child who can perform column multiplication but can't say why the second row starts with a zero has learned something fragile. She'll be faster this term and stuck next year. Speed and fluency look similar from the outside and are not the same thing.
 
-And if she's finding something hard, the most useful question to bring to us is "what is she thinking that isn't right yet" rather than "what should she practise". We can usually tell you, and the answer is nearly always more specific — and more fixable — than more practice.
+And if she's finding something hard, the most useful question to bring to us is "what is she thinking that isn't right yet" rather than "what should she practise". We can usually tell you, and the answer is nearly always more specific — and more fixable — than more practice. If there's something this guide hasn't answered, [do ask](mailto:REPLACE-WITH-ADDRESS) — the questions parents send us are how this guide gets better.

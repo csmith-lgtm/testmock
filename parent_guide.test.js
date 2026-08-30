@@ -30,11 +30,13 @@ const proseRoot=d.body.cloneNode(true);
 proseRoot.querySelectorAll('.pg-visual,.pg-contents,.pg-chip,.pg-home,.pg-num,.pg-caret,script,style').forEach(x=>x.remove());
 const unesc=t=>{const e=d.createElement('textarea');e.innerHTML=t;return e.value};
 const strip=h=>h.replace(/<br\s*\/?>/gi,' ')
-  .replace(/<\/(p|h1|h2|h3|li|td|th|tr|figcaption|div|ol|ul|table|thead|tbody|figure|hr|section|button|summary|nav|main|header)>/gi,' ')
+  .replace(/<\/(p|h1|h2|h3|h4|li|td|th|tr|figcaption|div|ol|ul|dl|dt|dd|table|thead|tbody|figure|hr|section|button|summary|nav|main|header|aside)>/gi,' ')
   .replace(/<[^>]+>/g,'');
 const pageText=norm(unesc(strip(proseRoot.innerHTML)));
 const mdText=norm(md.split('\n').filter(l=>!/^\s*\|\s*-+/.test(l)).join('\n')
   .replace(/^\s*#{1,3}\s+/gm,'').replace(/^\s*---\s*$/gm,'')
+  .replace(/^\s*>\s?/gm,'').replace(/^\s*-\s+/gm,'').replace(/^\s*\u2192\s+/gm,'')
+  .replace(/\[([^\]]+)\]\([^)]*\)/g,'$1')
   .replace(/\*\*/g,'').replace(/\*/g,'').replace(/\|/g,' ').replace(/^\s*\d+\.\s+/gm,''));
 const A=mdText.split(' '), B=pageText.split(' ');
 let cur=0, missing=[];
@@ -56,7 +58,7 @@ if(last===entries[13]&&last.id==='at-home')
   ok('the last thing in the page is entry 14, "What actually helps at home"');
 else bad('content follows the last method entry: '+(last&&(last.tagName+'#'+last.id)));
 const tail=norm(unesc(strip(entries[13].innerHTML)));
-if(/practice\.?$/.test(tail.replace(/Back to contents$/,'').trim()))
+if(/how this guide gets better\.$/.test(tail.replace(/Back to contents$/,'').trim()))
   ok('entry 14 ends on the copy, with only the back-to-contents link after it');
 else bad('entry 14 tail: ...'+tail.slice(-90));
 for(const [label,re] of [['Open questions',/open questions/i],['Bute House',/bute house/i],
@@ -83,14 +85,26 @@ for(const sec of entries){
   const fig=sec.querySelector('.pg-figure[data-fig]');
   if(n<=12){
     if(!fig){bad('entry '+n+' has no strip');continue}
-    const panels=[...fig.querySelectorAll('.miniMethod')];
-    const labels=panels.map(p=>norm(p.querySelector('.miniLabel').textContent));
-    const drawn=panels.filter(p=>norm(p.querySelector('.pg-panelbody').innerHTML).length>40).length;
-    if(panels.length===3&&labels.join('|')===LABELS.join('|')&&drawn===3) stripsOk++;
-    else bad('entry '+n+' strip: '+panels.length+' panels, labels ['+labels.join(', ')+'], '+drawn+' drawn');
+    // an entry may hold several worked examples; each is its own strip
+    const strips=fig.querySelectorAll('.pg-example').length
+      ? [...fig.querySelectorAll('.pg-example')] : [fig];
+    const wrong=strips.filter(st=>{
+      const panels=[...st.querySelectorAll('.miniMethod')];
+      const labels=panels.map(p=>norm(p.querySelector('.miniLabel').textContent));
+      const drawn=panels.filter(p=>norm(p.querySelector('.pg-panelbody').innerHTML).length>40).length;
+      return !(panels.length===3&&labels.join('|')===LABELS.join('|')&&drawn===3);
+    });
+    if(!wrong.length) stripsOk++;
+    else bad('entry '+n+': '+wrong.length+' of '+strips.length+' strips are not three drawn panels');
   } else if(fig) bad('entry '+n+' has a strip but is not a method 1-12');
 }
 if(stripsOk===12) ok('entries 1-12 each show three drawn panels labelled '+LABELS.join(' / '));
+const buried=entries.filter(s2=>{
+  const f=s2.querySelector('.pg-figure[data-fig]');
+  return f&&s2.querySelector('.pg-entry-body').contains(f);
+});
+buried.length?bad(buried.length+' strips are inside the collapsed body and invisible until opened')
+  :ok('every strip sits outside the collapsed body, so the page opens showing pictures');
 const dashed=d.querySelectorAll('.pg-figure-unillustrated').length;
 dashed?bad(dashed+' placeholders still have no figure'):ok('no "awaiting art" placeholders left');
 const caps=[...d.querySelectorAll('.pg-figure figcaption')].map(x=>norm(x.textContent));
@@ -130,7 +144,8 @@ badWhen.length?bad(badWhen.length+' entries lost their full "when you\'ll see it
 /* ----------------------------------------------------- 5. getting around -- */
 section('5. Contents, anchors and deep links');
 const links=[...d.querySelectorAll('.pg-toc-list a')];
-links.length===14?ok('the contents lists all 14 methods'):bad(links.length+' contents links');
+links.length===15?ok('the contents lists the glossary and all 14 methods')
+  :bad(links.length+' contents links, expected 15');
 const badIds=links.map(a=>a.getAttribute('href').slice(1)).filter(id=>!d.getElementById(id));
 badIds.length?bad('contents links to missing ids: '+badIds):ok('every contents link resolves');
 const ids=entries.map(s=>s.id);
@@ -140,8 +155,10 @@ if(new Set(ids).size===14) ok('ids are unique'); else bad('duplicate ids');
 const backs=entries.filter(s=>s.querySelector('.pg-back a[href="#contents"]')).length;
 backs===14?ok('every entry ends with a back-to-contents link'):bad(backs+' back links, expected 14');
 // collapsed by default, and a hash opens the entry it names
-const closed=entries.filter(s=>s.querySelector('.pg-entry-body').hidden).length;
-closed===14?ok('all entries start collapsed'):bad(closed+' collapsed at load, expected 14');
+const collapsibles=[...d.querySelectorAll('.pg-collapsible')];
+const closed=collapsibles.filter(s=>s.querySelector('.pg-entry-body').hidden).length;
+closed===collapsibles.length?ok('all '+closed+' collapsible sections start closed')
+  :bad(closed+' closed at load, of '+collapsibles.length);
 {
   const dom2=new JSDOM(html,{runScripts:'dangerously',pretendToBeVisual:true,
     url:'https://x.invalid/Parent_Maths_Guide_v40_1.html#division'});
@@ -167,7 +184,8 @@ for(const fn of ['function partWhole','function base10(','function tenframe(','f
                  'function expandedAddTable(','function expandedSubTable(','function bar(',
                  'function methodPair(','function miniNumberLine(','function numberLine(',
                  'function groups(','function array(','function objectiveVisual(',
-                 'function shortMult(','function longMult(','function shortDiv(','function longDiv(']){
+                 'function shortMult(','function longMult(','function shortDiv(','function longDiv(',
+                 'function columnPlaces(','function colCell(']){
   const a=grab(hub,fn), b=grab(html,fn);
   (a&&b&&a===b)?ok('identical to the hub: '+fn.replace('function ','').replace('(',''))
               :bad('renderer differs or missing: '+fn);
@@ -222,8 +240,174 @@ ldSteps.join(',')==='1,2,3'
   ?ok('longDiv stages left to right, one step per quotient digit: '+ldSteps.join(', '))
   :bad('longDiv steps: '+ldSteps.join(','));
 
-/* ---------------------------------------------------------- 8. self-contained */
-section('8. Self-contained');
+/* --------------------------------------------- 8. glossary, band, controls -- */
+section('8. The words she\'ll bring home, and getting to it in a hurry');
+const gloss=d.getElementById('glossary');
+gloss?ok('the glossary is a section of its own, id "glossary"'):bad('no glossary section');
+const terms=[...d.querySelectorAll('.pg-term')];
+terms.length===19?ok('19 terms'):bad(terms.length+' terms, expected 19');
+const termLinks=[...d.querySelectorAll('.pg-termlink')];
+const deadLinks=termLinks.filter(a=>!d.getElementById(a.getAttribute('href').slice(1)));
+deadLinks.length?bad('glossary terms point at anchors that do not exist: '
+    +deadLinks.map(a=>a.getAttribute('href')).join(', '))
+  :ok('every one of the '+termLinks.length+' glossary references resolves to a method anchor');
+// each reference must name the method it links to
+const titleById=new Map(entries.map(s2=>[s2.id,norm(s2.querySelector('.pg-entry-title').textContent)]));
+const mismatched=termLinks.filter(a=>{
+  const t=titleById.get(a.getAttribute('href').slice(1))||'';
+  return !t.toLowerCase().startsWith(norm(a.textContent).toLowerCase());
+});
+mismatched.length?bad('glossary reference text does not match its target: '
+    +mismatched.map(a=>norm(a.textContent)+' -> '+a.getAttribute('href')).join(', '))
+  :ok('every reference names the method it links to');
+if(gloss&&gloss.classList.contains('pg-collapsible')&&gloss.querySelector('.pg-entry-body').hidden)
+  ok('the glossary collapses like a method entry'); else bad('the glossary does not collapse');
+const tocGloss=d.querySelector('.pg-toc-list a[href="#glossary"]');
+tocGloss?ok('the contents lists the glossary'):bad('the glossary is not in the contents');
+
+const bandEl=d.querySelector('.pg-band');
+if(bandEl){
+  const hrefs=[...bandEl.querySelectorAll('a')].map(a=>a.getAttribute('href').slice(1));
+  const dead=hrefs.filter(h=>!d.getElementById(h));
+  dead.length?bad('the homework band links nowhere: '+dead.join(', '))
+    :ok('the homework band links to '+hrefs.join(', ')+', all of which exist');
+  const before=bandEl.compareDocumentPosition(d.querySelector('.pg-contents'));
+  (before&d.defaultView.Node.DOCUMENT_POSITION_FOLLOWING)
+    ?ok('the band sits above the contents'):bad('the band is not above the contents');
+} else bad('no homework band');
+
+['expandAll','collapseAll'].forEach(id=>{
+  d.getElementById(id)?ok('control present: '+id):bad('missing control: '+id);
+});
+{
+  const all=[...d.querySelectorAll('.pg-collapsible')];
+  d.getElementById('expandAll').dispatchEvent(new w.MouseEvent('click',{bubbles:true}));
+  const open=all.filter(x=>!x.querySelector('.pg-entry-body').hidden).length;
+  const aria=all.filter(x=>x.querySelector('.pg-toggle').getAttribute('aria-expanded')==='true').length;
+  (open===all.length&&aria===all.length)
+    ?ok('Expand all opens all '+all.length+' sections and sets aria-expanded on each')
+    :bad('Expand all: '+open+' open, '+aria+' with aria-expanded=true, of '+all.length);
+  d.getElementById('collapseAll').dispatchEvent(new w.MouseEvent('click',{bubbles:true}));
+  const shut=all.filter(x=>x.querySelector('.pg-entry-body').hidden).length;
+  const aria2=all.filter(x=>x.querySelector('.pg-toggle').getAttribute('aria-expanded')==='false').length;
+  (shut===all.length&&aria2===all.length)
+    ?ok('Collapse all closes them again, aria-expanded back to false')
+    :bad('Collapse all: '+shut+' closed, '+aria2+' aria-expanded=false');
+}
+// the heading must read as words, not "5Addition"
+const runOn=entries.filter(s2=>/\d[A-Za-z]/.test(norm(s2.querySelector('.pg-toggle').textContent)));
+runOn.length?bad(runOn.length+' headings run the number into the title: '
+    +runOn.map(s2=>norm(s2.querySelector('.pg-toggle').textContent)).join(', '))
+  :ok('every heading reads as "5 Addition", not "5Addition", when copied or read aloud');
+// print must not depend on a beforeprint handler
+const printCss=[...html.matchAll(/@media print\{([\s\S]*?)\n\}/g)].map(m=>m[1]).join('\n');
+/\.pg-entry-body\[hidden\][^}]*display:block!important/.test(printCss)
+  ?ok('print unhides collapsed prose in CSS, with no script needed'):bad('print does not unhide collapsed prose');
+/\.pg-example\[hidden\]/.test(printCss)&&/\.pg-strategy-panel\[hidden\]/.test(printCss)
+  ?ok('print also unhides the hidden examples and strategy panels'):bad('print leaves examples or strategy panels hidden');
+/\.method-controls\{display:none!important\}|\.method-controls[^}]*display:none!important/.test(printCss.replace(/\s/g,''))
+  ?ok('print hides the step controls'):bad('print leaves the step controls in');
+
+/* ---------------------------------------------------- 9. worked examples -- */
+section('9. Worked examples');
+const withSwitcher=[...d.querySelectorAll('.pg-figure[data-fig]')]
+  .filter(f=>f.querySelector('.pg-another'));
+const nums=withSwitcher.map(f=>Number(f.dataset.fig.replace('strip-',''))).sort((a,b)=>a-b);
+nums.join(',')==='5,6,7,8,9,10'
+  ?ok('entries 5, 6, 7, 8, 9 and 10 each offer more than one worked example')
+  :bad('switchers on entries '+nums.join(', '));
+let exTotal=0, exBad=[];
+for(const f of withSwitcher){
+  const panes=[...f.querySelectorAll('.pg-example')];
+  exTotal+=panes.length;
+  if(panes.length<2) exBad.push(f.dataset.fig+' has '+panes.length);
+  // one visible at a time, so the entry does not grow
+  const vis=panes.filter(x=>!x.hidden).length;
+  if(vis!==1) exBad.push(f.dataset.fig+' shows '+vis+' at once');
+  // each example is independently steppable
+  const blocks=panes.map(x=>x.querySelectorAll('.methodblock').length);
+  if(blocks.some(b=>b!==1)) exBad.push(f.dataset.fig+' step controls '+blocks.join('/'));
+  const drawn=panes.filter(x=>x.querySelectorAll('.miniMethod').length===3).length;
+  if(drawn!==panes.length) exBad.push(f.dataset.fig+' only '+drawn+' full strips');
+}
+exBad.length?bad('example bank: '+exBad.join('; '))
+  :ok(exTotal+' worked examples across six entries, one shown at a time, each with its own step controls');
+{
+  const f=withSwitcher.find(x=>x.dataset.fig==='strip-5');
+  const cap=f.querySelector('figcaption'), btn=f.querySelector('.pg-another');
+  const first=norm(f.querySelector('.pg-example-label').textContent);
+  const capBefore=cap.hidden;
+  btn.dispatchEvent(new w.MouseEvent('click',{bubbles:true}));
+  const second=norm(f.querySelector('.pg-example-label').textContent);
+  const vis=[...f.querySelectorAll('.pg-example')].filter(x=>!x.hidden).length;
+  (second!==first&&vis===1)
+    ?ok('"Show me another" moves '+first+' to '+second+', still one at a time')
+    :bad('"Show me another" did not switch: '+first+' -> '+second);
+  (!capBefore&&cap.hidden)
+    ?ok('the caption is shown with the example it describes and hidden for the others')
+    :bad('caption visibility: first='+!capBefore+', after switching hidden='+cap.hidden);
+  // back round to the start
+  const n2=f.querySelectorAll('.pg-example').length;
+  for(let i=1;i<n2;i++) btn.dispatchEvent(new w.MouseEvent('click',{bubbles:true}));
+  norm(f.querySelector('.pg-example-label').textContent)===first
+    ?ok('the control cycles back round to the first example'):bad('the switcher does not cycle');
+}
+
+/* ------------------------------------------ 10. strategy comparison -------- */
+section('10. Strategy comparison');
+const qs=[...d.querySelectorAll('.pg-question')];
+qs.length===16?ok('16 questions'):bad(qs.length+' questions, expected 16');
+const ops=[...d.querySelectorAll('.pg-tab')].map(t=>norm(t.textContent));
+ops.join(',')==='Addition,Subtraction,Multiplication,Division'
+  ?ok('tabbed by operation: '+ops.join(' / ')):bad('tabs: '+ops.join(','));
+const perOp=[...d.querySelectorAll('.pg-strategy-panel')].map(pn=>pn.querySelectorAll('.pg-question').length);
+perOp.join(',')==='4,4,4,4'?ok('four questions per operation'):bad('per operation: '+perOp.join(','));
+if(/There's no wrong method on this page/.test(pageText)) ok('the framing line is on the page');
+else bad('the framing line about there being no wrong method is missing');
+
+// Every route must reach the answer the copy states. Read from the render,
+// after stepping it to its last step - not from the markup.
+const digits=t=>norm(t).replace(/[,\s]/g,'');
+let checked=0, drift=[];
+for(const q of qs){
+  const want=digits(q.dataset.answer);
+  const routes=[...q.querySelectorAll('.pg-route')].filter(r=>!r.dataset.none);
+  if(!routes.length){ drift.push(q.dataset.q+': no route renders'); continue; }
+  for(const r of routes){
+    const block=r.querySelector('.methodblock');
+    if(!block){ drift.push(q.dataset.q+'|'+r.dataset.label+': no step controls'); continue; }
+    const max=Math.max(0,...[...block.querySelectorAll('[data-mstep]')].map(x=>Number(x.dataset.mstep)||0));
+    w.resetWrittenMethod(block);
+    w.revealWrittenMethodStep(block,max);
+    const outs=[...block.querySelectorAll('.method-output')];
+    // read the whole answer row, so a decimal point - which is a column of its
+    // own and not an output cell - is not silently dropped
+    const rows=[...new Set(outs.map(o=>o.parentElement))];
+    const got=outs.length
+      ? digits(rows.map(r=>[...r.children].map(c=>c.textContent).join('')).join(''))
+      : digits((block.querySelector('.pg-answer')||{textContent:''}).textContent);
+    checked++;
+    if(got!==want) drift.push(q.dataset.q+' | '+r.dataset.label+': renders '+(got||'nothing')+', copy says '+want);
+    // and the answer must only be complete at the end
+    if(outs.length){
+      const stepsOfOut=outs.map(x=>Number(x.dataset.mstep)||0);
+      if(Math.max(...stepsOfOut)!==max)
+        drift.push(q.dataset.q+' | '+r.dataset.label+': answer complete before the final step');
+    }
+  }
+}
+drift.length?bad('strategy renders drift from the copy:\n         '+drift.join('\n         '))
+  :ok('all '+checked+' rendered routes reach the answer their copy states, at their final step');
+const noRoute=[...d.querySelectorAll('.pg-route[data-none]')].map(r=>r.dataset.label);
+ok('routes the copy says have no calculation, left undrawn: '+noRoute.length+' ('+[...new Set(noRoute)].join(', ')+')');
+// half the verdicts should not favour the mental route
+const verdicts=[...d.querySelectorAll('.pg-verdict')].map(v=>norm(v.textContent));
+const written=verdicts.filter(v=>/written method|short division|column/i.test(v)).length;
+written>=4?ok(written+' of 16 verdicts favour or accept the written method, so the set is not rigged')
+  :bad('only '+written+' verdicts favour the written method');
+
+/* --------------------------------------------------------- 12. self-contained */
+section('12. Self-contained');
 // The hub's stylesheet is inlined into a <style> of our own. Leaving its own
 // tags in swallows the :root block, and every var() on the page falls back to
 // nothing - which is silent, so it is checked rather than eyeballed.
