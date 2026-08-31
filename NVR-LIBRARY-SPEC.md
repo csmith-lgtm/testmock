@@ -609,6 +609,29 @@ resolves them. Each carries a `threads` count as an honest structural descriptor
   the same diagonal, which a cold-read showed is not reliably separable (a grey
   raindrop at 45° vs 225°); at right angles that pair is up-vs-down or
   left-vs-right. Registered as preset `interwoven`.
+- `buildInteractingMovement` — **v9 `interacting-movement`** (Matrix, Greater
+  Depth, 85). Two objects travel independent circuits, with a third thread that is
+  a *dependency* rather than a path: the dot steps one place around the four
+  **corners** per column, the arrow steps one place around the four **edge
+  midpoints** per row, and the arrow always **points at the dot**, so its heading
+  is a function of both positions and cannot be read off either circuit alone.
+  Machine-verified over 800 builds: tracking only the two positions always leaves
+  at least two options standing, and tracking only "is it aimed at the dot" always
+  leaves at least two standing — so no pair of threads resolves the item, which is
+  what the band is claiming. Distractors are the partial readings: each circuit
+  failing to advance, the arrow aimed at the previous column's dot, the arrow
+  reversed, and the previous cell copied.
+
+  Fairness constraints, all verified: the two circuits are disjoint, so the
+  objects can never collide or be confused; only the arrow is rotated, and an
+  arrow's orientation is unmistakable; headings to two different corners differ by
+  at least 48° from every arrow position, so "aimed at the dot" versus "aimed at
+  the old dot" is a plain visual difference. Two sizing rules came out of the
+  cold-read: a 3×3 grid renders each cell at about a quarter-panel, so the dot is
+  drawn at 0.9 (it was a 2.6px radius at paper size before — a pinprick carrying a
+  whole thread), and any two options sharing both positions must differ by 40° of
+  heading, since two *distractors* could otherwise sit 28° apart and waste two of
+  the five slots. Registered as preset `interactingMovement`.
 
 **Caveat, stated plainly:** the structural difficulty estimator *underrates these
 badly* — it bands the 3-thread matrix as "Developing" and the cross-conjunction
@@ -633,14 +656,15 @@ generator adds (conjunction search, embedded figure, cross-category conjunction)
 — are flagged `library-only` and floored at Secure with an explicit
 "trial before trusting" note, because the bank cannot calibrate them.
 
-The generator currently produces **11 of the bank's 24 mechanisms** (calibrated
-directly); the remaining 13 are listed as build targets in `v9-gap-analysis.md`,
-ranked by score. Nine of those are Greater-Depth mechanisms
-(interacting-movement, reflect-turn-alternation, the second-order and
-count-controls variants, diagonal-shading, count-addition, cube-corner); building
-them would bring the generator to parity with the bank's difficulty range while
-adding fresh-instance generation the static bank can't provide. `interwoven` was
-the first of these to land (see `buildInterwovenSeries` above).
+The generator currently produces **12 of the bank's 24 mechanisms** (calibrated
+directly); the remaining 12 are listed as build targets in `v9-gap-analysis.md`,
+ranked by score. Eight of those are Greater-Depth mechanisms
+(reflect-turn-alternation, the second-order and count-controls variants,
+diagonal-shading, count-addition, cube-corner, chirality-position); building them
+would bring the generator to parity with the bank's difficulty range while adding
+fresh-instance generation the static bank can't provide. `interwoven` and
+`interacting-movement` were the first two to land (see `buildInterwovenSeries` and
+`buildInteractingMovement` above).
 
 ## 13. Extension roadmap
 

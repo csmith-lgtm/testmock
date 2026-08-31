@@ -305,6 +305,121 @@
     return item;
   }
 
+
+  // ===========================================================================
+  // 5. INTERACTING MOVEMENT  (v9 mechanism "interacting-movement" — Matrix, GD)
+  //    Two objects travel independent circuits, and a third thread is a
+  //    DEPENDENCY rather than a path of its own:
+  //      * the dot steps once around the four CORNERS per column;
+  //      * the arrow steps once around the four EDGE MIDPOINTS per row;
+  //      * the arrow always points AT the dot — its heading is a function of
+  //        both positions, so it cannot be read off either circuit alone.
+  //    Tracking only the two positions leaves three options standing; tracking
+  //    only the arrow leaves the positions unresolved. All three are needed.
+  //
+  //    Fairness construction (BRIEF §5):
+  //      * the two circuits are disjoint (corners vs edge midpoints), so the
+  //        objects can never collide or be confused for one another;
+  //      * only the arrow is ever rotated, and an arrow's orientation is
+  //        unmistakable (ROT_ORDER 1);
+  //      * headings to two different corners differ by at least 48° from every
+  //        arrow position, so "points at the dot" vs "points at the old dot" is
+  //        a plain visual difference, not a fine angular judgement;
+  //      * nothing is counted and nothing accelerates — each step is one place
+  //        around a circuit, shown twice before the answer cell.
+  // ===========================================================================
+  const MOVE_CORNERS = [[36, 36], [84, 36], [84, 84], [36, 84]];   // NW NE SE SW, clockwise
+  const MOVE_MIDS    = [[60, 30], [90, 60], [60, 90], [30, 60]];   // N  E  S  W,  clockwise
+  const headingTo = (from, to) =>
+    (Math.round(Math.atan2(to[1] - from[1], to[0] - from[0]) * 180 / Math.PI) + 360) % 360;
+  // A 3x3 matrix renders each cell at roughly a quarter of a normal panel, so the
+  // dot has to be drawn generously: at the paper's grid size a 0.5 dot comes out
+  // about 2.6px across, and it carries a whole thread of the rule. The arrow is
+  // shortened a little to buy that room — the closest an arrow ever sits to the
+  // dot is 24.7 units (an edge midpoint to an adjacent corner), so the arrow's
+  // reach plus the dot's radius must stay under that.
+  function moveCell(dotPos, arrowPos, rot) {
+    return figure([
+      prim('arrow', { x: arrowPos[0], y: arrowPos[1], size: 0.40, shading: 'white', rotation: rot, z: 1 }),
+      prim('dot',   { x: dotPos[0],   y: dotPos[1],   size: 0.90, shading: 'black', z: 2 })
+    ]);
+  }
+
+  function buildInteractingMovement({ rng = Math.random } = {}) {
+    // each circuit gets its own start and direction (+1 clockwise, +3 anticlockwise)
+    const cStart = Math.floor(rng() * 4), cDir = rng() < 0.5 ? 1 : 3;
+    const mStart = Math.floor(rng() * 4), mDir = rng() < 0.5 ? 1 : 3;
+    const dotAt   = c => MOVE_CORNERS[(cStart + cDir * c) % 4];
+    const arrowAt = r => MOVE_MIDS[(mStart + mDir * r) % 4];
+    const cell = (c, r) => { const d = dotAt(c), a = arrowAt(r); return moveCell(d, a, headingTo(a, d)); };
+
+    const grid = [];
+    for (let r = 0; r < 3; r++) { const row = []; for (let c = 0; c < 3; c++) row.push(cell(c, r)); grid.push(row); }
+
+    const D = dotAt(2), A_ = arrowAt(2), aim = headingTo(A_, D);
+    const Dprev = dotAt(1), Aprev = arrowAt(1);
+    const answer = moveCell(D, A_, aim);
+    const pool = [
+      { f: moveCell(D, A_, headingTo(A_, Dprev)),
+        trap: 'Both objects are in the right place, but the arrow points at where the dot was in the previous column — it must point at the dot in its own cell.' },
+      { f: moveCell(Dprev, A_, headingTo(A_, Dprev)),
+        trap: 'The arrow moved on but the dot did not — the dot advances one corner per column.' },
+      { f: moveCell(D, Aprev, headingTo(Aprev, D)),
+        trap: 'The dot moved on but the arrow did not — the arrow advances one edge per row.' },
+      { f: moveCell(D, A_, (aim + 180) % 360),
+        trap: 'Points directly away from the dot instead of at it.' },
+      { f: moveCell(Dprev, Aprev, headingTo(Aprev, Dprev)),
+        trap: 'Neither object moved on — this is the cell above and to the left, copied.' },
+      // spares, used when one of the above is filtered out by the separation rule
+      { f: moveCell(dotAt(0), A_, headingTo(A_, dotAt(0))),
+        trap: 'The dot has gone back to the corner it started from instead of moving on.' },
+      { f: moveCell(D, arrowAt(0), headingTo(arrowAt(0), D)),
+        trap: 'The arrow has gone back to the edge it started from instead of moving on.' }
+    ];
+
+    // Two options that share BOTH positions differ only by the arrow's heading, so
+    // they have to be far enough apart to read as different answers. The answer is
+    // always at least 48° from every distractor by construction, but two
+    // DISTRACTORS could land within 28° of each other (points-away vs points-at-the
+    // -old-dot, when the old dot lies roughly opposite) — a quarter of items had a
+    // pair like that. It never made the item ambiguous, but it wasted two of the
+    // five slots on near-lookalikes. Require 40° between any two same-position
+    // options, and fall through to the spares above when that rejects one.
+    const MIN_SEP = 40;
+    const partsOf = f => ({ a: f.items.find(i => i.shape === 'arrow'), d: f.items.find(i => i.shape === 'dot') });
+    const sameSpot = (f, g) => { const x = partsOf(f), y = partsOf(g);
+      return x.a.x === y.a.x && x.a.y === y.a.y && x.d.x === y.d.x && x.d.y === y.d.y; };
+    const sep = (f, g) => { const x = ((partsOf(f).a.rotation % 360) + 360) % 360;
+      const y = ((partsOf(g).a.rotation % 360) + 360) % 360;
+      const t = Math.abs(x - y); return Math.min(t, 360 - t); };
+
+    const seen = new Set([figLookKey(answer)]); const kept = [];
+    for (const p of pool) {
+      if (kept.length === 4) break;
+      const k = figLookKey(p.f);
+      if (seen.has(k)) continue;
+      if ([answer].concat(kept.map(x => x.f)).some(f => sameSpot(f, p.f) && sep(f, p.f) < MIN_SEP)) continue;
+      seen.add(k); kept.push(p);
+    }
+    if (kept.length < 4) return null;                      // never ship a short option set
+    const opts = shuffle([answer, ...kept.map(p => p.f)], rng);
+    const answerIndex = opts.indexOf(answer);
+    const traps = opts.map(f => f === answer ? null : kept.find(p => p.f === f).trap);
+
+    const item = {
+      type: 'matrix', elite: true, threads: 3, size: 3, grid, missing: [2, 2],
+      options: opts, answerIndex, traps,
+      rationale: 'Two objects move on their own circuits: the black dot steps one corner round as you go ' +
+                 'across a row, and the arrow steps one edge round as you go down a column. The arrow always ' +
+                 'points at the dot, so its direction depends on where BOTH have got to. The missing cell ' +
+                 'needs the dot at its next corner, the arrow at its next edge, and the arrow aimed at the dot.',
+      difficulty: NVR.estimateDifficulty({ type: 'matrix', options: opts, answerIndex, stem: grid.flat() })
+    };
+    item.band = NVR.band(item.difficulty);
+    return item;
+  }
+
   return { buildTripleMatrix, buildCrossConjunction, buildDependencySeries,
-           buildInterwovenSeries, cellFig, depFig, turnFig, plainFig, version: '1.1.0-elite' };
+           buildInterwovenSeries, buildInteractingMovement,
+           cellFig, depFig, turnFig, plainFig, moveCell, version: '1.2.0-elite' };
 });

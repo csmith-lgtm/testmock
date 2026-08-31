@@ -1,6 +1,6 @@
 # v9 parity — generator gap analysis
 
-Generator currently produces 11 of 24 v9 mechanisms.
+Generator currently produces 12 of 24 v9 mechanisms.
 
 ## Produced (calibrated to v9)
 
@@ -15,6 +15,7 @@ Generator currently produces 11 of 24 v9 mechanisms.
 - **second-order-eighth-turn** — Series · Greater Depth (90)
 - **triple-attribute** — Matrix · Greater Depth (91)
 - **interwoven** — Series · Greater Depth (77)  *(built: `buildInterwovenSeries`)*
+- **interacting-movement** — Matrix · Greater Depth (85)  *(built: `buildInteractingMovement`)*
 
 ## MISSING from the generator — build targets (ranked by v9 score)
 
@@ -22,7 +23,6 @@ Generator currently produces 11 of 24 v9 mechanisms.
 - **second-order-position** — Series · Greater Depth (87)
 - **cube-corner** — Spatial / 3D · Greater Depth (85)
 - **chirality-position** — Series · Greater Depth (85)
-- **interacting-movement** — Matrix · Greater Depth (85)
 - **diagonal-shading** — Matrix · Greater Depth (84)
 - **count-controls-sides** — Series · Greater Depth (83)
 - **second-order-count** — Series · Greater Depth (83)

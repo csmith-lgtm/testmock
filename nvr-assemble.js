@@ -157,6 +157,7 @@
     crossConjunction: (rng) => NVRElite && NVRElite.buildCrossConjunction({ rng }),
     dependencySeries: (rng) => NVRElite && NVRElite.buildDependencySeries({ rng }),
     interwoven: (rng) => NVRElite && NVRElite.buildInterwovenSeries({ rng }),
+    interactingMovement: (rng) => NVRElite && NVRElite.buildInteractingMovement({ rng }),
     // camouflage
     conjunction: (rng) => NVRCamo.buildConjunctionOddOneOut({ rng }),
     embedded: (rng) => NVRCamo.buildEmbeddedFigure({ rng, noise: 'medium' }),

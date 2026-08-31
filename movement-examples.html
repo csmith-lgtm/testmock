@@ -1,0 +1,683 @@
+<!DOCTYPE html>
+<html lang="en-GB"><head><meta charset="utf-8"><title>interacting-movement — examples</title>
+<style>
+  body{font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",Helvetica,Arial,sans-serif;
+       color:#1f2933;background:#fff;margin:0;padding:26px 30px}
+  h1{font-size:20px;margin:0 0 16px}
+  section{border-top:1px solid #cbd2d9;padding:16px 0}
+  h2{font-size:15px;margin:0 0 2px}
+  .id{font-weight:400;color:#7b8794;font-size:12px;margin-left:8px}
+  .q{font-size:13px;color:#52606d;margin:0 0 10px}
+  .wrap{display:flex;align-items:center;gap:28px;flex-wrap:wrap}
+  .opts{display:flex;gap:14px;flex-wrap:wrap}
+  .p{border:1px solid #cbd2d9;border-radius:6px;padding:2px;background:#fff;line-height:0}
+  .o{text-align:center}
+  .o .lbl{font-size:12px;color:#52606d;margin-top:4px}
+  .o.ans .p{border:2.5px solid #1f7a4d}
+  .key{font-size:12px;color:#1f7a4d;margin:12px 0 0;max-width:820px;line-height:1.5}
+</style></head><body>
+<h1>interacting-movement — rendered examples</h1><section>
+    <h2>Example 1 <span class="id">interactingMovement@1000</span></h2>
+    <p class="q">Which figure completes the grid?</p>
+    <div class="wrap"><svg viewBox="0 0 320 320" width="330" xmlns="http://www.w3.org/2000/svg"><rect width="320" height="320" fill="transparent"/><rect x="8" y="8" width="96" height="96" rx="10" fill="#fff" stroke="#d7dee6" stroke-width="2"/><svg x="14" y="14" width="84" height="84" viewBox="0 0 120 120">
+    <defs>
+      <pattern id="hatch" width="7" height="7" patternUnits="userSpaceOnUse" patternTransform="rotate(45)">
+        <line x1="0" y1="0" x2="0" y2="7" stroke="#1f2933" stroke-width="1.6"/>
+      </pattern>
+      <pattern id="crosshatch" width="7" height="7" patternUnits="userSpaceOnUse">
+        <path d="M0 0 L7 0 M0 0 L0 7" stroke="#1f2933" stroke-width="1.1"/>
+      </pattern>
+      <pattern id="stipple" width="6" height="6" patternUnits="userSpaceOnUse">
+        <circle cx="3" cy="3" r="1.1" fill="#1f2933"/>
+      </pattern>
+    </defs><g transform="translate(90,60) rotate(104) scale(0.4)"><polygon points="-36,-10.8 7.2,-10.8 7.2,-21.6 36,0 7.2,21.6 7.2,10.8 -36,10.8" fill="none" stroke="#1f2933" stroke-width="2.2" stroke-linejoin="round" stroke-linecap="round"/></g>
+<g transform="translate(84,84) rotate(0) scale(0.9)"><circle cx="0" cy="0" r="10.080000000000002" fill="#1f2933" stroke="#1f2933" stroke-width="2.2" stroke-linejoin="round" stroke-linecap="round"/></g></svg><rect x="112" y="8" width="96" height="96" rx="10" fill="#fff" stroke="#d7dee6" stroke-width="2"/><svg x="118" y="14" width="84" height="84" viewBox="0 0 120 120">
+    <defs>
+      <pattern id="hatch" width="7" height="7" patternUnits="userSpaceOnUse" patternTransform="rotate(45)">
+        <line x1="0" y1="0" x2="0" y2="7" stroke="#1f2933" stroke-width="1.6"/>
+      </pattern>
+      <pattern id="crosshatch" width="7" height="7" patternUnits="userSpaceOnUse">
+        <path d="M0 0 L7 0 M0 0 L0 7" stroke="#1f2933" stroke-width="1.1"/>
+      </pattern>
+      <pattern id="stipple" width="6" height="6" patternUnits="userSpaceOnUse">
+        <circle cx="3" cy="3" r="1.1" fill="#1f2933"/>
+      </pattern>
+    </defs><g transform="translate(90,60) rotate(256) scale(0.4)"><polygon points="-36,-10.8 7.2,-10.8 7.2,-21.6 36,0 7.2,21.6 7.2,10.8 -36,10.8" fill="none" stroke="#1f2933" stroke-width="2.2" stroke-linejoin="round" stroke-linecap="round"/></g>
+<g transform="translate(84,36) rotate(0) scale(0.9)"><circle cx="0" cy="0" r="10.080000000000002" fill="#1f2933" stroke="#1f2933" stroke-width="2.2" stroke-linejoin="round" stroke-linecap="round"/></g></svg><rect x="216" y="8" width="96" height="96" rx="10" fill="#fff" stroke="#d7dee6" stroke-width="2"/><svg x="222" y="14" width="84" height="84" viewBox="0 0 120 120">
+    <defs>
+      <pattern id="hatch" width="7" height="7" patternUnits="userSpaceOnUse" patternTransform="rotate(45)">
+        <line x1="0" y1="0" x2="0" y2="7" stroke="#1f2933" stroke-width="1.6"/>
+      </pattern>
+      <pattern id="crosshatch" width="7" height="7" patternUnits="userSpaceOnUse">
+        <path d="M0 0 L7 0 M0 0 L0 7" stroke="#1f2933" stroke-width="1.1"/>
+      </pattern>
+      <pattern id="stipple" width="6" height="6" patternUnits="userSpaceOnUse">
+        <circle cx="3" cy="3" r="1.1" fill="#1f2933"/>
+      </pattern>
+    </defs><g transform="translate(90,60) rotate(204) scale(0.4)"><polygon points="-36,-10.8 7.2,-10.8 7.2,-21.6 36,0 7.2,21.6 7.2,10.8 -36,10.8" fill="none" stroke="#1f2933" stroke-width="2.2" stroke-linejoin="round" stroke-linecap="round"/></g>
+<g transform="translate(36,36) rotate(0) scale(0.9)"><circle cx="0" cy="0" r="10.080000000000002" fill="#1f2933" stroke="#1f2933" stroke-width="2.2" stroke-linejoin="round" stroke-linecap="round"/></g></svg><rect x="8" y="112" width="96" height="96" rx="10" fill="#fff" stroke="#d7dee6" stroke-width="2"/><svg x="14" y="118" width="84" height="84" viewBox="0 0 120 120">
+    <defs>
+      <pattern id="hatch" width="7" height="7" patternUnits="userSpaceOnUse" patternTransform="rotate(45)">
+        <line x1="0" y1="0" x2="0" y2="7" stroke="#1f2933" stroke-width="1.6"/>
+      </pattern>
+      <pattern id="crosshatch" width="7" height="7" patternUnits="userSpaceOnUse">
+        <path d="M0 0 L7 0 M0 0 L0 7" stroke="#1f2933" stroke-width="1.1"/>
+      </pattern>
+      <pattern id="stipple" width="6" height="6" patternUnits="userSpaceOnUse">
+        <circle cx="3" cy="3" r="1.1" fill="#1f2933"/>
+      </pattern>
+    </defs><g transform="translate(60,30) rotate(66) scale(0.4)"><polygon points="-36,-10.8 7.2,-10.8 7.2,-21.6 36,0 7.2,21.6 7.2,10.8 -36,10.8" fill="none" stroke="#1f2933" stroke-width="2.2" stroke-linejoin="round" stroke-linecap="round"/></g>
+<g transform="translate(84,84) rotate(0) scale(0.9)"><circle cx="0" cy="0" r="10.080000000000002" fill="#1f2933" stroke="#1f2933" stroke-width="2.2" stroke-linejoin="round" stroke-linecap="round"/></g></svg><rect x="112" y="112" width="96" height="96" rx="10" fill="#fff" stroke="#d7dee6" stroke-width="2"/><svg x="118" y="118" width="84" height="84" viewBox="0 0 120 120">
+    <defs>
+      <pattern id="hatch" width="7" height="7" patternUnits="userSpaceOnUse" patternTransform="rotate(45)">
+        <line x1="0" y1="0" x2="0" y2="7" stroke="#1f2933" stroke-width="1.6"/>
+      </pattern>
+      <pattern id="crosshatch" width="7" height="7" patternUnits="userSpaceOnUse">
+        <path d="M0 0 L7 0 M0 0 L0 7" stroke="#1f2933" stroke-width="1.1"/>
+      </pattern>
+      <pattern id="stipple" width="6" height="6" patternUnits="userSpaceOnUse">
+        <circle cx="3" cy="3" r="1.1" fill="#1f2933"/>
+      </pattern>
+    </defs><g transform="translate(60,30) rotate(14) scale(0.4)"><polygon points="-36,-10.8 7.2,-10.8 7.2,-21.6 36,0 7.2,21.6 7.2,10.8 -36,10.8" fill="none" stroke="#1f2933" stroke-width="2.2" stroke-linejoin="round" stroke-linecap="round"/></g>
+<g transform="translate(84,36) rotate(0) scale(0.9)"><circle cx="0" cy="0" r="10.080000000000002" fill="#1f2933" stroke="#1f2933" stroke-width="2.2" stroke-linejoin="round" stroke-linecap="round"/></g></svg><rect x="216" y="112" width="96" height="96" rx="10" fill="#fff" stroke="#d7dee6" stroke-width="2"/><svg x="222" y="118" width="84" height="84" viewBox="0 0 120 120">
+    <defs>
+      <pattern id="hatch" width="7" height="7" patternUnits="userSpaceOnUse" patternTransform="rotate(45)">
+        <line x1="0" y1="0" x2="0" y2="7" stroke="#1f2933" stroke-width="1.6"/>
+      </pattern>
+      <pattern id="crosshatch" width="7" height="7" patternUnits="userSpaceOnUse">
+        <path d="M0 0 L7 0 M0 0 L0 7" stroke="#1f2933" stroke-width="1.1"/>
+      </pattern>
+      <pattern id="stipple" width="6" height="6" patternUnits="userSpaceOnUse">
+        <circle cx="3" cy="3" r="1.1" fill="#1f2933"/>
+      </pattern>
+    </defs><g transform="translate(60,30) rotate(166) scale(0.4)"><polygon points="-36,-10.8 7.2,-10.8 7.2,-21.6 36,0 7.2,21.6 7.2,10.8 -36,10.8" fill="none" stroke="#1f2933" stroke-width="2.2" stroke-linejoin="round" stroke-linecap="round"/></g>
+<g transform="translate(36,36) rotate(0) scale(0.9)"><circle cx="0" cy="0" r="10.080000000000002" fill="#1f2933" stroke="#1f2933" stroke-width="2.2" stroke-linejoin="round" stroke-linecap="round"/></g></svg><rect x="8" y="216" width="96" height="96" rx="10" fill="#fff" stroke="#d7dee6" stroke-width="2"/><svg x="14" y="222" width="84" height="84" viewBox="0 0 120 120">
+    <defs>
+      <pattern id="hatch" width="7" height="7" patternUnits="userSpaceOnUse" patternTransform="rotate(45)">
+        <line x1="0" y1="0" x2="0" y2="7" stroke="#1f2933" stroke-width="1.6"/>
+      </pattern>
+      <pattern id="crosshatch" width="7" height="7" patternUnits="userSpaceOnUse">
+        <path d="M0 0 L7 0 M0 0 L0 7" stroke="#1f2933" stroke-width="1.1"/>
+      </pattern>
+      <pattern id="stipple" width="6" height="6" patternUnits="userSpaceOnUse">
+        <circle cx="3" cy="3" r="1.1" fill="#1f2933"/>
+      </pattern>
+    </defs><g transform="translate(30,60) rotate(24) scale(0.4)"><polygon points="-36,-10.8 7.2,-10.8 7.2,-21.6 36,0 7.2,21.6 7.2,10.8 -36,10.8" fill="none" stroke="#1f2933" stroke-width="2.2" stroke-linejoin="round" stroke-linecap="round"/></g>
+<g transform="translate(84,84) rotate(0) scale(0.9)"><circle cx="0" cy="0" r="10.080000000000002" fill="#1f2933" stroke="#1f2933" stroke-width="2.2" stroke-linejoin="round" stroke-linecap="round"/></g></svg><rect x="112" y="216" width="96" height="96" rx="10" fill="#fff" stroke="#d7dee6" stroke-width="2"/><svg x="118" y="222" width="84" height="84" viewBox="0 0 120 120">
+    <defs>
+      <pattern id="hatch" width="7" height="7" patternUnits="userSpaceOnUse" patternTransform="rotate(45)">
+        <line x1="0" y1="0" x2="0" y2="7" stroke="#1f2933" stroke-width="1.6"/>
+      </pattern>
+      <pattern id="crosshatch" width="7" height="7" patternUnits="userSpaceOnUse">
+        <path d="M0 0 L7 0 M0 0 L0 7" stroke="#1f2933" stroke-width="1.1"/>
+      </pattern>
+      <pattern id="stipple" width="6" height="6" patternUnits="userSpaceOnUse">
+        <circle cx="3" cy="3" r="1.1" fill="#1f2933"/>
+      </pattern>
+    </defs><g transform="translate(30,60) rotate(336) scale(0.4)"><polygon points="-36,-10.8 7.2,-10.8 7.2,-21.6 36,0 7.2,21.6 7.2,10.8 -36,10.8" fill="none" stroke="#1f2933" stroke-width="2.2" stroke-linejoin="round" stroke-linecap="round"/></g>
+<g transform="translate(84,36) rotate(0) scale(0.9)"><circle cx="0" cy="0" r="10.080000000000002" fill="#1f2933" stroke="#1f2933" stroke-width="2.2" stroke-linejoin="round" stroke-linecap="round"/></g></svg><rect x="216" y="216" width="96" height="96" rx="10" fill="#fff" stroke="#2f6f8f" stroke-width="2" stroke-dasharray="6 5"/><text x="264" y="278" text-anchor="middle" font-size="40" font-weight="700" fill="#2f6f8f" font-family="Lexend Deca, sans-serif">?</text></svg><div class="opts"><div class="o">
+       <div class="p"><svg viewBox="0 0 120 120" width="96" height="96" xmlns="http://www.w3.org/2000/svg" role="img">
+    <defs>
+      <pattern id="hatch" width="7" height="7" patternUnits="userSpaceOnUse" patternTransform="rotate(45)">
+        <line x1="0" y1="0" x2="0" y2="7" stroke="#1f2933" stroke-width="1.6"/>
+      </pattern>
+      <pattern id="crosshatch" width="7" height="7" patternUnits="userSpaceOnUse">
+        <path d="M0 0 L7 0 M0 0 L0 7" stroke="#1f2933" stroke-width="1.1"/>
+      </pattern>
+      <pattern id="stipple" width="6" height="6" patternUnits="userSpaceOnUse">
+        <circle cx="3" cy="3" r="1.1" fill="#1f2933"/>
+      </pattern>
+    </defs><g transform="translate(60,30) rotate(166) scale(0.4)"><polygon points="-36,-10.8 7.2,-10.8 7.2,-21.6 36,0 7.2,21.6 7.2,10.8 -36,10.8" fill="none" stroke="#1f2933" stroke-width="2.2" stroke-linejoin="round" stroke-linecap="round"/></g>
+<g transform="translate(36,36) rotate(0) scale(0.9)"><circle cx="0" cy="0" r="10.080000000000002" fill="#1f2933" stroke="#1f2933" stroke-width="2.2" stroke-linejoin="round" stroke-linecap="round"/></g></svg></div><div class="lbl">A</div></div><div class="o">
+       <div class="p"><svg viewBox="0 0 120 120" width="96" height="96" xmlns="http://www.w3.org/2000/svg" role="img">
+    <defs>
+      <pattern id="hatch" width="7" height="7" patternUnits="userSpaceOnUse" patternTransform="rotate(45)">
+        <line x1="0" y1="0" x2="0" y2="7" stroke="#1f2933" stroke-width="1.6"/>
+      </pattern>
+      <pattern id="crosshatch" width="7" height="7" patternUnits="userSpaceOnUse">
+        <path d="M0 0 L7 0 M0 0 L0 7" stroke="#1f2933" stroke-width="1.1"/>
+      </pattern>
+      <pattern id="stipple" width="6" height="6" patternUnits="userSpaceOnUse">
+        <circle cx="3" cy="3" r="1.1" fill="#1f2933"/>
+      </pattern>
+    </defs><g transform="translate(30,60) rotate(336) scale(0.4)"><polygon points="-36,-10.8 7.2,-10.8 7.2,-21.6 36,0 7.2,21.6 7.2,10.8 -36,10.8" fill="none" stroke="#1f2933" stroke-width="2.2" stroke-linejoin="round" stroke-linecap="round"/></g>
+<g transform="translate(84,36) rotate(0) scale(0.9)"><circle cx="0" cy="0" r="10.080000000000002" fill="#1f2933" stroke="#1f2933" stroke-width="2.2" stroke-linejoin="round" stroke-linecap="round"/></g></svg></div><div class="lbl">B</div></div><div class="o">
+       <div class="p"><svg viewBox="0 0 120 120" width="96" height="96" xmlns="http://www.w3.org/2000/svg" role="img">
+    <defs>
+      <pattern id="hatch" width="7" height="7" patternUnits="userSpaceOnUse" patternTransform="rotate(45)">
+        <line x1="0" y1="0" x2="0" y2="7" stroke="#1f2933" stroke-width="1.6"/>
+      </pattern>
+      <pattern id="crosshatch" width="7" height="7" patternUnits="userSpaceOnUse">
+        <path d="M0 0 L7 0 M0 0 L0 7" stroke="#1f2933" stroke-width="1.1"/>
+      </pattern>
+      <pattern id="stipple" width="6" height="6" patternUnits="userSpaceOnUse">
+        <circle cx="3" cy="3" r="1.1" fill="#1f2933"/>
+      </pattern>
+    </defs><g transform="translate(30,60) rotate(104) scale(0.4)"><polygon points="-36,-10.8 7.2,-10.8 7.2,-21.6 36,0 7.2,21.6 7.2,10.8 -36,10.8" fill="none" stroke="#1f2933" stroke-width="2.2" stroke-linejoin="round" stroke-linecap="round"/></g>
+<g transform="translate(36,36) rotate(0) scale(0.9)"><circle cx="0" cy="0" r="10.080000000000002" fill="#1f2933" stroke="#1f2933" stroke-width="2.2" stroke-linejoin="round" stroke-linecap="round"/></g></svg></div><div class="lbl">C</div></div><div class="o">
+       <div class="p"><svg viewBox="0 0 120 120" width="96" height="96" xmlns="http://www.w3.org/2000/svg" role="img">
+    <defs>
+      <pattern id="hatch" width="7" height="7" patternUnits="userSpaceOnUse" patternTransform="rotate(45)">
+        <line x1="0" y1="0" x2="0" y2="7" stroke="#1f2933" stroke-width="1.6"/>
+      </pattern>
+      <pattern id="crosshatch" width="7" height="7" patternUnits="userSpaceOnUse">
+        <path d="M0 0 L7 0 M0 0 L0 7" stroke="#1f2933" stroke-width="1.1"/>
+      </pattern>
+      <pattern id="stipple" width="6" height="6" patternUnits="userSpaceOnUse">
+        <circle cx="3" cy="3" r="1.1" fill="#1f2933"/>
+      </pattern>
+    </defs><g transform="translate(30,60) rotate(336) scale(0.4)"><polygon points="-36,-10.8 7.2,-10.8 7.2,-21.6 36,0 7.2,21.6 7.2,10.8 -36,10.8" fill="none" stroke="#1f2933" stroke-width="2.2" stroke-linejoin="round" stroke-linecap="round"/></g>
+<g transform="translate(36,36) rotate(0) scale(0.9)"><circle cx="0" cy="0" r="10.080000000000002" fill="#1f2933" stroke="#1f2933" stroke-width="2.2" stroke-linejoin="round" stroke-linecap="round"/></g></svg></div><div class="lbl">D</div></div><div class="o">
+       <div class="p"><svg viewBox="0 0 120 120" width="96" height="96" xmlns="http://www.w3.org/2000/svg" role="img">
+    <defs>
+      <pattern id="hatch" width="7" height="7" patternUnits="userSpaceOnUse" patternTransform="rotate(45)">
+        <line x1="0" y1="0" x2="0" y2="7" stroke="#1f2933" stroke-width="1.6"/>
+      </pattern>
+      <pattern id="crosshatch" width="7" height="7" patternUnits="userSpaceOnUse">
+        <path d="M0 0 L7 0 M0 0 L0 7" stroke="#1f2933" stroke-width="1.1"/>
+      </pattern>
+      <pattern id="stipple" width="6" height="6" patternUnits="userSpaceOnUse">
+        <circle cx="3" cy="3" r="1.1" fill="#1f2933"/>
+      </pattern>
+    </defs><g transform="translate(30,60) rotate(284) scale(0.4)"><polygon points="-36,-10.8 7.2,-10.8 7.2,-21.6 36,0 7.2,21.6 7.2,10.8 -36,10.8" fill="none" stroke="#1f2933" stroke-width="2.2" stroke-linejoin="round" stroke-linecap="round"/></g>
+<g transform="translate(36,36) rotate(0) scale(0.9)"><circle cx="0" cy="0" r="10.080000000000002" fill="#1f2933" stroke="#1f2933" stroke-width="2.2" stroke-linejoin="round" stroke-linecap="round"/></g></svg></div><div class="lbl">E</div></div></div></div>
+    
+  </section><section>
+    <h2>Example 2 <span class="id">interactingMovement@1001</span></h2>
+    <p class="q">Which figure completes the grid?</p>
+    <div class="wrap"><svg viewBox="0 0 320 320" width="330" xmlns="http://www.w3.org/2000/svg"><rect width="320" height="320" fill="transparent"/><rect x="8" y="8" width="96" height="96" rx="10" fill="#fff" stroke="#d7dee6" stroke-width="2"/><svg x="14" y="14" width="84" height="84" viewBox="0 0 120 120">
+    <defs>
+      <pattern id="hatch" width="7" height="7" patternUnits="userSpaceOnUse" patternTransform="rotate(45)">
+        <line x1="0" y1="0" x2="0" y2="7" stroke="#1f2933" stroke-width="1.6"/>
+      </pattern>
+      <pattern id="crosshatch" width="7" height="7" patternUnits="userSpaceOnUse">
+        <path d="M0 0 L7 0 M0 0 L0 7" stroke="#1f2933" stroke-width="1.1"/>
+      </pattern>
+      <pattern id="stipple" width="6" height="6" patternUnits="userSpaceOnUse">
+        <circle cx="3" cy="3" r="1.1" fill="#1f2933"/>
+      </pattern>
+    </defs><g transform="translate(90,60) rotate(156) scale(0.4)"><polygon points="-36,-10.8 7.2,-10.8 7.2,-21.6 36,0 7.2,21.6 7.2,10.8 -36,10.8" fill="none" stroke="#1f2933" stroke-width="2.2" stroke-linejoin="round" stroke-linecap="round"/></g>
+<g transform="translate(36,84) rotate(0) scale(0.9)"><circle cx="0" cy="0" r="10.080000000000002" fill="#1f2933" stroke="#1f2933" stroke-width="2.2" stroke-linejoin="round" stroke-linecap="round"/></g></svg><rect x="112" y="8" width="96" height="96" rx="10" fill="#fff" stroke="#d7dee6" stroke-width="2"/><svg x="118" y="14" width="84" height="84" viewBox="0 0 120 120">
+    <defs>
+      <pattern id="hatch" width="7" height="7" patternUnits="userSpaceOnUse" patternTransform="rotate(45)">
+        <line x1="0" y1="0" x2="0" y2="7" stroke="#1f2933" stroke-width="1.6"/>
+      </pattern>
+      <pattern id="crosshatch" width="7" height="7" patternUnits="userSpaceOnUse">
+        <path d="M0 0 L7 0 M0 0 L0 7" stroke="#1f2933" stroke-width="1.1"/>
+      </pattern>
+      <pattern id="stipple" width="6" height="6" patternUnits="userSpaceOnUse">
+        <circle cx="3" cy="3" r="1.1" fill="#1f2933"/>
+      </pattern>
+    </defs><g transform="translate(90,60) rotate(104) scale(0.4)"><polygon points="-36,-10.8 7.2,-10.8 7.2,-21.6 36,0 7.2,21.6 7.2,10.8 -36,10.8" fill="none" stroke="#1f2933" stroke-width="2.2" stroke-linejoin="round" stroke-linecap="round"/></g>
+<g transform="translate(84,84) rotate(0) scale(0.9)"><circle cx="0" cy="0" r="10.080000000000002" fill="#1f2933" stroke="#1f2933" stroke-width="2.2" stroke-linejoin="round" stroke-linecap="round"/></g></svg><rect x="216" y="8" width="96" height="96" rx="10" fill="#fff" stroke="#d7dee6" stroke-width="2"/><svg x="222" y="14" width="84" height="84" viewBox="0 0 120 120">
+    <defs>
+      <pattern id="hatch" width="7" height="7" patternUnits="userSpaceOnUse" patternTransform="rotate(45)">
+        <line x1="0" y1="0" x2="0" y2="7" stroke="#1f2933" stroke-width="1.6"/>
+      </pattern>
+      <pattern id="crosshatch" width="7" height="7" patternUnits="userSpaceOnUse">
+        <path d="M0 0 L7 0 M0 0 L0 7" stroke="#1f2933" stroke-width="1.1"/>
+      </pattern>
+      <pattern id="stipple" width="6" height="6" patternUnits="userSpaceOnUse">
+        <circle cx="3" cy="3" r="1.1" fill="#1f2933"/>
+      </pattern>
+    </defs><g transform="translate(90,60) rotate(256) scale(0.4)"><polygon points="-36,-10.8 7.2,-10.8 7.2,-21.6 36,0 7.2,21.6 7.2,10.8 -36,10.8" fill="none" stroke="#1f2933" stroke-width="2.2" stroke-linejoin="round" stroke-linecap="round"/></g>
+<g transform="translate(84,36) rotate(0) scale(0.9)"><circle cx="0" cy="0" r="10.080000000000002" fill="#1f2933" stroke="#1f2933" stroke-width="2.2" stroke-linejoin="round" stroke-linecap="round"/></g></svg><rect x="8" y="112" width="96" height="96" rx="10" fill="#fff" stroke="#d7dee6" stroke-width="2"/><svg x="14" y="118" width="84" height="84" viewBox="0 0 120 120">
+    <defs>
+      <pattern id="hatch" width="7" height="7" patternUnits="userSpaceOnUse" patternTransform="rotate(45)">
+        <line x1="0" y1="0" x2="0" y2="7" stroke="#1f2933" stroke-width="1.6"/>
+      </pattern>
+      <pattern id="crosshatch" width="7" height="7" patternUnits="userSpaceOnUse">
+        <path d="M0 0 L7 0 M0 0 L0 7" stroke="#1f2933" stroke-width="1.1"/>
+      </pattern>
+      <pattern id="stipple" width="6" height="6" patternUnits="userSpaceOnUse">
+        <circle cx="3" cy="3" r="1.1" fill="#1f2933"/>
+      </pattern>
+    </defs><g transform="translate(60,30) rotate(114) scale(0.4)"><polygon points="-36,-10.8 7.2,-10.8 7.2,-21.6 36,0 7.2,21.6 7.2,10.8 -36,10.8" fill="none" stroke="#1f2933" stroke-width="2.2" stroke-linejoin="round" stroke-linecap="round"/></g>
+<g transform="translate(36,84) rotate(0) scale(0.9)"><circle cx="0" cy="0" r="10.080000000000002" fill="#1f2933" stroke="#1f2933" stroke-width="2.2" stroke-linejoin="round" stroke-linecap="round"/></g></svg><rect x="112" y="112" width="96" height="96" rx="10" fill="#fff" stroke="#d7dee6" stroke-width="2"/><svg x="118" y="118" width="84" height="84" viewBox="0 0 120 120">
+    <defs>
+      <pattern id="hatch" width="7" height="7" patternUnits="userSpaceOnUse" patternTransform="rotate(45)">
+        <line x1="0" y1="0" x2="0" y2="7" stroke="#1f2933" stroke-width="1.6"/>
+      </pattern>
+      <pattern id="crosshatch" width="7" height="7" patternUnits="userSpaceOnUse">
+        <path d="M0 0 L7 0 M0 0 L0 7" stroke="#1f2933" stroke-width="1.1"/>
+      </pattern>
+      <pattern id="stipple" width="6" height="6" patternUnits="userSpaceOnUse">
+        <circle cx="3" cy="3" r="1.1" fill="#1f2933"/>
+      </pattern>
+    </defs><g transform="translate(60,30) rotate(66) scale(0.4)"><polygon points="-36,-10.8 7.2,-10.8 7.2,-21.6 36,0 7.2,21.6 7.2,10.8 -36,10.8" fill="none" stroke="#1f2933" stroke-width="2.2" stroke-linejoin="round" stroke-linecap="round"/></g>
+<g transform="translate(84,84) rotate(0) scale(0.9)"><circle cx="0" cy="0" r="10.080000000000002" fill="#1f2933" stroke="#1f2933" stroke-width="2.2" stroke-linejoin="round" stroke-linecap="round"/></g></svg><rect x="216" y="112" width="96" height="96" rx="10" fill="#fff" stroke="#d7dee6" stroke-width="2"/><svg x="222" y="118" width="84" height="84" viewBox="0 0 120 120">
+    <defs>
+      <pattern id="hatch" width="7" height="7" patternUnits="userSpaceOnUse" patternTransform="rotate(45)">
+        <line x1="0" y1="0" x2="0" y2="7" stroke="#1f2933" stroke-width="1.6"/>
+      </pattern>
+      <pattern id="crosshatch" width="7" height="7" patternUnits="userSpaceOnUse">
+        <path d="M0 0 L7 0 M0 0 L0 7" stroke="#1f2933" stroke-width="1.1"/>
+      </pattern>
+      <pattern id="stipple" width="6" height="6" patternUnits="userSpaceOnUse">
+        <circle cx="3" cy="3" r="1.1" fill="#1f2933"/>
+      </pattern>
+    </defs><g transform="translate(60,30) rotate(14) scale(0.4)"><polygon points="-36,-10.8 7.2,-10.8 7.2,-21.6 36,0 7.2,21.6 7.2,10.8 -36,10.8" fill="none" stroke="#1f2933" stroke-width="2.2" stroke-linejoin="round" stroke-linecap="round"/></g>
+<g transform="translate(84,36) rotate(0) scale(0.9)"><circle cx="0" cy="0" r="10.080000000000002" fill="#1f2933" stroke="#1f2933" stroke-width="2.2" stroke-linejoin="round" stroke-linecap="round"/></g></svg><rect x="8" y="216" width="96" height="96" rx="10" fill="#fff" stroke="#d7dee6" stroke-width="2"/><svg x="14" y="222" width="84" height="84" viewBox="0 0 120 120">
+    <defs>
+      <pattern id="hatch" width="7" height="7" patternUnits="userSpaceOnUse" patternTransform="rotate(45)">
+        <line x1="0" y1="0" x2="0" y2="7" stroke="#1f2933" stroke-width="1.6"/>
+      </pattern>
+      <pattern id="crosshatch" width="7" height="7" patternUnits="userSpaceOnUse">
+        <path d="M0 0 L7 0 M0 0 L0 7" stroke="#1f2933" stroke-width="1.1"/>
+      </pattern>
+      <pattern id="stipple" width="6" height="6" patternUnits="userSpaceOnUse">
+        <circle cx="3" cy="3" r="1.1" fill="#1f2933"/>
+      </pattern>
+    </defs><g transform="translate(30,60) rotate(76) scale(0.4)"><polygon points="-36,-10.8 7.2,-10.8 7.2,-21.6 36,0 7.2,21.6 7.2,10.8 -36,10.8" fill="none" stroke="#1f2933" stroke-width="2.2" stroke-linejoin="round" stroke-linecap="round"/></g>
+<g transform="translate(36,84) rotate(0) scale(0.9)"><circle cx="0" cy="0" r="10.080000000000002" fill="#1f2933" stroke="#1f2933" stroke-width="2.2" stroke-linejoin="round" stroke-linecap="round"/></g></svg><rect x="112" y="216" width="96" height="96" rx="10" fill="#fff" stroke="#d7dee6" stroke-width="2"/><svg x="118" y="222" width="84" height="84" viewBox="0 0 120 120">
+    <defs>
+      <pattern id="hatch" width="7" height="7" patternUnits="userSpaceOnUse" patternTransform="rotate(45)">
+        <line x1="0" y1="0" x2="0" y2="7" stroke="#1f2933" stroke-width="1.6"/>
+      </pattern>
+      <pattern id="crosshatch" width="7" height="7" patternUnits="userSpaceOnUse">
+        <path d="M0 0 L7 0 M0 0 L0 7" stroke="#1f2933" stroke-width="1.1"/>
+      </pattern>
+      <pattern id="stipple" width="6" height="6" patternUnits="userSpaceOnUse">
+        <circle cx="3" cy="3" r="1.1" fill="#1f2933"/>
+      </pattern>
+    </defs><g transform="translate(30,60) rotate(24) scale(0.4)"><polygon points="-36,-10.8 7.2,-10.8 7.2,-21.6 36,0 7.2,21.6 7.2,10.8 -36,10.8" fill="none" stroke="#1f2933" stroke-width="2.2" stroke-linejoin="round" stroke-linecap="round"/></g>
+<g transform="translate(84,84) rotate(0) scale(0.9)"><circle cx="0" cy="0" r="10.080000000000002" fill="#1f2933" stroke="#1f2933" stroke-width="2.2" stroke-linejoin="round" stroke-linecap="round"/></g></svg><rect x="216" y="216" width="96" height="96" rx="10" fill="#fff" stroke="#2f6f8f" stroke-width="2" stroke-dasharray="6 5"/><text x="264" y="278" text-anchor="middle" font-size="40" font-weight="700" fill="#2f6f8f" font-family="Lexend Deca, sans-serif">?</text></svg><div class="opts"><div class="o">
+       <div class="p"><svg viewBox="0 0 120 120" width="96" height="96" xmlns="http://www.w3.org/2000/svg" role="img">
+    <defs>
+      <pattern id="hatch" width="7" height="7" patternUnits="userSpaceOnUse" patternTransform="rotate(45)">
+        <line x1="0" y1="0" x2="0" y2="7" stroke="#1f2933" stroke-width="1.6"/>
+      </pattern>
+      <pattern id="crosshatch" width="7" height="7" patternUnits="userSpaceOnUse">
+        <path d="M0 0 L7 0 M0 0 L0 7" stroke="#1f2933" stroke-width="1.1"/>
+      </pattern>
+      <pattern id="stipple" width="6" height="6" patternUnits="userSpaceOnUse">
+        <circle cx="3" cy="3" r="1.1" fill="#1f2933"/>
+      </pattern>
+    </defs><g transform="translate(30,60) rotate(24) scale(0.4)"><polygon points="-36,-10.8 7.2,-10.8 7.2,-21.6 36,0 7.2,21.6 7.2,10.8 -36,10.8" fill="none" stroke="#1f2933" stroke-width="2.2" stroke-linejoin="round" stroke-linecap="round"/></g>
+<g transform="translate(84,36) rotate(0) scale(0.9)"><circle cx="0" cy="0" r="10.080000000000002" fill="#1f2933" stroke="#1f2933" stroke-width="2.2" stroke-linejoin="round" stroke-linecap="round"/></g></svg></div><div class="lbl">A</div></div><div class="o">
+       <div class="p"><svg viewBox="0 0 120 120" width="96" height="96" xmlns="http://www.w3.org/2000/svg" role="img">
+    <defs>
+      <pattern id="hatch" width="7" height="7" patternUnits="userSpaceOnUse" patternTransform="rotate(45)">
+        <line x1="0" y1="0" x2="0" y2="7" stroke="#1f2933" stroke-width="1.6"/>
+      </pattern>
+      <pattern id="crosshatch" width="7" height="7" patternUnits="userSpaceOnUse">
+        <path d="M0 0 L7 0 M0 0 L0 7" stroke="#1f2933" stroke-width="1.1"/>
+      </pattern>
+      <pattern id="stipple" width="6" height="6" patternUnits="userSpaceOnUse">
+        <circle cx="3" cy="3" r="1.1" fill="#1f2933"/>
+      </pattern>
+    </defs><g transform="translate(60,30) rotate(14) scale(0.4)"><polygon points="-36,-10.8 7.2,-10.8 7.2,-21.6 36,0 7.2,21.6 7.2,10.8 -36,10.8" fill="none" stroke="#1f2933" stroke-width="2.2" stroke-linejoin="round" stroke-linecap="round"/></g>
+<g transform="translate(84,36) rotate(0) scale(0.9)"><circle cx="0" cy="0" r="10.080000000000002" fill="#1f2933" stroke="#1f2933" stroke-width="2.2" stroke-linejoin="round" stroke-linecap="round"/></g></svg></div><div class="lbl">B</div></div><div class="o">
+       <div class="p"><svg viewBox="0 0 120 120" width="96" height="96" xmlns="http://www.w3.org/2000/svg" role="img">
+    <defs>
+      <pattern id="hatch" width="7" height="7" patternUnits="userSpaceOnUse" patternTransform="rotate(45)">
+        <line x1="0" y1="0" x2="0" y2="7" stroke="#1f2933" stroke-width="1.6"/>
+      </pattern>
+      <pattern id="crosshatch" width="7" height="7" patternUnits="userSpaceOnUse">
+        <path d="M0 0 L7 0 M0 0 L0 7" stroke="#1f2933" stroke-width="1.1"/>
+      </pattern>
+      <pattern id="stipple" width="6" height="6" patternUnits="userSpaceOnUse">
+        <circle cx="3" cy="3" r="1.1" fill="#1f2933"/>
+      </pattern>
+    </defs><g transform="translate(30,60) rotate(24) scale(0.4)"><polygon points="-36,-10.8 7.2,-10.8 7.2,-21.6 36,0 7.2,21.6 7.2,10.8 -36,10.8" fill="none" stroke="#1f2933" stroke-width="2.2" stroke-linejoin="round" stroke-linecap="round"/></g>
+<g transform="translate(84,84) rotate(0) scale(0.9)"><circle cx="0" cy="0" r="10.080000000000002" fill="#1f2933" stroke="#1f2933" stroke-width="2.2" stroke-linejoin="round" stroke-linecap="round"/></g></svg></div><div class="lbl">C</div></div><div class="o">
+       <div class="p"><svg viewBox="0 0 120 120" width="96" height="96" xmlns="http://www.w3.org/2000/svg" role="img">
+    <defs>
+      <pattern id="hatch" width="7" height="7" patternUnits="userSpaceOnUse" patternTransform="rotate(45)">
+        <line x1="0" y1="0" x2="0" y2="7" stroke="#1f2933" stroke-width="1.6"/>
+      </pattern>
+      <pattern id="crosshatch" width="7" height="7" patternUnits="userSpaceOnUse">
+        <path d="M0 0 L7 0 M0 0 L0 7" stroke="#1f2933" stroke-width="1.1"/>
+      </pattern>
+      <pattern id="stipple" width="6" height="6" patternUnits="userSpaceOnUse">
+        <circle cx="3" cy="3" r="1.1" fill="#1f2933"/>
+      </pattern>
+    </defs><g transform="translate(30,60) rotate(156) scale(0.4)"><polygon points="-36,-10.8 7.2,-10.8 7.2,-21.6 36,0 7.2,21.6 7.2,10.8 -36,10.8" fill="none" stroke="#1f2933" stroke-width="2.2" stroke-linejoin="round" stroke-linecap="round"/></g>
+<g transform="translate(84,36) rotate(0) scale(0.9)"><circle cx="0" cy="0" r="10.080000000000002" fill="#1f2933" stroke="#1f2933" stroke-width="2.2" stroke-linejoin="round" stroke-linecap="round"/></g></svg></div><div class="lbl">D</div></div><div class="o">
+       <div class="p"><svg viewBox="0 0 120 120" width="96" height="96" xmlns="http://www.w3.org/2000/svg" role="img">
+    <defs>
+      <pattern id="hatch" width="7" height="7" patternUnits="userSpaceOnUse" patternTransform="rotate(45)">
+        <line x1="0" y1="0" x2="0" y2="7" stroke="#1f2933" stroke-width="1.6"/>
+      </pattern>
+      <pattern id="crosshatch" width="7" height="7" patternUnits="userSpaceOnUse">
+        <path d="M0 0 L7 0 M0 0 L0 7" stroke="#1f2933" stroke-width="1.1"/>
+      </pattern>
+      <pattern id="stipple" width="6" height="6" patternUnits="userSpaceOnUse">
+        <circle cx="3" cy="3" r="1.1" fill="#1f2933"/>
+      </pattern>
+    </defs><g transform="translate(30,60) rotate(336) scale(0.4)"><polygon points="-36,-10.8 7.2,-10.8 7.2,-21.6 36,0 7.2,21.6 7.2,10.8 -36,10.8" fill="none" stroke="#1f2933" stroke-width="2.2" stroke-linejoin="round" stroke-linecap="round"/></g>
+<g transform="translate(84,36) rotate(0) scale(0.9)"><circle cx="0" cy="0" r="10.080000000000002" fill="#1f2933" stroke="#1f2933" stroke-width="2.2" stroke-linejoin="round" stroke-linecap="round"/></g></svg></div><div class="lbl">E</div></div></div></div>
+    
+  </section><section>
+    <h2>Example 3 <span class="id">interactingMovement@1002</span></h2>
+    <p class="q">Which figure completes the grid?</p>
+    <div class="wrap"><svg viewBox="0 0 320 320" width="330" xmlns="http://www.w3.org/2000/svg"><rect width="320" height="320" fill="transparent"/><rect x="8" y="8" width="96" height="96" rx="10" fill="#fff" stroke="#d7dee6" stroke-width="2"/><svg x="14" y="14" width="84" height="84" viewBox="0 0 120 120">
+    <defs>
+      <pattern id="hatch" width="7" height="7" patternUnits="userSpaceOnUse" patternTransform="rotate(45)">
+        <line x1="0" y1="0" x2="0" y2="7" stroke="#1f2933" stroke-width="1.6"/>
+      </pattern>
+      <pattern id="crosshatch" width="7" height="7" patternUnits="userSpaceOnUse">
+        <path d="M0 0 L7 0 M0 0 L0 7" stroke="#1f2933" stroke-width="1.1"/>
+      </pattern>
+      <pattern id="stipple" width="6" height="6" patternUnits="userSpaceOnUse">
+        <circle cx="3" cy="3" r="1.1" fill="#1f2933"/>
+      </pattern>
+    </defs><g transform="translate(60,30) rotate(66) scale(0.4)"><polygon points="-36,-10.8 7.2,-10.8 7.2,-21.6 36,0 7.2,21.6 7.2,10.8 -36,10.8" fill="none" stroke="#1f2933" stroke-width="2.2" stroke-linejoin="round" stroke-linecap="round"/></g>
+<g transform="translate(84,84) rotate(0) scale(0.9)"><circle cx="0" cy="0" r="10.080000000000002" fill="#1f2933" stroke="#1f2933" stroke-width="2.2" stroke-linejoin="round" stroke-linecap="round"/></g></svg><rect x="112" y="8" width="96" height="96" rx="10" fill="#fff" stroke="#d7dee6" stroke-width="2"/><svg x="118" y="14" width="84" height="84" viewBox="0 0 120 120">
+    <defs>
+      <pattern id="hatch" width="7" height="7" patternUnits="userSpaceOnUse" patternTransform="rotate(45)">
+        <line x1="0" y1="0" x2="0" y2="7" stroke="#1f2933" stroke-width="1.6"/>
+      </pattern>
+      <pattern id="crosshatch" width="7" height="7" patternUnits="userSpaceOnUse">
+        <path d="M0 0 L7 0 M0 0 L0 7" stroke="#1f2933" stroke-width="1.1"/>
+      </pattern>
+      <pattern id="stipple" width="6" height="6" patternUnits="userSpaceOnUse">
+        <circle cx="3" cy="3" r="1.1" fill="#1f2933"/>
+      </pattern>
+    </defs><g transform="translate(60,30) rotate(14) scale(0.4)"><polygon points="-36,-10.8 7.2,-10.8 7.2,-21.6 36,0 7.2,21.6 7.2,10.8 -36,10.8" fill="none" stroke="#1f2933" stroke-width="2.2" stroke-linejoin="round" stroke-linecap="round"/></g>
+<g transform="translate(84,36) rotate(0) scale(0.9)"><circle cx="0" cy="0" r="10.080000000000002" fill="#1f2933" stroke="#1f2933" stroke-width="2.2" stroke-linejoin="round" stroke-linecap="round"/></g></svg><rect x="216" y="8" width="96" height="96" rx="10" fill="#fff" stroke="#d7dee6" stroke-width="2"/><svg x="222" y="14" width="84" height="84" viewBox="0 0 120 120">
+    <defs>
+      <pattern id="hatch" width="7" height="7" patternUnits="userSpaceOnUse" patternTransform="rotate(45)">
+        <line x1="0" y1="0" x2="0" y2="7" stroke="#1f2933" stroke-width="1.6"/>
+      </pattern>
+      <pattern id="crosshatch" width="7" height="7" patternUnits="userSpaceOnUse">
+        <path d="M0 0 L7 0 M0 0 L0 7" stroke="#1f2933" stroke-width="1.1"/>
+      </pattern>
+      <pattern id="stipple" width="6" height="6" patternUnits="userSpaceOnUse">
+        <circle cx="3" cy="3" r="1.1" fill="#1f2933"/>
+      </pattern>
+    </defs><g transform="translate(60,30) rotate(166) scale(0.4)"><polygon points="-36,-10.8 7.2,-10.8 7.2,-21.6 36,0 7.2,21.6 7.2,10.8 -36,10.8" fill="none" stroke="#1f2933" stroke-width="2.2" stroke-linejoin="round" stroke-linecap="round"/></g>
+<g transform="translate(36,36) rotate(0) scale(0.9)"><circle cx="0" cy="0" r="10.080000000000002" fill="#1f2933" stroke="#1f2933" stroke-width="2.2" stroke-linejoin="round" stroke-linecap="round"/></g></svg><rect x="8" y="112" width="96" height="96" rx="10" fill="#fff" stroke="#d7dee6" stroke-width="2"/><svg x="14" y="118" width="84" height="84" viewBox="0 0 120 120">
+    <defs>
+      <pattern id="hatch" width="7" height="7" patternUnits="userSpaceOnUse" patternTransform="rotate(45)">
+        <line x1="0" y1="0" x2="0" y2="7" stroke="#1f2933" stroke-width="1.6"/>
+      </pattern>
+      <pattern id="crosshatch" width="7" height="7" patternUnits="userSpaceOnUse">
+        <path d="M0 0 L7 0 M0 0 L0 7" stroke="#1f2933" stroke-width="1.1"/>
+      </pattern>
+      <pattern id="stipple" width="6" height="6" patternUnits="userSpaceOnUse">
+        <circle cx="3" cy="3" r="1.1" fill="#1f2933"/>
+      </pattern>
+    </defs><g transform="translate(30,60) rotate(24) scale(0.4)"><polygon points="-36,-10.8 7.2,-10.8 7.2,-21.6 36,0 7.2,21.6 7.2,10.8 -36,10.8" fill="none" stroke="#1f2933" stroke-width="2.2" stroke-linejoin="round" stroke-linecap="round"/></g>
+<g transform="translate(84,84) rotate(0) scale(0.9)"><circle cx="0" cy="0" r="10.080000000000002" fill="#1f2933" stroke="#1f2933" stroke-width="2.2" stroke-linejoin="round" stroke-linecap="round"/></g></svg><rect x="112" y="112" width="96" height="96" rx="10" fill="#fff" stroke="#d7dee6" stroke-width="2"/><svg x="118" y="118" width="84" height="84" viewBox="0 0 120 120">
+    <defs>
+      <pattern id="hatch" width="7" height="7" patternUnits="userSpaceOnUse" patternTransform="rotate(45)">
+        <line x1="0" y1="0" x2="0" y2="7" stroke="#1f2933" stroke-width="1.6"/>
+      </pattern>
+      <pattern id="crosshatch" width="7" height="7" patternUnits="userSpaceOnUse">
+        <path d="M0 0 L7 0 M0 0 L0 7" stroke="#1f2933" stroke-width="1.1"/>
+      </pattern>
+      <pattern id="stipple" width="6" height="6" patternUnits="userSpaceOnUse">
+        <circle cx="3" cy="3" r="1.1" fill="#1f2933"/>
+      </pattern>
+    </defs><g transform="translate(30,60) rotate(336) scale(0.4)"><polygon points="-36,-10.8 7.2,-10.8 7.2,-21.6 36,0 7.2,21.6 7.2,10.8 -36,10.8" fill="none" stroke="#1f2933" stroke-width="2.2" stroke-linejoin="round" stroke-linecap="round"/></g>
+<g transform="translate(84,36) rotate(0) scale(0.9)"><circle cx="0" cy="0" r="10.080000000000002" fill="#1f2933" stroke="#1f2933" stroke-width="2.2" stroke-linejoin="round" stroke-linecap="round"/></g></svg><rect x="216" y="112" width="96" height="96" rx="10" fill="#fff" stroke="#d7dee6" stroke-width="2"/><svg x="222" y="118" width="84" height="84" viewBox="0 0 120 120">
+    <defs>
+      <pattern id="hatch" width="7" height="7" patternUnits="userSpaceOnUse" patternTransform="rotate(45)">
+        <line x1="0" y1="0" x2="0" y2="7" stroke="#1f2933" stroke-width="1.6"/>
+      </pattern>
+      <pattern id="crosshatch" width="7" height="7" patternUnits="userSpaceOnUse">
+        <path d="M0 0 L7 0 M0 0 L0 7" stroke="#1f2933" stroke-width="1.1"/>
+      </pattern>
+      <pattern id="stipple" width="6" height="6" patternUnits="userSpaceOnUse">
+        <circle cx="3" cy="3" r="1.1" fill="#1f2933"/>
+      </pattern>
+    </defs><g transform="translate(30,60) rotate(284) scale(0.4)"><polygon points="-36,-10.8 7.2,-10.8 7.2,-21.6 36,0 7.2,21.6 7.2,10.8 -36,10.8" fill="none" stroke="#1f2933" stroke-width="2.2" stroke-linejoin="round" stroke-linecap="round"/></g>
+<g transform="translate(36,36) rotate(0) scale(0.9)"><circle cx="0" cy="0" r="10.080000000000002" fill="#1f2933" stroke="#1f2933" stroke-width="2.2" stroke-linejoin="round" stroke-linecap="round"/></g></svg><rect x="8" y="216" width="96" height="96" rx="10" fill="#fff" stroke="#d7dee6" stroke-width="2"/><svg x="14" y="222" width="84" height="84" viewBox="0 0 120 120">
+    <defs>
+      <pattern id="hatch" width="7" height="7" patternUnits="userSpaceOnUse" patternTransform="rotate(45)">
+        <line x1="0" y1="0" x2="0" y2="7" stroke="#1f2933" stroke-width="1.6"/>
+      </pattern>
+      <pattern id="crosshatch" width="7" height="7" patternUnits="userSpaceOnUse">
+        <path d="M0 0 L7 0 M0 0 L0 7" stroke="#1f2933" stroke-width="1.1"/>
+      </pattern>
+      <pattern id="stipple" width="6" height="6" patternUnits="userSpaceOnUse">
+        <circle cx="3" cy="3" r="1.1" fill="#1f2933"/>
+      </pattern>
+    </defs><g transform="translate(60,90) rotate(346) scale(0.4)"><polygon points="-36,-10.8 7.2,-10.8 7.2,-21.6 36,0 7.2,21.6 7.2,10.8 -36,10.8" fill="none" stroke="#1f2933" stroke-width="2.2" stroke-linejoin="round" stroke-linecap="round"/></g>
+<g transform="translate(84,84) rotate(0) scale(0.9)"><circle cx="0" cy="0" r="10.080000000000002" fill="#1f2933" stroke="#1f2933" stroke-width="2.2" stroke-linejoin="round" stroke-linecap="round"/></g></svg><rect x="112" y="216" width="96" height="96" rx="10" fill="#fff" stroke="#d7dee6" stroke-width="2"/><svg x="118" y="222" width="84" height="84" viewBox="0 0 120 120">
+    <defs>
+      <pattern id="hatch" width="7" height="7" patternUnits="userSpaceOnUse" patternTransform="rotate(45)">
+        <line x1="0" y1="0" x2="0" y2="7" stroke="#1f2933" stroke-width="1.6"/>
+      </pattern>
+      <pattern id="crosshatch" width="7" height="7" patternUnits="userSpaceOnUse">
+        <path d="M0 0 L7 0 M0 0 L0 7" stroke="#1f2933" stroke-width="1.1"/>
+      </pattern>
+      <pattern id="stipple" width="6" height="6" patternUnits="userSpaceOnUse">
+        <circle cx="3" cy="3" r="1.1" fill="#1f2933"/>
+      </pattern>
+    </defs><g transform="translate(60,90) rotate(294) scale(0.4)"><polygon points="-36,-10.8 7.2,-10.8 7.2,-21.6 36,0 7.2,21.6 7.2,10.8 -36,10.8" fill="none" stroke="#1f2933" stroke-width="2.2" stroke-linejoin="round" stroke-linecap="round"/></g>
+<g transform="translate(84,36) rotate(0) scale(0.9)"><circle cx="0" cy="0" r="10.080000000000002" fill="#1f2933" stroke="#1f2933" stroke-width="2.2" stroke-linejoin="round" stroke-linecap="round"/></g></svg><rect x="216" y="216" width="96" height="96" rx="10" fill="#fff" stroke="#2f6f8f" stroke-width="2" stroke-dasharray="6 5"/><text x="264" y="278" text-anchor="middle" font-size="40" font-weight="700" fill="#2f6f8f" font-family="Lexend Deca, sans-serif">?</text></svg><div class="opts"><div class="o">
+       <div class="p"><svg viewBox="0 0 120 120" width="96" height="96" xmlns="http://www.w3.org/2000/svg" role="img">
+    <defs>
+      <pattern id="hatch" width="7" height="7" patternUnits="userSpaceOnUse" patternTransform="rotate(45)">
+        <line x1="0" y1="0" x2="0" y2="7" stroke="#1f2933" stroke-width="1.6"/>
+      </pattern>
+      <pattern id="crosshatch" width="7" height="7" patternUnits="userSpaceOnUse">
+        <path d="M0 0 L7 0 M0 0 L0 7" stroke="#1f2933" stroke-width="1.1"/>
+      </pattern>
+      <pattern id="stipple" width="6" height="6" patternUnits="userSpaceOnUse">
+        <circle cx="3" cy="3" r="1.1" fill="#1f2933"/>
+      </pattern>
+    </defs><g transform="translate(30,60) rotate(284) scale(0.4)"><polygon points="-36,-10.8 7.2,-10.8 7.2,-21.6 36,0 7.2,21.6 7.2,10.8 -36,10.8" fill="none" stroke="#1f2933" stroke-width="2.2" stroke-linejoin="round" stroke-linecap="round"/></g>
+<g transform="translate(36,36) rotate(0) scale(0.9)"><circle cx="0" cy="0" r="10.080000000000002" fill="#1f2933" stroke="#1f2933" stroke-width="2.2" stroke-linejoin="round" stroke-linecap="round"/></g></svg></div><div class="lbl">A</div></div><div class="o">
+       <div class="p"><svg viewBox="0 0 120 120" width="96" height="96" xmlns="http://www.w3.org/2000/svg" role="img">
+    <defs>
+      <pattern id="hatch" width="7" height="7" patternUnits="userSpaceOnUse" patternTransform="rotate(45)">
+        <line x1="0" y1="0" x2="0" y2="7" stroke="#1f2933" stroke-width="1.6"/>
+      </pattern>
+      <pattern id="crosshatch" width="7" height="7" patternUnits="userSpaceOnUse">
+        <path d="M0 0 L7 0 M0 0 L0 7" stroke="#1f2933" stroke-width="1.1"/>
+      </pattern>
+      <pattern id="stipple" width="6" height="6" patternUnits="userSpaceOnUse">
+        <circle cx="3" cy="3" r="1.1" fill="#1f2933"/>
+      </pattern>
+    </defs><g transform="translate(60,90) rotate(294) scale(0.4)"><polygon points="-36,-10.8 7.2,-10.8 7.2,-21.6 36,0 7.2,21.6 7.2,10.8 -36,10.8" fill="none" stroke="#1f2933" stroke-width="2.2" stroke-linejoin="round" stroke-linecap="round"/></g>
+<g transform="translate(84,36) rotate(0) scale(0.9)"><circle cx="0" cy="0" r="10.080000000000002" fill="#1f2933" stroke="#1f2933" stroke-width="2.2" stroke-linejoin="round" stroke-linecap="round"/></g></svg></div><div class="lbl">B</div></div><div class="o">
+       <div class="p"><svg viewBox="0 0 120 120" width="96" height="96" xmlns="http://www.w3.org/2000/svg" role="img">
+    <defs>
+      <pattern id="hatch" width="7" height="7" patternUnits="userSpaceOnUse" patternTransform="rotate(45)">
+        <line x1="0" y1="0" x2="0" y2="7" stroke="#1f2933" stroke-width="1.6"/>
+      </pattern>
+      <pattern id="crosshatch" width="7" height="7" patternUnits="userSpaceOnUse">
+        <path d="M0 0 L7 0 M0 0 L0 7" stroke="#1f2933" stroke-width="1.1"/>
+      </pattern>
+      <pattern id="stipple" width="6" height="6" patternUnits="userSpaceOnUse">
+        <circle cx="3" cy="3" r="1.1" fill="#1f2933"/>
+      </pattern>
+    </defs><g transform="translate(60,90) rotate(246) scale(0.4)"><polygon points="-36,-10.8 7.2,-10.8 7.2,-21.6 36,0 7.2,21.6 7.2,10.8 -36,10.8" fill="none" stroke="#1f2933" stroke-width="2.2" stroke-linejoin="round" stroke-linecap="round"/></g>
+<g transform="translate(36,36) rotate(0) scale(0.9)"><circle cx="0" cy="0" r="10.080000000000002" fill="#1f2933" stroke="#1f2933" stroke-width="2.2" stroke-linejoin="round" stroke-linecap="round"/></g></svg></div><div class="lbl">C</div></div><div class="o">
+       <div class="p"><svg viewBox="0 0 120 120" width="96" height="96" xmlns="http://www.w3.org/2000/svg" role="img">
+    <defs>
+      <pattern id="hatch" width="7" height="7" patternUnits="userSpaceOnUse" patternTransform="rotate(45)">
+        <line x1="0" y1="0" x2="0" y2="7" stroke="#1f2933" stroke-width="1.6"/>
+      </pattern>
+      <pattern id="crosshatch" width="7" height="7" patternUnits="userSpaceOnUse">
+        <path d="M0 0 L7 0 M0 0 L0 7" stroke="#1f2933" stroke-width="1.1"/>
+      </pattern>
+      <pattern id="stipple" width="6" height="6" patternUnits="userSpaceOnUse">
+        <circle cx="3" cy="3" r="1.1" fill="#1f2933"/>
+      </pattern>
+    </defs><g transform="translate(60,90) rotate(66) scale(0.4)"><polygon points="-36,-10.8 7.2,-10.8 7.2,-21.6 36,0 7.2,21.6 7.2,10.8 -36,10.8" fill="none" stroke="#1f2933" stroke-width="2.2" stroke-linejoin="round" stroke-linecap="round"/></g>
+<g transform="translate(36,36) rotate(0) scale(0.9)"><circle cx="0" cy="0" r="10.080000000000002" fill="#1f2933" stroke="#1f2933" stroke-width="2.2" stroke-linejoin="round" stroke-linecap="round"/></g></svg></div><div class="lbl">D</div></div><div class="o">
+       <div class="p"><svg viewBox="0 0 120 120" width="96" height="96" xmlns="http://www.w3.org/2000/svg" role="img">
+    <defs>
+      <pattern id="hatch" width="7" height="7" patternUnits="userSpaceOnUse" patternTransform="rotate(45)">
+        <line x1="0" y1="0" x2="0" y2="7" stroke="#1f2933" stroke-width="1.6"/>
+      </pattern>
+      <pattern id="crosshatch" width="7" height="7" patternUnits="userSpaceOnUse">
+        <path d="M0 0 L7 0 M0 0 L0 7" stroke="#1f2933" stroke-width="1.1"/>
+      </pattern>
+      <pattern id="stipple" width="6" height="6" patternUnits="userSpaceOnUse">
+        <circle cx="3" cy="3" r="1.1" fill="#1f2933"/>
+      </pattern>
+    </defs><g transform="translate(60,90) rotate(294) scale(0.4)"><polygon points="-36,-10.8 7.2,-10.8 7.2,-21.6 36,0 7.2,21.6 7.2,10.8 -36,10.8" fill="none" stroke="#1f2933" stroke-width="2.2" stroke-linejoin="round" stroke-linecap="round"/></g>
+<g transform="translate(36,36) rotate(0) scale(0.9)"><circle cx="0" cy="0" r="10.080000000000002" fill="#1f2933" stroke="#1f2933" stroke-width="2.2" stroke-linejoin="round" stroke-linecap="round"/></g></svg></div><div class="lbl">E</div></div></div></div>
+    
+  </section><section>
+    <h2>Example 4 <span class="id">interactingMovement@1003</span></h2>
+    <p class="q">Which figure completes the grid?</p>
+    <div class="wrap"><svg viewBox="0 0 320 320" width="330" xmlns="http://www.w3.org/2000/svg"><rect width="320" height="320" fill="transparent"/><rect x="8" y="8" width="96" height="96" rx="10" fill="#fff" stroke="#d7dee6" stroke-width="2"/><svg x="14" y="14" width="84" height="84" viewBox="0 0 120 120">
+    <defs>
+      <pattern id="hatch" width="7" height="7" patternUnits="userSpaceOnUse" patternTransform="rotate(45)">
+        <line x1="0" y1="0" x2="0" y2="7" stroke="#1f2933" stroke-width="1.6"/>
+      </pattern>
+      <pattern id="crosshatch" width="7" height="7" patternUnits="userSpaceOnUse">
+        <path d="M0 0 L7 0 M0 0 L0 7" stroke="#1f2933" stroke-width="1.1"/>
+      </pattern>
+      <pattern id="stipple" width="6" height="6" patternUnits="userSpaceOnUse">
+        <circle cx="3" cy="3" r="1.1" fill="#1f2933"/>
+      </pattern>
+    </defs><g transform="translate(60,30) rotate(166) scale(0.4)"><polygon points="-36,-10.8 7.2,-10.8 7.2,-21.6 36,0 7.2,21.6 7.2,10.8 -36,10.8" fill="none" stroke="#1f2933" stroke-width="2.2" stroke-linejoin="round" stroke-linecap="round"/></g>
+<g transform="translate(36,36) rotate(0) scale(0.9)"><circle cx="0" cy="0" r="10.080000000000002" fill="#1f2933" stroke="#1f2933" stroke-width="2.2" stroke-linejoin="round" stroke-linecap="round"/></g></svg><rect x="112" y="8" width="96" height="96" rx="10" fill="#fff" stroke="#d7dee6" stroke-width="2"/><svg x="118" y="14" width="84" height="84" viewBox="0 0 120 120">
+    <defs>
+      <pattern id="hatch" width="7" height="7" patternUnits="userSpaceOnUse" patternTransform="rotate(45)">
+        <line x1="0" y1="0" x2="0" y2="7" stroke="#1f2933" stroke-width="1.6"/>
+      </pattern>
+      <pattern id="crosshatch" width="7" height="7" patternUnits="userSpaceOnUse">
+        <path d="M0 0 L7 0 M0 0 L0 7" stroke="#1f2933" stroke-width="1.1"/>
+      </pattern>
+      <pattern id="stipple" width="6" height="6" patternUnits="userSpaceOnUse">
+        <circle cx="3" cy="3" r="1.1" fill="#1f2933"/>
+      </pattern>
+    </defs><g transform="translate(60,30) rotate(114) scale(0.4)"><polygon points="-36,-10.8 7.2,-10.8 7.2,-21.6 36,0 7.2,21.6 7.2,10.8 -36,10.8" fill="none" stroke="#1f2933" stroke-width="2.2" stroke-linejoin="round" stroke-linecap="round"/></g>
+<g transform="translate(36,84) rotate(0) scale(0.9)"><circle cx="0" cy="0" r="10.080000000000002" fill="#1f2933" stroke="#1f2933" stroke-width="2.2" stroke-linejoin="round" stroke-linecap="round"/></g></svg><rect x="216" y="8" width="96" height="96" rx="10" fill="#fff" stroke="#d7dee6" stroke-width="2"/><svg x="222" y="14" width="84" height="84" viewBox="0 0 120 120">
+    <defs>
+      <pattern id="hatch" width="7" height="7" patternUnits="userSpaceOnUse" patternTransform="rotate(45)">
+        <line x1="0" y1="0" x2="0" y2="7" stroke="#1f2933" stroke-width="1.6"/>
+      </pattern>
+      <pattern id="crosshatch" width="7" height="7" patternUnits="userSpaceOnUse">
+        <path d="M0 0 L7 0 M0 0 L0 7" stroke="#1f2933" stroke-width="1.1"/>
+      </pattern>
+      <pattern id="stipple" width="6" height="6" patternUnits="userSpaceOnUse">
+        <circle cx="3" cy="3" r="1.1" fill="#1f2933"/>
+      </pattern>
+    </defs><g transform="translate(60,30) rotate(66) scale(0.4)"><polygon points="-36,-10.8 7.2,-10.8 7.2,-21.6 36,0 7.2,21.6 7.2,10.8 -36,10.8" fill="none" stroke="#1f2933" stroke-width="2.2" stroke-linejoin="round" stroke-linecap="round"/></g>
+<g transform="translate(84,84) rotate(0) scale(0.9)"><circle cx="0" cy="0" r="10.080000000000002" fill="#1f2933" stroke="#1f2933" stroke-width="2.2" stroke-linejoin="round" stroke-linecap="round"/></g></svg><rect x="8" y="112" width="96" height="96" rx="10" fill="#fff" stroke="#d7dee6" stroke-width="2"/><svg x="14" y="118" width="84" height="84" viewBox="0 0 120 120">
+    <defs>
+      <pattern id="hatch" width="7" height="7" patternUnits="userSpaceOnUse" patternTransform="rotate(45)">
+        <line x1="0" y1="0" x2="0" y2="7" stroke="#1f2933" stroke-width="1.6"/>
+      </pattern>
+      <pattern id="crosshatch" width="7" height="7" patternUnits="userSpaceOnUse">
+        <path d="M0 0 L7 0 M0 0 L0 7" stroke="#1f2933" stroke-width="1.1"/>
+      </pattern>
+      <pattern id="stipple" width="6" height="6" patternUnits="userSpaceOnUse">
+        <circle cx="3" cy="3" r="1.1" fill="#1f2933"/>
+      </pattern>
+    </defs><g transform="translate(90,60) rotate(204) scale(0.4)"><polygon points="-36,-10.8 7.2,-10.8 7.2,-21.6 36,0 7.2,21.6 7.2,10.8 -36,10.8" fill="none" stroke="#1f2933" stroke-width="2.2" stroke-linejoin="round" stroke-linecap="round"/></g>
+<g transform="translate(36,36) rotate(0) scale(0.9)"><circle cx="0" cy="0" r="10.080000000000002" fill="#1f2933" stroke="#1f2933" stroke-width="2.2" stroke-linejoin="round" stroke-linecap="round"/></g></svg><rect x="112" y="112" width="96" height="96" rx="10" fill="#fff" stroke="#d7dee6" stroke-width="2"/><svg x="118" y="118" width="84" height="84" viewBox="0 0 120 120">
+    <defs>
+      <pattern id="hatch" width="7" height="7" patternUnits="userSpaceOnUse" patternTransform="rotate(45)">
+        <line x1="0" y1="0" x2="0" y2="7" stroke="#1f2933" stroke-width="1.6"/>
+      </pattern>
+      <pattern id="crosshatch" width="7" height="7" patternUnits="userSpaceOnUse">
+        <path d="M0 0 L7 0 M0 0 L0 7" stroke="#1f2933" stroke-width="1.1"/>
+      </pattern>
+      <pattern id="stipple" width="6" height="6" patternUnits="userSpaceOnUse">
+        <circle cx="3" cy="3" r="1.1" fill="#1f2933"/>
+      </pattern>
+    </defs><g transform="translate(90,60) rotate(156) scale(0.4)"><polygon points="-36,-10.8 7.2,-10.8 7.2,-21.6 36,0 7.2,21.6 7.2,10.8 -36,10.8" fill="none" stroke="#1f2933" stroke-width="2.2" stroke-linejoin="round" stroke-linecap="round"/></g>
+<g transform="translate(36,84) rotate(0) scale(0.9)"><circle cx="0" cy="0" r="10.080000000000002" fill="#1f2933" stroke="#1f2933" stroke-width="2.2" stroke-linejoin="round" stroke-linecap="round"/></g></svg><rect x="216" y="112" width="96" height="96" rx="10" fill="#fff" stroke="#d7dee6" stroke-width="2"/><svg x="222" y="118" width="84" height="84" viewBox="0 0 120 120">
+    <defs>
+      <pattern id="hatch" width="7" height="7" patternUnits="userSpaceOnUse" patternTransform="rotate(45)">
+        <line x1="0" y1="0" x2="0" y2="7" stroke="#1f2933" stroke-width="1.6"/>
+      </pattern>
+      <pattern id="crosshatch" width="7" height="7" patternUnits="userSpaceOnUse">
+        <path d="M0 0 L7 0 M0 0 L0 7" stroke="#1f2933" stroke-width="1.1"/>
+      </pattern>
+      <pattern id="stipple" width="6" height="6" patternUnits="userSpaceOnUse">
+        <circle cx="3" cy="3" r="1.1" fill="#1f2933"/>
+      </pattern>
+    </defs><g transform="translate(90,60) rotate(104) scale(0.4)"><polygon points="-36,-10.8 7.2,-10.8 7.2,-21.6 36,0 7.2,21.6 7.2,10.8 -36,10.8" fill="none" stroke="#1f2933" stroke-width="2.2" stroke-linejoin="round" stroke-linecap="round"/></g>
+<g transform="translate(84,84) rotate(0) scale(0.9)"><circle cx="0" cy="0" r="10.080000000000002" fill="#1f2933" stroke="#1f2933" stroke-width="2.2" stroke-linejoin="round" stroke-linecap="round"/></g></svg><rect x="8" y="216" width="96" height="96" rx="10" fill="#fff" stroke="#d7dee6" stroke-width="2"/><svg x="14" y="222" width="84" height="84" viewBox="0 0 120 120">
+    <defs>
+      <pattern id="hatch" width="7" height="7" patternUnits="userSpaceOnUse" patternTransform="rotate(45)">
+        <line x1="0" y1="0" x2="0" y2="7" stroke="#1f2933" stroke-width="1.6"/>
+      </pattern>
+      <pattern id="crosshatch" width="7" height="7" patternUnits="userSpaceOnUse">
+        <path d="M0 0 L7 0 M0 0 L0 7" stroke="#1f2933" stroke-width="1.1"/>
+      </pattern>
+      <pattern id="stipple" width="6" height="6" patternUnits="userSpaceOnUse">
+        <circle cx="3" cy="3" r="1.1" fill="#1f2933"/>
+      </pattern>
+    </defs><g transform="translate(60,90) rotate(246) scale(0.4)"><polygon points="-36,-10.8 7.2,-10.8 7.2,-21.6 36,0 7.2,21.6 7.2,10.8 -36,10.8" fill="none" stroke="#1f2933" stroke-width="2.2" stroke-linejoin="round" stroke-linecap="round"/></g>
+<g transform="translate(36,36) rotate(0) scale(0.9)"><circle cx="0" cy="0" r="10.080000000000002" fill="#1f2933" stroke="#1f2933" stroke-width="2.2" stroke-linejoin="round" stroke-linecap="round"/></g></svg><rect x="112" y="216" width="96" height="96" rx="10" fill="#fff" stroke="#d7dee6" stroke-width="2"/><svg x="118" y="222" width="84" height="84" viewBox="0 0 120 120">
+    <defs>
+      <pattern id="hatch" width="7" height="7" patternUnits="userSpaceOnUse" patternTransform="rotate(45)">
+        <line x1="0" y1="0" x2="0" y2="7" stroke="#1f2933" stroke-width="1.6"/>
+      </pattern>
+      <pattern id="crosshatch" width="7" height="7" patternUnits="userSpaceOnUse">
+        <path d="M0 0 L7 0 M0 0 L0 7" stroke="#1f2933" stroke-width="1.1"/>
+      </pattern>
+      <pattern id="stipple" width="6" height="6" patternUnits="userSpaceOnUse">
+        <circle cx="3" cy="3" r="1.1" fill="#1f2933"/>
+      </pattern>
+    </defs><g transform="translate(60,90) rotate(194) scale(0.4)"><polygon points="-36,-10.8 7.2,-10.8 7.2,-21.6 36,0 7.2,21.6 7.2,10.8 -36,10.8" fill="none" stroke="#1f2933" stroke-width="2.2" stroke-linejoin="round" stroke-linecap="round"/></g>
+<g transform="translate(36,84) rotate(0) scale(0.9)"><circle cx="0" cy="0" r="10.080000000000002" fill="#1f2933" stroke="#1f2933" stroke-width="2.2" stroke-linejoin="round" stroke-linecap="round"/></g></svg><rect x="216" y="216" width="96" height="96" rx="10" fill="#fff" stroke="#2f6f8f" stroke-width="2" stroke-dasharray="6 5"/><text x="264" y="278" text-anchor="middle" font-size="40" font-weight="700" fill="#2f6f8f" font-family="Lexend Deca, sans-serif">?</text></svg><div class="opts"><div class="o">
+       <div class="p"><svg viewBox="0 0 120 120" width="96" height="96" xmlns="http://www.w3.org/2000/svg" role="img">
+    <defs>
+      <pattern id="hatch" width="7" height="7" patternUnits="userSpaceOnUse" patternTransform="rotate(45)">
+        <line x1="0" y1="0" x2="0" y2="7" stroke="#1f2933" stroke-width="1.6"/>
+      </pattern>
+      <pattern id="crosshatch" width="7" height="7" patternUnits="userSpaceOnUse">
+        <path d="M0 0 L7 0 M0 0 L0 7" stroke="#1f2933" stroke-width="1.1"/>
+      </pattern>
+      <pattern id="stipple" width="6" height="6" patternUnits="userSpaceOnUse">
+        <circle cx="3" cy="3" r="1.1" fill="#1f2933"/>
+      </pattern>
+    </defs><g transform="translate(90,60) rotate(104) scale(0.4)"><polygon points="-36,-10.8 7.2,-10.8 7.2,-21.6 36,0 7.2,21.6 7.2,10.8 -36,10.8" fill="none" stroke="#1f2933" stroke-width="2.2" stroke-linejoin="round" stroke-linecap="round"/></g>
+<g transform="translate(84,84) rotate(0) scale(0.9)"><circle cx="0" cy="0" r="10.080000000000002" fill="#1f2933" stroke="#1f2933" stroke-width="2.2" stroke-linejoin="round" stroke-linecap="round"/></g></svg></div><div class="lbl">A</div></div><div class="o">
+       <div class="p"><svg viewBox="0 0 120 120" width="96" height="96" xmlns="http://www.w3.org/2000/svg" role="img">
+    <defs>
+      <pattern id="hatch" width="7" height="7" patternUnits="userSpaceOnUse" patternTransform="rotate(45)">
+        <line x1="0" y1="0" x2="0" y2="7" stroke="#1f2933" stroke-width="1.6"/>
+      </pattern>
+      <pattern id="crosshatch" width="7" height="7" patternUnits="userSpaceOnUse">
+        <path d="M0 0 L7 0 M0 0 L0 7" stroke="#1f2933" stroke-width="1.1"/>
+      </pattern>
+      <pattern id="stipple" width="6" height="6" patternUnits="userSpaceOnUse">
+        <circle cx="3" cy="3" r="1.1" fill="#1f2933"/>
+      </pattern>
+    </defs><g transform="translate(60,90) rotate(346) scale(0.4)"><polygon points="-36,-10.8 7.2,-10.8 7.2,-21.6 36,0 7.2,21.6 7.2,10.8 -36,10.8" fill="none" stroke="#1f2933" stroke-width="2.2" stroke-linejoin="round" stroke-linecap="round"/></g>
+<g transform="translate(84,84) rotate(0) scale(0.9)"><circle cx="0" cy="0" r="10.080000000000002" fill="#1f2933" stroke="#1f2933" stroke-width="2.2" stroke-linejoin="round" stroke-linecap="round"/></g></svg></div><div class="lbl">B</div></div><div class="o">
+       <div class="p"><svg viewBox="0 0 120 120" width="96" height="96" xmlns="http://www.w3.org/2000/svg" role="img">
+    <defs>
+      <pattern id="hatch" width="7" height="7" patternUnits="userSpaceOnUse" patternTransform="rotate(45)">
+        <line x1="0" y1="0" x2="0" y2="7" stroke="#1f2933" stroke-width="1.6"/>
+      </pattern>
+      <pattern id="crosshatch" width="7" height="7" patternUnits="userSpaceOnUse">
+        <path d="M0 0 L7 0 M0 0 L0 7" stroke="#1f2933" stroke-width="1.1"/>
+      </pattern>
+      <pattern id="stipple" width="6" height="6" patternUnits="userSpaceOnUse">
+        <circle cx="3" cy="3" r="1.1" fill="#1f2933"/>
+      </pattern>
+    </defs><g transform="translate(60,90) rotate(194) scale(0.4)"><polygon points="-36,-10.8 7.2,-10.8 7.2,-21.6 36,0 7.2,21.6 7.2,10.8 -36,10.8" fill="none" stroke="#1f2933" stroke-width="2.2" stroke-linejoin="round" stroke-linecap="round"/></g>
+<g transform="translate(36,84) rotate(0) scale(0.9)"><circle cx="0" cy="0" r="10.080000000000002" fill="#1f2933" stroke="#1f2933" stroke-width="2.2" stroke-linejoin="round" stroke-linecap="round"/></g></svg></div><div class="lbl">C</div></div><div class="o">
+       <div class="p"><svg viewBox="0 0 120 120" width="96" height="96" xmlns="http://www.w3.org/2000/svg" role="img">
+    <defs>
+      <pattern id="hatch" width="7" height="7" patternUnits="userSpaceOnUse" patternTransform="rotate(45)">
+        <line x1="0" y1="0" x2="0" y2="7" stroke="#1f2933" stroke-width="1.6"/>
+      </pattern>
+      <pattern id="crosshatch" width="7" height="7" patternUnits="userSpaceOnUse">
+        <path d="M0 0 L7 0 M0 0 L0 7" stroke="#1f2933" stroke-width="1.1"/>
+      </pattern>
+      <pattern id="stipple" width="6" height="6" patternUnits="userSpaceOnUse">
+        <circle cx="3" cy="3" r="1.1" fill="#1f2933"/>
+      </pattern>
+    </defs><g transform="translate(60,90) rotate(194) scale(0.4)"><polygon points="-36,-10.8 7.2,-10.8 7.2,-21.6 36,0 7.2,21.6 7.2,10.8 -36,10.8" fill="none" stroke="#1f2933" stroke-width="2.2" stroke-linejoin="round" stroke-linecap="round"/></g>
+<g transform="translate(84,84) rotate(0) scale(0.9)"><circle cx="0" cy="0" r="10.080000000000002" fill="#1f2933" stroke="#1f2933" stroke-width="2.2" stroke-linejoin="round" stroke-linecap="round"/></g></svg></div><div class="lbl">D</div></div><div class="o">
+       <div class="p"><svg viewBox="0 0 120 120" width="96" height="96" xmlns="http://www.w3.org/2000/svg" role="img">
+    <defs>
+      <pattern id="hatch" width="7" height="7" patternUnits="userSpaceOnUse" patternTransform="rotate(45)">
+        <line x1="0" y1="0" x2="0" y2="7" stroke="#1f2933" stroke-width="1.6"/>
+      </pattern>
+      <pattern id="crosshatch" width="7" height="7" patternUnits="userSpaceOnUse">
+        <path d="M0 0 L7 0 M0 0 L0 7" stroke="#1f2933" stroke-width="1.1"/>
+      </pattern>
+      <pattern id="stipple" width="6" height="6" patternUnits="userSpaceOnUse">
+        <circle cx="3" cy="3" r="1.1" fill="#1f2933"/>
+      </pattern>
+    </defs><g transform="translate(90,60) rotate(156) scale(0.4)"><polygon points="-36,-10.8 7.2,-10.8 7.2,-21.6 36,0 7.2,21.6 7.2,10.8 -36,10.8" fill="none" stroke="#1f2933" stroke-width="2.2" stroke-linejoin="round" stroke-linecap="round"/></g>
+<g transform="translate(36,84) rotate(0) scale(0.9)"><circle cx="0" cy="0" r="10.080000000000002" fill="#1f2933" stroke="#1f2933" stroke-width="2.2" stroke-linejoin="round" stroke-linecap="round"/></g></svg></div><div class="lbl">E</div></div></div></div>
+    
+  </section></body></html>

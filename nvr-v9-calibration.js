@@ -62,6 +62,7 @@
     tripleMatrix: 'triple-attribute', eliteTriple: 'triple-attribute',
     dependencySeries: 'count-controls-two', eliteDep: 'count-controls-two',
     interwoven: 'interwoven', eliteInterwoven: 'interwoven',
+    interactingMovement: 'interacting-movement', eliteMovement: 'interacting-movement',
     // library-only mechanisms with no v9 anchor (perceptual / relational-conjunction)
     oddOneOutClear: 'inside-outside',
     conjunction: null, camoConjunction: null,
