@@ -97,6 +97,8 @@ This guide is about **methods** — the ways of working your daughter will meet,
 
 It is not a checklist. Each method has a note saying roughly when you'll see it, because parents reasonably want to know, but children arrive at fluency at different points and in different orders. A child still using an expanded written method a year after it was introduced is not behind. She is using the version that still makes sense to her, which is exactly what we want.
 
+The examples in each method start small and get bigger. If your daughter is in Year 2 or 3, the first one or two are the ones to look at.
+
 If you read only one section, make it the next one.
 
 ---

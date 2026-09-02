@@ -6,6 +6,8 @@
    Run: node parent_guide.test.js   (needs jsdom) */
 const fs=require('fs'), path=require('path');
 const {JSDOM, VirtualConsole}=require('jsdom');
+const {execFileSync}=require('child_process');
+const os=require('os');
 const root=__dirname;
 const GUIDE=path.join(root,'Parent_Maths_Guide_v40_1.html');
 const HUB=path.join(root,'Primary_Maths_Curriculum_Navigator_v40_1.html');
@@ -176,7 +178,11 @@ closed===collapsibles.length?ok('all '+closed+' collapsible sections start close
                                                   :bad('#division did not open its entry');
   dom2.window.close();
 }
-if(/href="Primary_Maths_Curriculum_Navigator_v40_1\.html"/.test(html)) ok('the guide links back to the hub'); else bad('no link back to the hub');
+// The guide is published to parents. Nothing on it may lead to staff material.
+const toHub=[...d.querySelectorAll('a[href]')].filter(a=>/Primary_Maths_Curriculum_Navigator/i.test(a.getAttribute('href')));
+(toHub.length===0&&!/Primary_Maths_Curriculum_Navigator/.test(html))
+  ?ok('the guide contains no link to the staff hub, in the markup or after scripting')
+  :bad('the guide still reaches the staff hub: '+(toHub.map(a=>a.getAttribute('href')).join(', ')||'referenced in the source'));
 if(/<a class="navbtn navlink" href="Parent_Maths_Guide_v40_1\.html">Parent maths guide<\/a>/.test(hub))
   ok('the hub navigation links to the guide as "Parent maths guide"');
 else bad('the hub does not link to the guide');
@@ -211,8 +217,11 @@ const nmap=[...new Set([...nlDoc.querySelectorAll('[data-mstep]')].map(x=>x.data
 nmap.join(',')==='1:starting point 8,2:hop to 10,3:hop to 13'
   ?ok('numberLine marks its hops: '+nmap.join(' | ')):bad('numberLine markers: '+nmap.join(' | '));
 
+// 23 x 4 is the example that pairs the area model with the expanded record; it
+// is now the third of four, so find it rather than assuming it is on screen
 const fm=d.querySelector('.pg-figure[data-fig="strip-7"]');
-const block=fm.querySelector('.methodblock');
+const block=[...fm.querySelectorAll('.pg-example')]
+  .find(x=>/23/.test(x.textContent)&&/80/.test(x.textContent)).querySelector('.methodblock');
 const lit=()=>[...block.querySelectorAll('.method-active')].map(x=>norm(x.textContent));
 w.resetWrittenMethod(block); w.revealWrittenMethodStep(block,1);
 let L=lit();
@@ -341,6 +350,49 @@ for(const f of withSwitcher){
 }
 exBad.length?bad('example bank: '+exBad.join('; '))
   :ok(exTotal+' worked examples across six entries, one shown at a time, each with its own step controls');
+// smallest first, with the year each example is for
+{
+  const YEARS={'strip-5':['Year 2','Year 3','Year 4','Year 5'],
+               'strip-6':['Year 2','Year 3','Year 4','Year 5'],
+               'strip-7':['Year 2','Year 3','Year 4','Year 4'],
+               'strip-9':['Year 1\u20132','Year 3','Year 4','Year 5']};
+  const LABELS4={'strip-5':['38 + 47','347 + 268','2,476 + 1,589','18.5 + 6.75'],
+                 'strip-6':['62 \u2212 35','403 \u2212 176','4,003 \u2212 1,786','12.4 \u2212 5.85'],
+                 'strip-7':['4 \u00d7 3','13 \u00d7 4','23 \u00d7 4','128 \u00d7 3'],
+                 'strip-9':['12 \u00f7 3','48 \u00f7 4','96 \u00f7 6','936 \u00f7 6']};
+  for(const key of Object.keys(YEARS)){
+    const f=d.querySelector('.pg-figure[data-fig="'+key+'"]');
+    const btn=f.querySelector('.pg-another');
+    const yrs=[], labs=[];
+    const n=f.querySelectorAll('.pg-example').length;
+    for(let i=0;i<n;i++){
+      yrs.push(norm(f.querySelector('.pg-example-year').textContent));
+      labs.push(norm(f.querySelector('.pg-example-label').textContent));
+      if(i<n-1) btn.dispatchEvent(new w.MouseEvent('click',{bubbles:true}));
+    }
+    btn.dispatchEvent(new w.MouseEvent('click',{bubbles:true}));   // back to the first
+    (n===4&&yrs.join('|')===YEARS[key].join('|')&&labs.join('|')===LABELS4[key].join('|'))
+      ?ok(key+': '+labs.map((l,i)=>l+' ('+yrs[i]+')').join(', '))
+      :bad(key+' examples: '+labs.map((l,i)=>l+' ['+yrs[i]+']').join(', '));
+  }
+  // as example labels, not as substrings: "3,247 x 6" contains "47 x 6"
+  const allLabels=new Set();
+  for(const f of d.querySelectorAll('.pg-figure[data-fig]')){
+    const btn=f.querySelector('.pg-another');
+    const n=f.querySelectorAll('.pg-example').length||1;
+    for(let i=0;i<n;i++){
+      allLabels.add(norm(f.querySelector('.pg-example-label').textContent));
+      if(btn) btn.dispatchEvent(new w.MouseEvent('click',{bubbles:true}));
+    }
+  }
+  const dropped=['3,456 + 2,789','6,502 \u2212 2,847','47 \u00d7 6','175 \u00f7 5'].filter(x=>allLabels.has(x));
+  dropped.length?bad('examples that should have been dropped are still there: '+dropped.join(', '))
+                :ok('3,456 + 2,789, 6,502 \u2212 2,847, 47 \u00d7 6 and 175 \u00f7 5 are gone; '
+                    +allLabels.size+' distinct examples remain');
+  if(/The examples in each method start small and get bigger/.test(pageText))
+    ok('the opening section says the examples start small');
+  else bad('the line about examples starting small is missing');
+}
 {
   const f=withSwitcher.find(x=>x.dataset.fig==='strip-5');
   const btn=f.querySelector('.pg-another');
@@ -431,6 +483,7 @@ for(const a of labLinks){
   const shown=norm(a.closest('.pg-visual').querySelector('.pg-example-label').textContent)
     .replace(/,/g,'').replace(/[^0-9.]+/g,' ').trim().split(/\s+/);
   if(!['add','sub','mult','div'].includes(qs.get('operation'))){paramsOk=false;bad('no operation on '+href)}
+  if(qs.get('step')!=='full'){paramsOk=false;bad('link does not open on the worked answer: '+href)}
   if(qs.get('a')!==shown[0]||qs.get('b')!==shown[1]){
     paramsOk=false;bad('link numbers '+qs.get('a')+'/'+qs.get('b')+' do not match the example shown: '+shown.join(' '));
   }
@@ -440,15 +493,19 @@ paramsOk?ok('every link carries the operation and the two numbers of the example
 {
   const lab=fs.readFileSync(LAB,'utf8');
   const ldom=new JSDOM(lab,{runScripts:'dangerously',pretendToBeVisual:true,
-    url:'https://x.invalid/Written_Calculation_Lab_v3.html?operation=div&a=4368&b=24&method=long'});
+    url:'https://x.invalid/Written_Calculation_Lab_v3.html?operation=div&a=4368&b=24&method=long&step=full'});
   const ld=ldom.window.document;
   const got=[ld.getElementById('op').value,ld.getElementById('a').value,ld.getElementById('b').value].join('/');
   got==='div/4368/24'
     ?ok('opening the tool with those parameters lands on that calculation: '+got)
     :bad('the tool ignored the link parameters: '+got);
   const stage=norm(ld.getElementById('calcStage').textContent);
-  /4,368/.test(stage)?ok('and the tool is showing it: "'+stage.slice(0,60)+'"')
-                     :bad('the tool did not render the linked calculation: '+stage.slice(0,80));
+  // step=full: the answer must be on screen, not four clicks away
+  /4,368 \u00f7 24 = 182/.test(stage)
+    ?ok('and it opens on the worked answer: "'+stage.slice(0,58)+'"')
+    :bad('the tool did not open on the answer: '+stage.slice(0,90));
+  const count=norm(ld.getElementById('stepCount').textContent);
+  /Step 4 of 4/.test(count)?ok('landing on the last step: '+count):bad('landed on '+count);
   ldom.window.close();
 }
 // the link follows the example switcher
@@ -460,8 +517,12 @@ paramsOk?ok('every link carries the operation and the two numbers of the example
   const after=a.getAttribute('href');
   after!==before?ok('the link follows "show me another": '+before.split('?')[1]+' -> '+after.split('?')[1])
                 :bad('the link did not change with the example');
-  btn.dispatchEvent(new w.MouseEvent('click',{bubbles:true}));   // the decimal one
-  a.hidden?ok('and hides itself for the decimal example, which the tool cannot take')
+  // step on to the decimal example, whichever number it is
+  const total=f.querySelectorAll('.pg-example').length;
+  for(let i=0;i<total&&!/\./.test(norm(f.querySelector('.pg-example-label').textContent));i++)
+    btn.dispatchEvent(new w.MouseEvent('click',{bubbles:true}));
+  a.hidden?ok('and hides itself for '+norm(f.querySelector('.pg-example-label').textContent)
+              +', which the tool cannot take')
           :bad('the link is offered for an example the tool cannot open');
 }
 
@@ -475,8 +536,77 @@ section('12. The hub points at the guide and nowhere else');
   ?ok('the hub reaches the guide from both the navigation and the staff home')
   :bad('the hub links to the guide '+(hub.match(/href="Parent_Maths_Guide_v40_1\.html"/g)||[]).length+' time(s)');
 
-/* --------------------------------------------------------- 13. self-contained */
-section('13. Self-contained');
+/* ------------------------------------------- 13. every link goes somewhere -- */
+section('13. Every link resolves, in the repository and in the deploy layout');
+
+/* Collect every href a reader can click, after scripting: the tool links are
+   built at runtime, so reading the markup alone would miss them. */
+function collectLinks(doc, win){
+  const out=[];
+  for(const f of doc.querySelectorAll('.pg-figure[data-fig]')){
+    const btn=f.querySelector('.pg-another');
+    const n=f.querySelectorAll('.pg-example').length||1;
+    for(let i=0;i<n;i++){
+      const a=f.querySelector('.pg-ownnumbers');
+      if(a&&!a.hidden&&a.getAttribute('href')) out.push(a.getAttribute('href'));
+      if(btn) btn.dispatchEvent(new win.MouseEvent('click',{bubbles:true}));
+    }
+  }
+  doc.querySelectorAll('a[href]').forEach(a=>out.push(a.getAttribute('href')));
+  return [...new Set(out)];
+}
+function checkLinks(links, dir, label){
+  const anchors=[], files=[], mails=[], dead=[], external=[];
+  for(const href of links){
+    if(href.startsWith('#')){ anchors.push(href); continue; }
+    if(/^mailto:/i.test(href)){ mails.push(href); continue; }
+    if(/^https?:/i.test(href)){ external.push(href); continue; }
+    const [rel]=href.split('#');
+    const target=path.resolve(dir, decodeURIComponent(rel.split('?')[0]));
+    (fs.existsSync(target)?files:dead).push(href);
+  }
+  external.length?bad(label+': links off-site: '+external.join(', '))
+    :ok(label+': no off-site links');
+  dead.length?bad(label+': '+dead.length+' link(s) point at files that do not exist: '+dead.join(', '))
+    :ok(label+': all '+files.length+' file links resolve ('+[...new Set(files.map(f=>f.split('?')[0]))].join(', ')+')');
+  return {anchors, mails};
+}
+
+const repoLinks=collectLinks(d, w);
+const {anchors, mails}=checkLinks(repoLinks, root, 'repository layout');
+const deadAnchors=anchors.filter(h=>h!=='#'&&!d.getElementById(h.slice(1)));
+deadAnchors.length?bad('anchors that go nowhere: '+deadAnchors.join(', '))
+  :ok('all '+anchors.length+' in-page anchors resolve');
+mails.some(m=>/REPLACE-WITH-ADDRESS/.test(m))
+  ? console.log('  NOTE  the mailto is still the placeholder, as asked: '+mails.join(', '))
+  : ok('mailto links: '+(mails.join(', ')||'none'));
+
+/* the deploy layout: /tools/ and /parents/ as siblings */
+{
+  const tmp=fs.mkdtempSync(path.join(os.tmpdir(),'pg-site-'));
+  try{
+    execFileSync('node',[path.join(root,'build_site.js'),tmp],{stdio:'pipe'});
+    const parents=path.join(tmp,'public','parents');
+    const built=fs.readdirSync(parents).find(f=>/^Parent_Maths_Guide/.test(f));
+    const tools=fs.readdirSync(path.join(tmp,'public','tools'));
+    built?ok('build_site puts the guide in public/parents/ beside public/tools/ ('+tools.length+' tools)')
+         :bad('build_site did not produce the parent guide');
+    const bhtml=fs.readFileSync(path.join(parents,built),'utf8');
+    /Primary_Maths_Curriculum_Navigator/.test(bhtml)
+      ?bad('the built guide still references the staff hub')
+      :ok('the built guide has no reference to the staff hub');
+    const bdom=new JSDOM(bhtml,{runScripts:'dangerously',pretendToBeVisual:true});
+    checkLinks(collectLinks(bdom.window.document,bdom.window), parents, 'deploy layout');
+    bdom.window.close();
+    fs.existsSync(path.join(tmp,'staff'))&&fs.existsSync(path.join(tmp,'DEPLOY.md'))
+      ?ok('the staff hub is built separately, outside the public tree, with DEPLOY.md alongside')
+      :bad('build_site did not separate the staff hub');
+  }catch(err){ bad('build_site failed: '+(err.stderr?String(err.stderr):err.message)); }
+  finally{ fs.rmSync(tmp,{recursive:true,force:true}); }
+}
+
+/* --------------------------------------------------------- 14. self-contained */
+section('14. Self-contained');
 // The hub's stylesheet is inlined into a <style> of our own. Leaving its own
 // tags in swallows the :root block, and every var() on the page falls back to
 // nothing - which is silent, so it is checked rather than eyeballed.

@@ -96,7 +96,8 @@ failure. Twelve sections:
 5. **Getting around.** Fifteen contents links that all resolve, readable and
    unique anchor ids, a back-to-contents link in every entry, every section
    collapsed at load, and `#division` opening the division entry. Also that the
-   guide links back to the hub and the hub links forward to the guide.
+   guide contains **no** link to the staff hub — it is published to parents, so
+   nothing on it may lead to staff material.
 6. **Every visual is a hub renderer, unmodified.** Twenty-three renderers are
    compared byte-for-byte with the hub's, so the page draws nothing of its own
    and a hub fix reaches the guide.
@@ -115,7 +116,9 @@ failure. Twelve sections:
    strategy panels *in CSS*, so it does not depend on a `beforeprint` handler.
 9. **Worked examples.** Entries 5–10 each offer more than one, one shown at a
    time so the entry does not grow, each with its own step controls, and the
-   control cycles back round.
+   control cycles back round. Entries 5, 6, 7 and 9 are checked example by
+   example for the four calculations and the four year labels, smallest first,
+   so an entry cannot quietly go back to opening on four-digit numbers.
 10. **Strategy comparison.** Sixteen questions, four per operation, tabbed;
     the framing line present; and every rendered route stepped to its last step
     and read back, so the answer the copy states and the answer the calculation
@@ -123,21 +126,34 @@ failure. Twelve sections:
     written method, so the set is not rigged towards mental arithmetic.
 11. **Straight to the tool with your own numbers.** A link on each of the six
     entries with a written calculation, pointing at the Written Calculation Lab
-    with the operation and the two numbers of the example currently on screen;
-    the link follows the "show me another" control and hides itself for the
-    decimal examples the tool cannot take. The tool is then loaded from that
-    query string and asserted to open on that calculation — so the link and the
-    tool cannot drift apart.
+    with the operation, the two numbers of the example currently on screen and
+    `step=full`; the link follows the "show me another" control and hides itself
+    for the decimal examples the tool cannot take. The tool is then loaded from
+    that query string and asserted to open **on the worked answer**, step 4 of
+    4 — so the link and the tool cannot drift apart, and a parent following it
+    never lands on a page with no answer on it.
 12. **The hub points at the guide and nowhere else.** The old in-hub parent tab
     and the dashboard card that opened it are gone, and the hub reaches the
     standalone guide from both the navigation and the staff home.
-13. **Self-contained.** No external requests, the font embedded, and the hub's
+13. **Every link resolves.** Every href a reader can click — including the tool
+    links, which are built at runtime and would be missed by reading the markup
+    — is resolved to a file on disk, in the repository layout *and* in the
+    deploy layout that `npm run build:site` produces. That build puts
+    `public/tools/` and `public/parents/` side by side and the staff hub in
+    `staff/`, outside the public tree; the section runs it into a temp
+    directory and checks the built guide the same way.
+14. **Self-contained.** No external requests, the font embedded, and the hub's
     `:root` custom properties inlined intact — that last one is here because
     leaving the hub's own `<style>` tags in the inlined CSS silently swallowed
     the whole `:root` block and every `var()` on the page fell back to nothing.
 
-Sections 2, 3, 6, 7, 8, 10, 11, 12 and 13 have each been run against a copy
-with the defect reintroduced, and fail there.
+Sections 2, 3, 5, 6, 7, 8, 9, 10, 11, 12, 13 and 14 have each been run against
+a copy with the defect reintroduced, and fail there.
+
+**Not covered by jsdom:** layout, touch targets and how the collapsed page
+reads. Those were measured in Chromium at 390px and 1280px: no horizontal
+overflow with every section open, and every standalone control at least 32px
+tall (the links still under that are inline in a sentence, which is exempt).
 
 **What it does not check:** the route descriptions' step and regroup counts.
 Section 10 verifies the *answer* a route reaches, not prose like "four steps,

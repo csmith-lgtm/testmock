@@ -1228,6 +1228,17 @@ body{background:var(--bg);color:var(--ink);margin:0;padding:0}
   .pg-shell{grid-template-columns:1fr;gap:14px}
   .pg-contents{position:static}
   .pg-toc{max-height:none}
+  /* Standalone controls get a thumb-sized target. Links inside a sentence are
+     left alone: making those 44px tall would wreck the line spacing, and an
+     inline link is exempt from the minimum for that reason. */
+  .pg-toggle{min-height:44px}
+  .pg-toc-summary{padding:12px 0}
+  .pg-toc-list a{padding:11px 6px}
+  .pg-allbtn{min-height:42px}
+  .pg-tab{min-height:42px}
+  .pg-figure .methodbtn,.pg-route .methodbtn{min-height:40px;padding-top:8px;padding-bottom:8px}
+  .pg-ownnumbers{display:inline-flex;align-items:center;min-height:40px}
+  .pg-back a{display:inline-block;padding:10px 0}
 }
 /* Printing must not depend on the beforeprint event: everything a collapsed
    entry hides is unhidden here, in CSS, so a print from any browser - or with
@@ -1276,6 +1287,9 @@ body{background:var(--bg);color:var(--ink);margin:0;padding:0}
 
 /* Worked examples */
 .pg-example-bar{display:flex;align-items:center;gap:10px;flex-wrap:wrap;width:100%;margin-bottom:2px}
+/* Examples run smallest first, so the year label says who each one is for. */
+.pg-example-year{display:inline-block;padding:2px 8px;border-radius:999px;background:var(--soft);
+  color:#3b4a6b;font-size:.7rem;font-weight:700;line-height:1.5}
 .pg-example-label{font-weight:700;font-size:.9rem;color:var(--nav)}
 .pg-example-count{font-size:.72rem;color:var(--muted)}
 .pg-another{margin-left:auto}
@@ -1321,7 +1335,6 @@ body{background:var(--bg);color:var(--ink);margin:0;padding:0}
 <body>
 
 <header class="pg-header">
-<a class="pg-home" href="Primary_Maths_Curriculum_Navigator_v40_1.html">&larr; Primary Maths Curriculum Navigator</a>
 <h1>How we teach maths — a guide for parents</h1>
 <p class="pg-subtitle"><em>Draft. All agreed updates incorporated.</em></p>
 <aside class="pg-band"><p><strong>Helping with homework tonight?</strong></p><p>Jump straight to <a href="#addition">addition</a>, <a href="#subtraction">subtraction</a>, <a href="#multiplication">multiplication</a> or <a href="#division">division</a> — or look up a word in <a href="#glossary">the words she'll bring home</a>. The rest of this guide will keep.</p></aside>
@@ -1359,6 +1372,7 @@ body{background:var(--bg);color:var(--ink);margin:0;padding:0}
 <h2>Before you start</h2>
 <p>This guide is about <strong>methods</strong> — the ways of working your daughter will meet, why we teach them the way we do, and how they differ from the way you were probably taught.</p>
 <p>It is not a checklist. Each method has a note saying roughly when you'll see it, because parents reasonably want to know, but children arrive at fluency at different points and in different orders. A child still using an expanded written method a year after it was introduced is not behind. She is using the version that still makes sense to her, which is exactly what we want.</p>
+<p>The examples in each method start small and get bigger. If your daughter is in Year 2 or 3, the first one or two are the ones to look at.</p>
 <p>If you read only one section, make it the next one.</p>
 </section>
 <section class="pg-section" id="the-idea">
@@ -2024,13 +2038,14 @@ const WC_LAB='Interactive_Maths_Tools_v40_1/Written_Calculation_Lab_v3.html';
 function labLink(wc){
   const q=new URLSearchParams({operation:wc.op,a:String(wc.a),b:String(wc.b)});
   if(wc.method) q.set('method',wc.method);
+  q.set('step','full');   // land on the worked answer, not on "estimate first"
   return WC_LAB+'?'+q.toString();
 }
 
 /* 23 x 4 recorded in full. The step indices match gridMethod's columns, so 80
    and 12 reveal together with their cells in the area model. */
 const expandedMult23x4=eq('23 &times; 4<br>= (<span data-mstep="2" data-unit="20 column">20 &times; 4</span>) + (<span data-mstep="1" data-unit="3 column">3 &times; 4</span>)<br>= <span data-mstep="2" data-unit="20 column">80</span> + <span data-mstep="1" data-unit="3 column">12</span><br><b data-mstep="3" data-unit="total">= 92</b>');
-const expandedMult47x6=eq('47 &times; 6<br>= (<span data-mstep="2" data-unit="40 column">40 &times; 6</span>) + (<span data-mstep="1" data-unit="7 column">7 &times; 6</span>)<br>= <span data-mstep="2" data-unit="40 column">240</span> + <span data-mstep="1" data-unit="7 column">42</span><br><b data-mstep="3" data-unit="total">= 282</b>');
+const expandedMult13x4=eq('13 &times; 4<br>= (<span data-mstep="2" data-unit="10 column">10 &times; 4</span>) + (<span data-mstep="1" data-unit="3 column">3 &times; 4</span>)<br>= <span data-mstep="2" data-unit="10 column">40</span> + <span data-mstep="1" data-unit="3 column">12</span><br><b data-mstep="3" data-unit="total">= 52</b>');
 const expandedMult128x3=eq('128 &times; 3<br>= (<span data-mstep="3" data-unit="100 column">100 &times; 3</span>) + (<span data-mstep="2" data-unit="20 column">20 &times; 3</span>) + (<span data-mstep="1" data-unit="8 column">8 &times; 3</span>)<br>= <span data-mstep="3" data-unit="100 column">300</span> + <span data-mstep="2" data-unit="20 column">60</span> + <span data-mstep="1" data-unit="8 column">24</span><br><b data-mstep="4" data-unit="total">= 384</b>');
 
 const longMult3247x26=()=>longMult(['3','2','4','7'],['2','6'],
@@ -2063,42 +2078,57 @@ const EXAMPLES={
       sub(eq('20 &times; 4 = 80<br>3 &times; 4 = 12<br>80 + 12 = 92'),
           shortMult(['2','3'],['4'],['9','2'],['1','']))]}],
 
- 5:[{label:'2,476 + 1,589', wc:{op:'add',a:2476,b:1589}, p:[
+ 5:[{label:'38 + 47', yr:'Year 2', wc:{op:'add',a:38,b:47}, p:[
+      sub(pvc({'T':3,'O':8}),pvc({'T':4,'O':7})),
+      bar([{t:'38',w:4},{t:'47',w:5}],'total unknown'),
+      sub(expandedAddTable(['T','O'],['3','8'],['4','7'],['7','15'],['8','5']),
+          columnAdd(['3','8'],['4','7'],['8','5'],['1','']))]},
+    {label:'347 + 268', yr:'Year 3', wc:{op:'add',a:347,b:268}, p:[
+      sub(pvc({'H':3,'T':4,'O':7}),pvc({'H':2,'T':6,'O':8})),
+      bar([{t:'347',w:5},{t:'268',w:4}],'total unknown'),
+      sub(expandedAddTable(['H','T','O'],['3','4','7'],['2','6','8'],['5','10','15'],['6','1','5']),
+          columnAdd(['3','4','7'],['2','6','8'],['6','1','5'],['1','1','']))]},
+    {label:'2,476 + 1,589', yr:'Year 4', wc:{op:'add',a:2476,b:1589}, p:[
       sub(pvc({'Th':2,'H':4,'T':7,'O':6}),pvc({'Th':1,'H':5,'T':8,'O':9})),
       bar([{t:'2,476',w:5},{t:'1,589',w:3}],'total unknown'),
       sub(expandedAddTable(['Th','H','T','O'],['2','4','7','6'],['1','5','8','9'],['3','9','15','15'],['4','0','6','5']),
           columnAdd(['2','4','7','6'],['1','5','8','9'],['4','0','6','5'],['1','1','1','']))]},
-    {label:'3,456 + 2,789', wc:{op:'add',a:3456,b:2789}, p:[
-      sub(pvc({'Th':3,'H':4,'T':5,'O':6}),pvc({'Th':2,'H':7,'T':8,'O':9})),
-      bar([{t:'3,456',w:5},{t:'2,789',w:4}],'total unknown'),
-      sub(expandedAddTable(['Th','H','T','O'],['3','4','5','6'],['2','7','8','9'],['5','11','13','15'],['6','2','4','5']),
-          columnAdd(['3','4','5','6'],['2','7','8','9'],['6','2','4','5'],['1','1','1','']))]},
-    {label:'18.5 + 6.75', p:[
+    {label:'18.5 + 6.75', yr:'Year 5', p:[
       sub(pvc({'T':1,'O':8,'0.1':5}),pvc({'O':6,'0.1':7,'0.01':5})),
       bar([{t:'18.5',w:5},{t:'6.75',w:2}],'total unknown'),
       sub(expandedAddTable(['T','O','tenths','hundredths'],['1','8','5','0'],['0','6','7','5'],['1','14','12','5'],['2','5','2','5']),
           columnAdd(['1','8','.','5','0'],['','6','.','7','5'],['2','5','.','2','5'],['1','1','','','']))]}],
 
- 6:[{label:'4,003 &minus; 1,786', wc:{op:'sub',a:4003,b:1786}, p:[
+ 6:[{label:'62 &minus; 35', yr:'Year 2', wc:{op:'sub',a:62,b:35}, p:[
+      pvc({'T':6,'O':2}),
+      bar([{t:'35',w:4},{t:'?',w:3}],'62'),
+      sub(expandedSubTable(['T','O'],['6','2'],['5','12'],['3','5'],['2','7']),
+          columnSub(['6','2'],['5','12'],['3','5'],['2','7']))]},
+    {label:'403 &minus; 176', yr:'Year 3', wc:{op:'sub',a:403,b:176}, p:[
+      pvc({'H':4,'T':0,'O':3}),
+      bar([{t:'176',w:4},{t:'?',w:5}],'403'),
+      sub(expandedSubTable(['H','T','O'],['4','0','3'],['3','9','13'],['1','7','6'],['2','2','7']),
+          columnSub(['4','0','3'],['3','9','13'],['1','7','6'],['2','2','7']))]},
+    {label:'4,003 &minus; 1,786', yr:'Year 4', wc:{op:'sub',a:4003,b:1786}, p:[
       pvc({'Th':4,'H':0,'T':0,'O':3}),
       bar([{t:'1,786',w:4},{t:'?',w:5}],'4,003'),
       sub(expandedSubTable(['Th','H','T','O'],['4','0','0','3'],['3','9','9','13'],['1','7','8','6'],['2','2','1','7']),
           columnSub(['4','0','0','3'],['3','9','9','13'],['1','7','8','6'],['2','2','1','7']))]},
-    {label:'6,502 &minus; 2,847', wc:{op:'sub',a:6502,b:2847}, p:[
-      pvc({'Th':6,'H':5,'T':0,'O':2}),
-      bar([{t:'2,847',w:4},{t:'?',w:5}],'6,502'),
-      sub(expandedSubTable(['Th','H','T','O'],['6','5','0','2'],['5','14','9','12'],['2','8','4','7'],['3','6','5','5']),
-          columnSub(['6','5','0','2'],['5','14','9','12'],['2','8','4','7'],['3','6','5','5']))]},
-    {label:'12.4 &minus; 5.85', p:[
+    {label:'12.4 &minus; 5.85', yr:'Year 5', p:[
       pvc({'T':1,'O':2,'0.1':4}),
       bar([{t:'5.85',w:4},{t:'?',w:5}],'12.4'),
       sub(expandedSubTable(['T','O','tenths','hundredths'],['1','2','4','0'],['0','11','3','10'],['','5','8','5'],['','6','5','5']),
           columnSub(['1','2','.','4','0'],['0','11','.','3','10'],['','5','.','8','5'],['','6','.','5','5']))]}],
 
- 7:[{label:'23 &times; 4', wc:{op:'mult',a:23,b:4}, p:[array(4,23), gridMethod(['20','3'],['4'],[['80','12']],'92'), expandedMult23x4]},
-    {label:'47 &times; 6', wc:{op:'mult',a:47,b:6}, p:[sub(base10(0,4,7),eq('&times; 6')),
-      gridMethod(['40','7'],['6'],[['240','42']],'282'), expandedMult47x6]},
-    {label:'128 &times; 3', wc:{op:'mult',a:128,b:3}, p:[sub(base10(1,2,8),eq('&times; 3')),
+ 7:[{label:'4 &times; 3', yr:'Year 2', wc:{op:'mult',a:4,b:3}, p:[
+      groups(4,3), array(4,3), eq('4 &times; 3 = 12<br>3 &times; 4 = 12')]},
+    {label:'13 &times; 4', yr:'Year 3', wc:{op:'mult',a:13,b:4}, p:[
+      sub(base10(0,1,3),eq('&times; 4')),
+      gridMethod(['10','3'],['4'],[['40','12']],'52'), expandedMult13x4]},
+    {label:'23 &times; 4', yr:'Year 4', wc:{op:'mult',a:23,b:4}, p:[
+      array(4,23), gridMethod(['20','3'],['4'],[['80','12']],'92'), expandedMult23x4]},
+    {label:'128 &times; 3', yr:'Year 4', wc:{op:'mult',a:128,b:3}, p:[
+      sub(base10(1,2,8),eq('&times; 3')),
       gridMethod(['100','20','8'],['3'],[['300','60','24']],'384'), expandedMult128x3]}],
 
  8:[{label:'3,247 &times; 26', wc:{op:'mult',a:3247,b:26}, p:[sub(base10(0,2,6),eq('26 = 20 + 6')),
@@ -2109,18 +2139,25 @@ const EXAMPLES={
         [{digits:['2','4','3','0'],why:'486 &times; 5'},
          {digits:['1','4','5','8','0'],why:'486 &times; 30'}],['1','7','0','1','0'])]}],
 
- 9:[{label:'96 &divide; 6', wc:{op:'div',a:96,b:6,method:'short'}, p:[sub(groups(4,3),eq('twelve grouped into threes')),
+ 9:[{label:'12 &divide; 3', yr:'Year 1–2', wc:{op:'div',a:12,b:3,method:'short'}, p:[
+      sub(groups(3,4),eq('twelve shared between three')),
+      bar([1,2,3].map(()=>({t:'4',w:1})),'12'),
+      eq('12 &divide; 3 = 4<br>12 &divide; 4 = 3')]},
+    {label:'48 &divide; 4', yr:'Year 3', wc:{op:'div',a:48,b:4,method:'short'}, p:[
+      sub(base10(0,4,8),eq('&divide; 4')),
+      bar([1,2,3,4].map(()=>({t:'12',w:1})),'48'),
+      sub(shortDiv('4',['4','8'],['1','2'],['','']),
+          eq('40 &divide; 4 = 10<br>8 &divide; 4 = 2'))]},
+    {label:'96 &divide; 6', yr:'Year 4', wc:{op:'div',a:96,b:6,method:'short'}, p:[
+      sub(groups(4,3),eq('twelve grouped into threes')),
       bar([1,2,3,4,5,6].map(()=>({t:'16',w:1})),'96'),
       sub(shortDiv('6',['9','6'],['1','6'],['','3']),
           eq('how many sixes in 9? 1, remainder 3<br>how many sixes in 36? 6'))]},
-    {label:'936 &divide; 6', wc:{op:'div',a:936,b:6,method:'short'}, p:[sub(base10(9,3,6),eq('&divide; 6')),
+    {label:'936 &divide; 6', yr:'Year 5', wc:{op:'div',a:936,b:6,method:'short'}, p:[
+      sub(base10(9,3,6),eq('&divide; 6')),
       bar([1,2,3,4,5,6].map(()=>({t:'156',w:1})),'936'),
       sub(shortDiv('6',['9','3','6'],['1','5','6'],['','3','3']),
-          eq('900 &divide; 6 = 150<br>36 &divide; 6 = 6'))]},
-    {label:'175 &divide; 5', wc:{op:'div',a:175,b:5,method:'short'}, p:[sub(base10(1,7,5),eq('&divide; 5')),
-      bar([1,2,3,4,5].map(()=>({t:'35',w:1})),'175'),
-      sub(shortDiv('5',['1','7','5'],['','3','5'],['','1','2']),
-          eq('how many fives in 17? 3, remainder 2<br>how many fives in 25? 5'))]}],
+          eq('900 &divide; 6 = 150<br>36 &divide; 6 = 6'))]}],
 
  10:[{label:'4,368 &divide; 24', wc:{op:'div',a:4368,b:24,method:'long'}, p:[sub(groups(4,6),eq('one group of 24')),
        bar([{t:'24',w:1},{t:'24',w:1},{t:'24',w:1},{t:'&hellip;',w:2},{t:'24',w:1}],'4,368'),
@@ -2215,13 +2252,15 @@ document.querySelectorAll('.pg-figure[data-fig]').forEach(fig=>{
   try{
     const many=exs.length>1, anyLab=exs.some(e=>e.wc);
     host.innerHTML=
-      `<div class="pg-example-bar"><span class="pg-example-label"></span>`
+      `<div class="pg-example-bar"><span class="pg-example-year"></span>`
+      + `<span class="pg-example-label"></span>`
       + (many?`<span class="pg-example-count"></span>`:'')
       + (many?`<button class="methodbtn pg-another" type="button">Show me another</button>`:'')
       + (anyLab?`<a class="pg-ownnumbers" target="_blank" rel="noopener">Put your own numbers in</a>`:'')
       + `</div>`
       + exs.map((e,i)=>`<div class="pg-example"${i?' hidden':''}>${strip(...e.p)}</div>`).join('');
     const label=host.querySelector('.pg-example-label'),
+          yr=host.querySelector('.pg-example-year'),
           count=host.querySelector('.pg-example-count'),
           own=host.querySelector('.pg-ownnumbers'),
           panes=[...host.querySelectorAll('.pg-example')];
@@ -2230,6 +2269,8 @@ document.querySelectorAll('.pg-figure[data-fig]').forEach(fig=>{
       at=(i+exs.length)%exs.length;
       panes.forEach((pn,k)=>{pn.hidden=k!==at});
       label.innerHTML=exs[at].label;
+      yr.textContent=exs[at].yr||'';
+      yr.hidden=!exs[at].yr;
       if(count) count.textContent=`Example ${at+1} of ${exs.length}`;
       if(own){
         const wc=exs[at].wc;
