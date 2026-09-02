@@ -1,0 +1,16 @@
+{
+  "name": "maths-navigator",
+  "private": true,
+  "description": "Primary Maths Curriculum Navigator - hub and interactive tools",
+  "scripts": {
+    "test": "node tools.test.js .",
+    "test:shape": "node shape_criteria.test.js",
+    "test:guide": "node parent_guide.test.js",
+    "build:site": "node build_site.js"
+  },
+  "devDependencies": {
+    "canvas": "^3.2.3",
+    "jsdom": "^30.0.1",
+    "playwright": "^1.62.1"
+  }
+}
