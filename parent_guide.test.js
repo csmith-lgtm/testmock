@@ -60,7 +60,7 @@ if(last===entries[13]&&last.id==='at-home')
   ok('the last thing in the page is entry 14, "What actually helps at home"');
 else bad('content follows the last method entry: '+(last&&(last.tagName+'#'+last.id)));
 const tail=norm(unesc(strip(entries[13].innerHTML)));
-if(/how this guide gets better\.$/.test(tail.replace(/Back to contents$/,'').trim()))
+if(/than more practice\.$/.test(tail.replace(/Back to contents$/,'').trim()))
   ok('entry 14 ends on the copy, with only the back-to-contents link after it');
 else bad('entry 14 tail: ...'+tail.slice(-90));
 for(const [label,re] of [['Open questions',/open questions/i],['Bute House',/bute house/i],
@@ -476,6 +476,65 @@ for(const q of qs){
 }
 drift.length?bad('strategy renders drift from the copy:\n         '+drift.join('\n         '))
   :ok('all '+checked+' rendered routes reach the answer their copy states, at their final step');
+// A route that says "two regroups" must draw two. Counting from the rendered
+// table closes the loop the answer check leaves open: the answer can be right
+// while the description of the working is wrong, which is how "four steps, one
+// regroup" survived beside a three-column, two-regroup calculation.
+const WORDS={one:1,two:2,three:3,four:4,five:5,six:6,seven:7,eight:8,nine:9,ten:10};
+const numberIn=w2=>WORDS[String(w2).toLowerCase()]!==undefined?WORDS[String(w2).toLowerCase()]:Number(w2);
+function claimsIn(text){
+  const out=[];
+  const re=/\b(one|two|three|four|five|six|seven|eight|nine|ten|\d+)\s+(columns?|regroups?|exchanges?)\b/gi;
+  let m; while((m=re.exec(text))) out.push({n:numberIn(m[1]), what:m[2].replace(/s$/,'').toLowerCase()});
+  return out;
+}
+function drawnCounts(block){
+  const table=block.querySelector('table.coltable');
+  if(!table) return null;
+  const rows=[...table.rows];
+  // digit columns: the widest row of place cells, ignoring the operator and
+  // any decimal-point column
+  const cols=Math.max(...rows.map(r=>[...r.cells].filter(c=>!c.classList.contains('op')&&!c.classList.contains('pt')&&c.colSpan===1).length));
+  const regroups=[...table.querySelectorAll('.carrydigit')].length;
+  // an exchange moves one unit right: work right to left, r_i = (new - old + gave)/10
+  let exchanges=null;
+  const regroupCells=[...table.querySelectorAll('td.method-regroup')];
+  if(regroupCells.length){
+    const row=regroupCells[0].parentElement;
+    const cells=[...row.cells].filter(c=>!c.classList.contains('op')&&!c.classList.contains('pt'));
+    const olds=cells.map(c=>{const x=c.querySelector('.cross');return Number((x?x.textContent:c.textContent).trim())});
+    const news=cells.map(c=>{const x=c.querySelector('.newdigit');return Number((x?x.textContent:c.textContent).trim())});
+    if(olds.every(Number.isFinite)&&news.every(Number.isFinite)){
+      let gave=0; exchanges=0;
+      for(let i=cells.length-1;i>=0;i--){
+        const received=(news[i]-olds[i]+gave)/10;
+        if(Math.abs(received-1)<1e-9){exchanges++;gave=1}
+        else if(Math.abs(received)<1e-9){gave=0}
+        else {exchanges=null;break}
+      }
+    }
+  }
+  return {column:cols, regroup:regroups, exchange:exchanges};
+}
+let claimed=0, wrong=[];
+for(const q of qs){
+  for(const r of q.querySelectorAll('.pg-route')){
+    const note=norm(r.querySelector('.pg-route-note').textContent);
+    const block=r.querySelector('.methodblock');
+    const cs=claimsIn(note);
+    if(!cs.length||!block) continue;
+    const drawn=drawnCounts(block);
+    if(!drawn) continue;
+    for(const c of cs){
+      claimed++;
+      const got=drawn[c.what];
+      if(got===null||got===undefined) continue;
+      if(got!==c.n) wrong.push(q.dataset.q+' | '+r.dataset.label+': says '+c.n+' '+c.what+(c.n===1?'':'s')+', draws '+got);
+    }
+  }
+}
+wrong.length?bad('route descriptions disagree with the calculation drawn:\n         '+wrong.join('\n         '))
+  :ok('all '+claimed+' counted claims in the route descriptions match the calculation drawn');
 const noRoute=[...d.querySelectorAll('.pg-route[data-none]')].map(r=>r.dataset.label);
 ok('routes the copy says have no calculation, left undrawn: '+noRoute.length+' ('+[...new Set(noRoute)].join(', ')+')');
 // half the verdicts should not favour the mental route
@@ -598,9 +657,12 @@ const {anchors, mails}=checkLinks(repoLinks, root, 'repository layout');
 const deadAnchors=anchors.filter(h=>h!=='#'&&!d.getElementById(h.slice(1)));
 deadAnchors.length?bad('anchors that go nowhere: '+deadAnchors.join(', '))
   :ok('all '+anchors.length+' in-page anchors resolve');
-mails.some(m=>/REPLACE-WITH-ADDRESS/.test(m))
-  ? console.log('  NOTE  the mailto is still the placeholder, as asked: '+mails.join(', '))
-  : ok('mailto links: '+(mails.join(', ')||'none'));
+mails.length
+  ? bad('the guide still carries an email link: '+mails.join(', '))
+  : ok('no email link, and no address placeholder left in the copy');
+/REPLACE-WITH-ADDRESS/.test(html)||/REPLACE-WITH-ADDRESS/.test(md)
+  ? bad('the address placeholder is still in the page or the source')
+  : ok('nothing left to fill in before publishing');
 
 /* the deploy layout: /tools/ and /parents/ as siblings */
 {

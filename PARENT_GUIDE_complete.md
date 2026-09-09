@@ -439,12 +439,12 @@ There's no wrong method on this page — every route shown gets the right answer
 
 **199 + 46**
 - *Compensate:* 200 + 46 = 246, then give one back → **245**
-- *Column method:* works, four steps, one regroup
+- *Column method:* works, three columns, two regroups
 - **Quickest here:** compensating. The 199 is one away from a friendly number, and spotting that is the whole trick.
 
 **3,500 + 2,500**
 - *Known bonds:* 35 + 25 = 60, so 3,500 + 2,500 = **6,000**
-- *Column method:* works, three regroups
+- *Column method:* works, four columns, one regroup
 - **Quickest here:** the bond. Recognising 35 and 25 inside the bigger numbers is what makes it instant.
 
 **2,476 + 1,589**
@@ -477,7 +477,7 @@ There's no wrong method on this page — every route shown gets the right answer
 
 **8,000 − 2,750**
 - *Count on:* 2,750 to 3,000 is 250; 3,000 to 8,000 is 5,000 → **5,250**
-- *Column method:* works, three exchanges across zeros
+- *Column method:* works, two exchanges across the zeros
 - **Quickest here:** counting on, if she's confident. The written method is a perfectly reasonable choice too.
 
 ### Multiplication
@@ -489,7 +489,7 @@ There's no wrong method on this page — every route shown gets the right answer
 
 **6 × 99**
 - *Compensate:* 6 × 100 = 600, take off 6 → **594**
-- *Long multiplication:* works, more steps
+- *Short multiplication:* works, more steps
 - **Quickest here:** compensating. Same move as 199 + 46, one operation along.
 
 **35 × 20**
@@ -552,4 +552,4 @@ Ask her how she worked it out, and mean it. Ask whether there was another way. W
 
 What helps less than parents expect is pushing on to the next method before the current one is secure. A child who can perform column multiplication but can't say why the second row starts with a zero has learned something fragile. She'll be faster this term and stuck next year. Speed and fluency look similar from the outside and are not the same thing.
 
-And if she's finding something hard, the most useful question to bring to us is "what is she thinking that isn't right yet" rather than "what should she practise". We can usually tell you, and the answer is nearly always more specific — and more fixable — than more practice. If there's something this guide hasn't answered, [do ask](mailto:REPLACE-WITH-ADDRESS) — the questions parents send us are how this guide gets better.
+And if she's finding something hard, the most useful question to bring to us is "what is she thinking that isn't right yet" rather than "what should she practise". We can usually tell you, and the answer is nearly always more specific — and more fixable — than more practice.

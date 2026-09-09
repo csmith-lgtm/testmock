@@ -156,7 +156,12 @@ failure. Twelve sections:
 10. **Strategy comparison.** Sixteen questions, four per operation, tabbed and
     each collapsed inside its tab, so a tab opens as a list of four rather than
     four screens of scrolling — on a phone that took entry 13 from 4.7 screens
-    to 1.8. Expand all reaches them and printing unhides them;
+    to 1.8. Expand all reaches them and printing unhides them. Every counted
+    claim in a route description ("two regroups", "three columns", "two
+    exchanges") is read back off the rendered table: regroups from the carry
+    digits, exchanges by working right to left through the regrouped row. That
+    is how "four steps, one regroup" was found sitting beside a three-column,
+    two-regroup calculation. Also;
     the framing line present; and every rendered route stepped to its last step
     and read back, so the answer the copy states and the answer the calculation
     reaches cannot drift apart. Also that at least four verdicts favour the
@@ -192,10 +197,9 @@ reads. Those were measured in Chromium at 390px and 1280px: no horizontal
 overflow with every section open, and every standalone control at least 32px
 tall (the links still under that are inline in a sentence, which is exempt).
 
-**What it does not check:** the route descriptions' step and regroup counts.
-Section 10 verifies the *answer* a route reaches, not prose like "four steps,
-one regroup" — three of those counts in the supplied copy do not match the
-calculation as rendered, and are flagged rather than corrected.
+**What it does not check:** whether the prose is *good*, only whether it is
+true to what is drawn. A route could say "works" of a method that does not, and
+nothing here would notice.
 
 ## Maintaining it
 
