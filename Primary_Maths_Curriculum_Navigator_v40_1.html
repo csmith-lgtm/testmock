@@ -19164,8 +19164,14 @@ function toolPresetParams(tool,o){
  if(tool.id==='clock')p.view=/duration|elapsed|timetable|later|earlier|intervals of time|convert.*hour|convert.*minute|convert.*second/.test(t)?'duration':'clock';
  if(tool.id==='scale')p.unit=/\bmass\b|\bgrams?\b|\bkilograms?\b|kg\b/.test(t)?'g':/capacity|\blitres?\b|\bmillilitres?\b|\bvolume\b|ml\b/.test(t)?'ml':/temperature|celsius|°c/.test(t)?'°C':/metres?\b/.test(t)&&!/centimetres?\b/.test(t)?'m':'cm';
  if(tool.id==='coordinates'){
-  if(/y-axis/.test(t))p.action='reflect-y';
-  else if(/reflect/.test(t))p.action='reflect-x';
+  /* The lab only opens all four quadrants from Year 6. Reflecting in either
+     axis negates a coordinate, so on a first-quadrant grid every point of the
+     image lands outside the visible area: Year 5's "following a reflection or
+     translation" was opening the lab on a shape that had left the grid. Below
+     Year 6 the preset is the translation, which stays on it. */
+  const fourQuadrants=/Year 6/.test(o.year);
+  if(fourQuadrants&&/y-axis/.test(t))p.action='reflect-y';
+  else if(fourQuadrants&&/reflect/.test(t))p.action='reflect-x';
   else if(/translate|translation/.test(t))p.action='translate';
   /* otherwise the parameter is omitted rather than sent empty */
  }
@@ -19249,8 +19255,9 @@ function renderObjectiveTools(o){
  if(o.strand==='as'&&/problem/.test(t))ensureVariant('bar-model','Bar Model · comparison',{type:'compare'});
  if(o.strand==='md'&&/remainder/.test(t))ensureVariant('division','Division · remainder interpretation',{view:'remainder'});
  /* "reflect them in the axes" means both axes, so the y-axis reflection gets
-    its own link rather than never being emitted at all. */
- if(o.strand==='geo'&&/reflect/.test(t)&&!/y-axis/.test(t))ensureVariant('coordinates','Coordinate · reflect in y-axis',{action:'reflect-y'});
+    its own link rather than never being emitted at all - but only from Year 6,
+    where the grid opens far enough for the image to be on it. */
+ if(o.strand==='geo'&&/Year 6/.test(o.year)&&/reflect/.test(t)&&!/y-axis/.test(t))ensureVariant('coordinates','Coordinate · reflect in y-axis',{action:'reflect-y'});
  if(!entries.length)return '';
  const links=entries.slice(0,4).map(e=>`<a class="obj-tool-link" href="Interactive_Maths_Tools_v40_1/${e.tool.file}?${new URLSearchParams(e.params)}" target="_blank" rel="noopener noreferrer" onclick="event.stopPropagation()">${e.label} ↗</a>`);
  return `<div class="obj-tools"><div class="obj-tool-links">${links.join('')}</div></div>`;

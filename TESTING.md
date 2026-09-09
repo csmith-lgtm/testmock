@@ -67,6 +67,40 @@ and exits 1, rather than passing silently.
 
 It also does not check mathematical correctness in general. Where maths has been verified — angles drawn matching angles stated, polygon interior angles against drawn vertices, rounding across place values and negatives — that was done with one-off probes. If you want any of those as permanent checks, they can be added as a section 7.
 
+## hub_links.test.js
+
+Checks the hub's deep links and its objective tool presets:
+
+```
+node hub_links.test.js                 # or: npm run test:hub
+```
+
+jsdom only, finds the hub itself, exits 1 on failure. Five sections:
+
+1. **Frozen ids.** All 239 objectives carry one, all distinct, and the slug a
+   link uses is the frozen id rather than something re-derived at runtime.
+2. **Every objective link opens that objective, expanded.** A link is four
+   levels — `#curriculum/<strand>/<year>/<objective-id>` — and the test walks
+   all 239 rather than sampling, asserting the right card is rendered, carries
+   `open`, and has `aria-expanded="true"`. It polls rather than guessing a
+   delay, because the router re-renders the view and then expands the card from
+   a `setTimeout` of its own.
+3. **A link that does not resolve falls back rather than erroring** — unknown
+   id, strand, year or view, and a link with no id at all.
+4. **The copy-link control** hands out exactly the link the router understands,
+   and pasting it back opens the card it came from. Both clipboard paths are
+   captured, since `file://` has no clipboard API and uses a textarea.
+5. **Coordinate presets stay on the visible grid.** The lab opens four
+   quadrants only from Year 6, and a reflection negates a coordinate, so below
+   Year 6 every point of the image would be off a first-quadrant grid. The test
+   asserts no reflection preset below Year 6, that Year 6's "reflect them in
+   the axes" still offers both, and that every link sends the objective's own
+   year — which is what sets the grid.
+
+Sections 2 and 5 have been run against a hub with the defect reintroduced (the
+router reading the id one level too shallow; the y-axis variant offered at
+every year) and fail there.
+
 ## parent_guide.test.js
 
 Checks `Parent_Maths_Guide_v40_1.html`, the standalone parent guide, against
@@ -119,7 +153,10 @@ failure. Twelve sections:
    control cycles back round. Entries 5, 6, 7 and 9 are checked example by
    example for the four calculations and the four year labels, smallest first,
    so an entry cannot quietly go back to opening on four-digit numbers.
-10. **Strategy comparison.** Sixteen questions, four per operation, tabbed;
+10. **Strategy comparison.** Sixteen questions, four per operation, tabbed and
+    each collapsed inside its tab, so a tab opens as a list of four rather than
+    four screens of scrolling — on a phone that took entry 13 from 4.7 screens
+    to 1.8. Expand all reaches them and printing unhides them;
     the framing line present; and every rendered route stepped to its last step
     and read back, so the answer the copy states and the answer the calculation
     reaches cannot drift apart. Also that at least four verdicts favour the

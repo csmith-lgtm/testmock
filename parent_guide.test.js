@@ -419,6 +419,27 @@ ops.join(',')==='Addition,Subtraction,Multiplication,Division'
   ?ok('tabbed by operation: '+ops.join(' / ')):bad('tabs: '+ops.join(','));
 const perOp=[...d.querySelectorAll('.pg-strategy-panel')].map(pn=>pn.querySelectorAll('.pg-question').length);
 perOp.join(',')==='4,4,4,4'?ok('four questions per operation'):bad('per operation: '+perOp.join(','));
+// each question collapses inside its tab, so a tab opens as a list of four
+const qClosed=qs.filter(q=>q.querySelector('.pg-question-body')&&q.querySelector('.pg-question-body').hidden).length;
+qClosed===qs.length?ok('every question starts collapsed, so a tab opens as a list of four')
+  :bad(qClosed+' of '+qs.length+' questions collapsed at load');
+{
+  const q=qs[0], btn=q.querySelector('.pg-qtoggle'), body=q.querySelector('.pg-question-body');
+  btn.dispatchEvent(new w.MouseEvent('click',{bubbles:true}));
+  const openedOk=!body.hidden&&q.classList.contains('is-open')&&btn.getAttribute('aria-expanded')==='true';
+  openedOk?ok('opening one reveals its routes and sets aria-expanded'):bad('a question did not open');
+  btn.dispatchEvent(new w.MouseEvent('click',{bubbles:true}));
+  body.hidden?ok('and closes again'):bad('a question did not close');
+}
+{
+  d.getElementById('expandAll').dispatchEvent(new w.MouseEvent('click',{bubbles:true}));
+  const open=qs.filter(q=>!q.querySelector('.pg-question-body').hidden).length;
+  open===qs.length?ok('Expand all reaches the strategy questions too ('+open+')')
+    :bad('Expand all left '+(qs.length-open)+' questions closed');
+  d.getElementById('collapseAll').dispatchEvent(new w.MouseEvent('click',{bubbles:true}));
+}
+/\.pg-question-body\[hidden\]/.test([...html.matchAll(/@media print\{([\s\S]*?)\n\}/g)].map(m=>m[1]).join('\n'))
+  ?ok('print unhides the collapsed questions'):bad('print leaves the questions collapsed');
 if(/There's no wrong method on this page/.test(pageText)) ok('the framing line is on the page');
 else bad('the framing line about there being no wrong method is missing');
 

@@ -6,6 +6,7 @@
     "test": "node tools.test.js .",
     "test:shape": "node shape_criteria.test.js",
     "test:guide": "node parent_guide.test.js",
+    "test:hub": "node hub_links.test.js",
     "build:site": "node build_site.js"
   },
   "devDependencies": {
